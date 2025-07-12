@@ -1,0 +1,6 @@
+brew 'stow'
+brew 'neovim'
+brew 'yazi'
+brew 'zellij'
+cask 'brave-browser'
+cask 'ghostty'

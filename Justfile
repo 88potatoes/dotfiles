@@ -1,7 +1,7 @@
 hello:
   echo "Hello, world!"
 
-stow:
+stow-all:
   stow zsh
   stow nvim
   stow zellij
@@ -11,10 +11,5 @@ stow:
   stow btop
 
 install-all:
-  brew install stow
-  brew install neovim
-  brew install yazi
-  brew install zellij
-  brew install --cask brave-browser
-  brew install --cask ghostty
+  brew bundle --file ./Brewfile
 
