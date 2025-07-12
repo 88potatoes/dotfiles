@@ -1,0 +1,28 @@
+layout {
+    tab {
+        pane split_direction="vertical" {
+            pane edit="~/Codestuff/erngmeblog/"
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+    tab {
+        pane {
+            cwd "~/Codestuff/erngmeblog/"
+            command "zsh"
+            args "-i" "-c" "chruby ruby-3.3.0 && bundle exec jekyll serve --livereload --drafts"
+        }
+        pane {
+            cwd "~/Codestuff/erngmeblog/"
+            command "zsh"
+            args "-i" "-c" "chruby ruby-3.3.0 && bundle exec jekyll post \"new_post\""
+        }
+        pane command="open" {
+            args "-a" "Google Chrome.app" "http://localhost:4000"
+        }
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+}

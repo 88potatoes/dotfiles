@@ -1,0 +1,11 @@
+[[actions]]
+action = "AddToLiked"
+key_sequence = "h"
+
+# [[actions]]
+# action = "Shuffle"
+# key_sequence = "s h"
+
+[[keymaps]]
+command = "Shuffle"
+key_sequence = "s h"
