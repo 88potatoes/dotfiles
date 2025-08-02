@@ -46,8 +46,8 @@ end, { noremap = true, silent = true })
 map('n', '<D-a>', '<esc>gg0vGg_', { noremap = true, silent = true })
 
 -- Buffer navigation
-map('n', '<C-l>', ':bnext<CR>', { noremap = true, silent = true })
-map('n', '<C-h>', ':bprevious<CR>', { noremap = true, silent = true })
+map('n', '<S-l>', ':bnext<CR>', { noremap = true, silent = true })
+map('n', '<S-h>', ':bprevious<CR>', { noremap = true, silent = true })
 
 -- Diagnostics
 map('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
