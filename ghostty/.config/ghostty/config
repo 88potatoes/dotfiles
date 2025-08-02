@@ -1,3 +1,5 @@
 background = 000000
 keybind = super+a=unbind
 keybind = super+d=unbind
+window-decoration = none
+font-size=11

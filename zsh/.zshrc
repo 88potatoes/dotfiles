@@ -52,6 +52,10 @@ alias zd='zellij delete-session'
 alias zk='zellij kill-session'
 alias za='zellij attach'
 
+alias spt="TERM=tmux-256color spotify_player"
+alias zel="zellij -l welcome"
+alias v="nvim"
+
 # pnpm
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
@@ -89,4 +93,4 @@ clear
 # Added by Windsurf
 export PATH="/Users/ericlang/.codeium/windsurf/bin:$PATH"
 
-alias spt="TERM=tmux-256color spotify_player"
+eval "$(zoxide init zsh)"

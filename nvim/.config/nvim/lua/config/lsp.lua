@@ -58,10 +58,13 @@ lspconfig.pyright.setup {
   capabilities = capabilities
 }
 
--- TypeScript setup
-lspconfig.ts_ls.setup {
-  capabilities = capabilities
-}
+local mason_registry = require("mason-registry")
+local vue_lsp_path = mason_registry.get_package("vue-language-server"):get_install_path() ..
+    '/node_modules/@vue/language-server'
+
+lspconfig.vtsls.setup({
+  capabilities = capabilities,
+})
 
 -- Lua LSP setup
 lspconfig.lua_ls.setup({
@@ -97,3 +100,12 @@ lspconfig.prismals.setup({
 })
 
 lspconfig.gopls.setup({})
+
+lspconfig.jsonls.setup {
+  filetypes = { "json", "jsonc" },
+  settings = {
+    json = {
+      validate = { enable = true }
+    }
+  }
+}

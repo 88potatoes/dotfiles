@@ -6,9 +6,9 @@ stow-all:
   stow nvim
   stow zellij
   stow spotify-player
-  stow raycast
   stow ghostty
   stow btop
+  stow karabiner
 
 install-all:
   brew bundle --file ./Brewfile

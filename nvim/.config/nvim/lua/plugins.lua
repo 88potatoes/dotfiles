@@ -178,9 +178,11 @@ require("lazy").setup({
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({})
-    end,
+    opts = {
+      keymaps = {
+        accept_suggestion = "<D-d>",
+      }
+    }
   },
   -- Yazi
   ---@type LazySpec
