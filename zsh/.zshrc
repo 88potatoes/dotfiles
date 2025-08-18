@@ -15,7 +15,6 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search tmux)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -26,8 +25,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='nvim'
 fi
-
-alias pyenv="python3 -m venv .venv && source .venv/bin/activate"
 
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 
@@ -69,9 +66,8 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 
-export FZF_DEFAULT_COMMAND='fd --type file --hidden --follow --exclude .git'
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -81,16 +77,13 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function ma () {
-  local dir_path="$HOME/Codestuff/$1"
-  mkdir -p "$dir_path"
-  cd "$dir_path"
-  nvim .
-}
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
 
 clear
-
-# Added by Windsurf
-export PATH="/Users/ericlang/.codeium/windsurf/bin:$PATH"
-
-eval "$(zoxide init zsh)"

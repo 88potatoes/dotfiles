@@ -130,7 +130,7 @@
                                     "key_code": "1",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
-                                "to": [{ "shell_command": "open -a Ghostty.app" }],
+                                "to": [{ "shell_command": "open -a Kitty.app" }],
                                 "type": "basic"
                             },
                             {
@@ -154,7 +154,7 @@
                                     "key_code": "e",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
-                                "to": [{ "shell_command": "open -a Bruno.app" }],
+                                "to": [{ "shell_command": "open -a Postman.app" }],
                                 "type": "basic"
                             },
                             {

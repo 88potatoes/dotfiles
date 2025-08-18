@@ -19,6 +19,20 @@ require("lazy").setup({
       require('config.telescope')
     end
   },
+  {
+    "nvim-pack/nvim-spectre",
+    event = "VeryLazy",
+    config = function()
+      require("spectre").setup({
+        -- Optional: you can add your own configuration options here.
+        -- For example, to set the open command to a new split:
+        -- open_cmd = "vsplit",
+      })
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
   -- Telescope file browser
   {
     "nvim-telescope/telescope-file-browser.nvim",

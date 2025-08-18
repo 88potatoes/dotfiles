@@ -27,7 +27,3 @@ vim.treesitter.language.register('prisma', 'prisma')
 vim.g.dashboard_default_executive = "telescope"
 vim.g.dashboard_disable_statusline = 1
 vim.g.dashboard_disable_at_vimenter = 0
-
--- Set colorscheme
-vim.cmd.colorscheme("catppuccin")
-

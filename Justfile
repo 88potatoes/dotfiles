@@ -1,6 +1,3 @@
-hello:
-  echo "Hello, world!"
-
 stow-all:
   stow zsh
   stow nvim
@@ -9,6 +6,7 @@ stow-all:
   stow ghostty
   stow btop
   stow karabiner
+  stow yazi
 
 install-all:
   brew bundle --file ./Brewfile

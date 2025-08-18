@@ -99,8 +99,6 @@ lspconfig.prismals.setup({
   capabilities = capabilities,
 })
 
-lspconfig.gopls.setup({})
-
 lspconfig.jsonls.setup {
   filetypes = { "json", "jsonc" },
   settings = {
