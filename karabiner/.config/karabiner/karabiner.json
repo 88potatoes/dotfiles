@@ -191,14 +191,6 @@
                             },
                             {
                                 "from": {
-                                    "key_code": "x",
-                                    "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
-                                },
-                                "to": [{ "shell_command": "open -a Messages.app" }],
-                                "type": "basic"
-                            },
-                            {
-                                "from": {
                                     "key_code": "c",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
@@ -267,6 +259,14 @@
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
                                 "to": [{ "shell_command": "open -a 'Preview.app'" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "x",
+                                    "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
+                                },
+                                "to": [{ "shell_command": "open -a 'MongoDB Compass.app'" }],
                                 "type": "basic"
                             }
                         ]

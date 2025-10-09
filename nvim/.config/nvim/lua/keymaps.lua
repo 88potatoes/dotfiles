@@ -70,7 +70,7 @@ map("n", "<leader>pv", vim.cmd.Ex)
 map('n', '<leader>pf', function() require('telescope.builtin').find_files() end, {})
 map('n', '<leader>fg', function() require('telescope.builtin').live_grep() end, {})
 map('n', '<leader>fd', function() require('telescope.builtin').diagnostics({ bufnr = 0, severity_bound = 0 }) end, {})
-map("n", "<space>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>")
+map('n', '<leader>fb', function() require('telescope.builtin').buffers({ sort_lastused = true }) end, { desc = 'List buffers' })
 
 -- LazyGit
 map('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })
@@ -114,3 +114,7 @@ vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 vim.keymap.set("n", "<leader>S", "<cmd>lua require('spectre').toggle()<CR>", { desc = "Toggle Spectre" })
 vim.keymap.set("n", "<leader>sw", "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", { desc = "Search current word" })
 vim.keymap.set("n", "<leader>sp", "<cmd>lua require('spectre').open_file_search({select_word=true})<CR>", { desc = "Search on current file" })
+
+-- Move buffer position
+map('n', '<leader>bl', '<Cmd>BufferLineMoveNext<CR>', { noremap = true, silent = true })
+map('n', '<leader>bh', '<Cmd>BufferLineMovePrev<CR>', { noremap = true, silent = true })
