@@ -46,16 +46,49 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
-    { name = 'path' }
-  })
+    { name = 'path' },
+    -- { name = 'nvim_lsp_signature_help' },
+  }),
+  window = {
+    completion = cmp.config.window.bordered(),
+  },
 })
+
 
 -- LSP capabilities for completions
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+-- local function get_venv_python_path()
+--   -- 1. Try to detect a standard '.venv' directory in the project root
+--   if vim.fn.isdirectory('./.venv') == 1 then
+--     return vim.fn.getcwd() .. '/.venv/bin/python'
+--   end
+--
+--   -- 2. Try to run 'poetry env info -p' and append /bin/python
+--   local handle = io.popen("poetry env info -p 2>/dev/null")
+--   if handle then
+--     local path = handle:read("*a"):gsub("^%s*(.-)%s*$", "%1") -- Trim whitespace
+--     handle:close()
+--     if path ~= "" and vim.fn.isdirectory(path) == 1 then
+--       return path .. '/bin/python'
+--     end
+--   end
+--
+--   -- 3. Fallback to system Python
+--   return 'python'
+-- end
+
+-- local dynamic_python_path = get_venv_python_path()
+
 -- Python setup
-lspconfig.pyright.setup {
-  capabilities = capabilities
+lspconfig.pyright_extended.setup {
+  capabilities = capabilities,
+  -- settings = {
+  --   python = {
+  --     -- Points to the Python executable inside your local .venv
+  --     pythonPath = dynamic_python_path
+  --   }
+  -- }
 }
 
 local mason_registry = require("mason-registry")
@@ -107,3 +140,53 @@ lspconfig.jsonls.setup {
     }
   }
 }
+
+lspconfig.rust_analyzer.setup {
+  settings = {
+    ['rust-analyzer'] = {
+      -- Enable the rust-analyzer formatter.
+      -- This makes rust-analyzer use rustfmt for formatting.
+      checkOnSave = {
+        enable = true,
+        command = "clippy"
+      },
+      inlayHints = {
+        -- Optional: Enables inlay hints for better code readability.
+        bindingModeHints = {
+          enable = true
+        },
+        chainingHints = {
+          enable = true
+        }
+      }
+    }
+  }
+
+}
+
+lspconfig.gopls.setup({
+  -- Ensure you are using the correct command-line options for gopls
+  cmd = { 'gopls' },
+
+  -- THIS SECTION IS KEY FOR FORMATTING
+  commands = {
+    -- This command tells gopls how to run the external formatter
+    Format = {
+      function()
+        -- Replace 'gofumpt' with 'goimports' if you use that instead
+        vim.cmd('silent !gofumpt -w ' .. vim.fn.expand('%'))
+      end,
+      description = 'Format file with gofumpt',
+    },
+  },
+
+  settings = {
+    gopls = {
+      -- Ensure gopls is told to use the external formatter
+      gofumpt = true,
+      completeUnimported = true,
+      usePlaceholders = true,
+      staticcheck = true,
+    },
+  },
+})

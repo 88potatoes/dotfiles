@@ -118,3 +118,9 @@ vim.keymap.set("n", "<leader>sp", "<cmd>lua require('spectre').open_file_search(
 -- Move buffer position
 map('n', '<leader>bl', '<Cmd>BufferLineMoveNext<CR>', { noremap = true, silent = true })
 map('n', '<leader>bh', '<Cmd>BufferLineMovePrev<CR>', { noremap = true, silent = true })
+
+local my_plugin = require('plugin.buffer-tree')
+vim.keymap.set("n", "<leader>bb", my_plugin.open_buffer, { desc = "Open buffer" })
+
+vim.keymap.set('n', '<leader>]', '<C-i>', { desc = 'Jump List Forward' })
+vim.keymap.set('n', '<leader>[', '<C-o>', { desc = 'Jump List Backward' })

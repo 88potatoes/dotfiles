@@ -86,4 +86,11 @@ if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
 clear
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
