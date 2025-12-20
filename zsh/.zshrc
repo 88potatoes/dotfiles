@@ -13,6 +13,22 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# --- VERSION MANAGERS START ---
+#
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# PYENV (Python Version Manager)
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+# CHRUBY (Ruby Version Manager)
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+
+# --- VERSION MANAGERS END ---
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 source $ZSH/oh-my-zsh.sh
@@ -26,10 +42,8 @@ else
   export EDITOR='nvim'
 fi
 
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
@@ -53,16 +67,6 @@ alias spt="TERM=tmux-256color spotify_player"
 alias zel="zellij -l welcome"
 alias v="nvim"
 
-# pnpm
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
 
@@ -86,11 +90,23 @@ if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
-
-clear
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
+
+# pnpm
+export PNPM_HOME="/Users/eric/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+clear
+
+
+# bun completions
+[ -s "/Users/eric/.bun/_bun" ] && source "/Users/eric/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

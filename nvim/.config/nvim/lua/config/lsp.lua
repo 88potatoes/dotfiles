@@ -80,23 +80,21 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- local dynamic_python_path = get_venv_python_path()
 
--- Python setup
-lspconfig.pyright_extended.setup {
-  capabilities = capabilities,
-  -- settings = {
-  --   python = {
-  --     -- Points to the Python executable inside your local .venv
-  --     pythonPath = dynamic_python_path
-  --   }
-  -- }
-}
 
-local mason_registry = require("mason-registry")
-local vue_lsp_path = mason_registry.get_package("vue-language-server"):get_install_path() ..
-    '/node_modules/@vue/language-server'
+lspconfig.pyright.setup({
+  capabilities = capabilities,
+})
 
 lspconfig.vtsls.setup({
   capabilities = capabilities,
+  settings = {
+    typescript = {
+      preferences = {
+        importModuleSpecifier = "non-relative",
+        preferTypeOnlyAutoImports = true
+      },
+    },
+  }
 })
 
 -- Lua LSP setup
@@ -190,3 +188,8 @@ lspconfig.gopls.setup({
     },
   },
 })
+
+-- lspconfig.xmlformatter.setup {
+--   filetypes = { "xml" },
+--   capabilities = capabilities,
+-- }

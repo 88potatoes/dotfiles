@@ -22,7 +22,8 @@ require("lazy").setup({
     config = function()
       require('gitsigns').setup()
       --gitsigns
-      vim.keymap.set("n", "<leader>gh", ":Gitsigns preview_hunk<CR>", { noremap = true, desc = "Gitsigns: preview [h]unk" })
+      vim.keymap.set("n", "<leader>gh", ":Gitsigns preview_hunk<CR>",
+        { noremap = true, desc = "Gitsigns: preview [h]unk" })
       vim.keymap.set("n", "<leader>gi", ":Gitsigns preview_hunk_inline<CR>",
         { noremap = true, desc = "Gitsigns: preview hunk [i]nline" })
     end
@@ -63,21 +64,20 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
-      { "prisma/vim-prisma",              ft = "prisma" },
-      { "nvim-treesitter/nvim-ts-autotag" }
+      { "prisma/vim-prisma", ft = "prisma" },
     },
     config = function()
       require('config.treesitter')
     end
   },
-  -- Auto tags
-  {
-    "windwp/nvim-ts-autotag",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    config = function()
-      require("config.nvim-ts-autotag")
-    end
-  },
+  -- -- Auto tags
+  -- {
+  --   "windwp/nvim-ts-autotag",
+  --   dependencies = "nvim-treesitter/nvim-treesitter",
+  --   config = function()
+  --     require("config.nvim-ts-autotag")
+  --   end
+  -- },
   -- LSP
   {
     "neovim/nvim-lspconfig",
@@ -131,7 +131,8 @@ require("lazy").setup({
     "nvimtools/none-ls.nvim",
     config = function()
       require('config.null-ls')
-    end
+    end,
+    requires = { "nvim-lua/plenary.nvim" },
   },
   -- Surround
   {
@@ -274,7 +275,119 @@ require("lazy").setup({
       require("catppuccin").setup({
         flavour = "mocha",
       })
+      vim.cmd.colorscheme("catppuccin")
     end
+  },
+  {
+    "mfussenegger/nvim-lint",
+    lazy = false,
+
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescript = { "eslint" },
+        typescriptreact = { "eslint" },
+        python = { "ruff" },
+      }
+
+      -- Helper function to find virtual environment
+      local function get_python_path()
+        -- Try to find project root
+        local root_dir = vim.fs.dirname(vim.fs.find({ "pyproject.toml", "setup.py", ".git" }, {
+          upward = true,
+          path = vim.fn.expand("%:p:h")
+        })[1])
+
+        if root_dir then
+          -- Check for common venv locations in project root
+          local venv_paths = {
+            ".venv/bin/python",
+            "venv/bin/python",
+            ".virtualenv/bin/python",
+          }
+
+          for _, venv_path in ipairs(venv_paths) do
+            local full_path = root_dir .. "/" .. venv_path
+            if vim.fn.executable(full_path) == 1 then
+              return full_path
+            end
+          end
+
+          -- Try poetry from project directory
+          if vim.fn.filereadable(root_dir .. "/pyproject.toml") == 1 then
+            local handle = io.popen("cd " .. vim.fn.shellescape(root_dir) .. " && poetry env info -p 2>/dev/null")
+            if handle then
+              local poetry_venv = handle:read("*a"):gsub("%s+", "")
+              handle:close()
+              if poetry_venv ~= "" and poetry_venv ~= "nil" then
+                local python_path = poetry_venv .. "/bin/python"
+                if vim.fn.executable(python_path) == 1 then
+                  return python_path
+                end
+              end
+            end
+          end
+        end
+
+        -- Fallback to system python
+        return "python3"
+      end
+
+      -- Configure ruff to use venv
+      local function get_ruff_cmd()
+        local python = get_python_path()
+        local venv_dir = vim.fn.fnamemodify(python, ":h:h")
+        local ruff_path = venv_dir .. "/bin/ruff"
+
+        if vim.fn.executable(ruff_path) == 1 then
+          return ruff_path
+        else
+          return "ruff"
+        end
+      end
+
+      -- Override eslint to prefer local installation
+      local eslint = lint.linters.eslint
+      eslint.cmd = "eslint_d"
+
+      -- Add args to make it use local config
+      eslint.args = {
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        function() return vim.api.nvim_buf_get_name(0) end,
+      }
+
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        group = vim.api.nvim_create_augroup("LinterAutocmds", { clear = true }),
+        callback = function()
+          -- Try local node_modules eslint first
+          local root_dir = vim.fs.dirname(vim.fs.find({ "package.json",
+            ".eslintrc.js", ".eslintrc.json" }, {
+            upward = true,
+            path = vim.fn.expand("%:p:h")
+          })[1])
+
+          if root_dir then
+            local local_eslint = root_dir .. "/node_modules/.bin/eslint_d"
+            if vim.fn.executable(local_eslint) == 1 then
+              lint.linters.eslint.cmd = local_eslint
+            end
+          end
+
+          -- Set ruff to use venv for Python files
+          if vim.bo.filetype == "python" then
+            lint.linters.ruff.cmd = get_ruff_cmd()
+          end
+
+          lint.try_lint()
+        end,
+      })
+    end,
   },
   {
     "ThePrimeagen/harpoon",
@@ -293,4 +406,3 @@ require("lazy").setup({
 })
 
 require("gitsigns").setup()
-
