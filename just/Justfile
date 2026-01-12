@@ -1,0 +1,4 @@
+move-to-dotfiles dir:
+    mkdir -p "$HOME/dotfiles/{{dir}}"
+    mv "{{invocation_directory()}}" "$HOME/dotfiles/{{dir}}"
+

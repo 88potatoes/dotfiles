@@ -7,7 +7,11 @@ stow-all:
   stow btop
   stow karabiner
   stow yazi
+  stow just
+  stow kitty
 
 install-all:
   brew bundle --file ./Brewfile
+
+
 

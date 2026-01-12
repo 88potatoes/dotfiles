@@ -260,14 +260,6 @@ require("lazy").setup({
     end,
   },
   {
-    'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    config = function()
-      require('config.dashboard')
-    end,
-    dependencies = { { 'nvim-tree/nvim-web-devicons' } }
-  },
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,

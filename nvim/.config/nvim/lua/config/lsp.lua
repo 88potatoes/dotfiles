@@ -1,5 +1,6 @@
 -- LSP Configuration
-local lspconfig = require('lspconfig')
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
+
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
@@ -54,11 +55,14 @@ cmp.setup({
   },
 })
 
+-- Lua LSP setup
+vim.lsp.config('lua_ls', {})
+vim.lsp.start('lua_ls')
 
 -- LSP capabilities for completions
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
--- local function get_venv_python_path()
+-- lokal function get_venv_python_path()
 --   -- 1. Try to detect a standard '.venv' directory in the project root
 --   if vim.fn.isdirectory('./.venv') == 1 then
 --     return vim.fn.getcwd() .. '/.venv/bin/python'
@@ -81,11 +85,11 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- local dynamic_python_path = get_venv_python_path()
 
 
-lspconfig.pyright.setup({
-  capabilities = capabilities,
-})
+-- vim.lsp.config.pyright.setup({
+--   capabilities = capabilities,
+-- })
 
-lspconfig.vtsls.setup({
+vim.lsp.config.vtsls.setup({
   capabilities = capabilities,
   settings = {
     typescript = {
@@ -98,7 +102,7 @@ lspconfig.vtsls.setup({
 })
 
 -- Lua LSP setup
-lspconfig.lua_ls.setup({
+vim.lsp.config.lua_ls.setup({
   capabilities = capabilities,
   settings = {
     Lua = {
@@ -122,15 +126,7 @@ lspconfig.lua_ls.setup({
   },
 })
 
--- Prisma LSP setup
-lspconfig.prismals.setup({
-  -- Basic setup
-  cmd = { "prisma-language-server", "--stdio" },
-  filetypes = { "prisma" },
-  capabilities = capabilities,
-})
-
-lspconfig.jsonls.setup {
+vim.lsp.config.jsonls.setup {
   filetypes = { "json", "jsonc" },
   settings = {
     json = {
@@ -139,7 +135,7 @@ lspconfig.jsonls.setup {
   }
 }
 
-lspconfig.rust_analyzer.setup {
+vim.lsp.config.rust_analyzer.setup {
   settings = {
     ['rust-analyzer'] = {
       -- Enable the rust-analyzer formatter.
@@ -162,7 +158,7 @@ lspconfig.rust_analyzer.setup {
 
 }
 
-lspconfig.gopls.setup({
+vim.lsp.config.gopls.setup({
   -- Ensure you are using the correct command-line options for gopls
   cmd = { 'gopls' },
 
@@ -189,12 +185,12 @@ lspconfig.gopls.setup({
   },
 })
 
--- lspconfig.xmlformatter.setup {
+-- vim.lsp.config.xmlformatter.setup {
 --   filetypes = { "xml" },
 --   capabilities = capabilities,
 -- }
 
-lspconfig.clangd.setup({
+vim.lsp.config.clangd.setup({
   cmd = {
     "clangd",
     "--background-index",

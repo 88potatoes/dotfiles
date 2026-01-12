@@ -1,5 +1,5 @@
 -- Treesitter Configuration
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter').setup({
   auto_install = true,
   indent = { enable = true },
   ensure_installed = {
