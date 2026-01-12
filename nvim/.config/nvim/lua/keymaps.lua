@@ -12,6 +12,8 @@ api.nvim_set_keymap('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
 api.nvim_set_keymap('i', '<D-o>', '<Cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 api.nvim_set_keymap('n', '<D-o>', '<Cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
 api.nvim_set_keymap('n', '<D-.>', '<Cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
+api.nvim_set_keymap('v', '<D-.>', '<Cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
+api.nvim_set_keymap('n', '<leader>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 
 -- Navigation
 api.nvim_set_keymap('n', '<S-l>', '<C-o>$', { noremap = true, silent = true })
@@ -143,6 +145,9 @@ map('n', '<leader>fb', function() require('telescope.builtin').buffers({ sort_la
 -- LazyGit
 map('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })
 
+-- Undotree
+map('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = "LazyGit" })
+
 -- Todoist
 map("n", "<leader>td", ":Todoist<CR>", { desc = "Open Todoist" })
 
@@ -202,3 +207,10 @@ vim.keymap.set('n', '<leader>cc', function()
   vim.fn.setreg('+', path)
   print('Copied to clipboard: ' .. path)
 end, { desc = 'Copy file path from cwd' })
+
+vim.fn.setreg('s', 'F(wyiwysiw{f:a{pa:f)i}')
+
+vim.keymap.set('n', '<A-Up>', ':resize +2<CR>')
+vim.keymap.set('n', '<A-Down>', ':resize -2<CR>')
+vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
+vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')

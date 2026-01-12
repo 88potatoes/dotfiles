@@ -193,3 +193,15 @@ lspconfig.gopls.setup({
 --   filetypes = { "xml" },
 --   capabilities = capabilities,
 -- }
+
+lspconfig.clangd.setup({
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy", -- Adds extra "robustness" checks
+  },
+  -- This tells clangd to use these flags if no compile_commands.json is found
+  initialization_options = {
+    fallbackFlags = { "-std=c99", "-Wall", "-Wextra" }
+  },
+})

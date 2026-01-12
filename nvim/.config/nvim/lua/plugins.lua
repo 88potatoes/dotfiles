@@ -397,12 +397,27 @@ require("lazy").setup({
       local harpoon = require("harpoon")
       harpoon:setup()
     end
-  }, {
-  "marcocofano/excalidraw.nvim",
-  config = function()
-    require("excalidraw").setup()
-  end
-}
+  },
+  {
+    "marcocofano/excalidraw.nvim",
+    config = function()
+      require("excalidraw").setup()
+    end
+  },
+  {
+    "mbbill/undotree",
+    cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
+    keys = {
+      { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Toggle Undotree" },
+    },
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  }
 })
 
 require("gitsigns").setup()

@@ -15,9 +15,9 @@ export ZSH="$HOME/.oh-my-zsh"
 
 # --- VERSION MANAGERS START ---
 #
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # PYENV (Python Version Manager)
 export PYENV_ROOT="$HOME/.pyenv"
@@ -31,6 +31,7 @@ source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
+zstyle ':omz:lib:nvm' load no
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -110,3 +111,6 @@ clear
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(mise activate zsh)"
+export PATH="$HOME/.local/share/mise/shims:$PATH"

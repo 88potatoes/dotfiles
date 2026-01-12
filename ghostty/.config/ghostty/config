@@ -3,3 +3,6 @@ keybind = super+a=unbind
 keybind = super+d=unbind
 window-decoration = none
 font-size=11
+
+# Load local overrides if they exist
+config-file = ~/.config/ghostty/config.local
