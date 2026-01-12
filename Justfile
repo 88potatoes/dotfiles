@@ -9,6 +9,7 @@ stow-all:
   stow yazi
   stow just
   stow kitty
+  stow lazygit
 
 install-all:
   brew bundle --file ./Brewfile

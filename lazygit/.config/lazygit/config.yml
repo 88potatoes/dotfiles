@@ -1,0 +1,4 @@
+git:
+  pagers:
+    - colorarg: always
+      pager: diff-so-fancy
