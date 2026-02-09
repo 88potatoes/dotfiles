@@ -114,3 +114,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 eval "$(mise activate zsh)"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
