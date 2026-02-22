@@ -7,17 +7,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Set up plugins
 require("lazy").setup({
   {
-    "tpope/vim-fugitive",
-    config = function()
-      --vim-fugitive
-      vim.keymap.set('n', '<leader>gs', ':Git<CR>', { noremap = true, desc = 'git status' }) --git status
-      vim.keymap.set('n', '<leader>ga', ':Git add ', { noremap = true, desc = 'git add ' })
-      vim.keymap.set('n', '<leader>gA', ':Git add .<CR>', { noremap = true, desc = 'git add .' })
-      vim.keymap.set('n', '<leader>gp', ':Git push --quiet <CR>', { noremap = true, desc = 'git push' })
-      vim.keymap.set('n', '<leader>gc', ':Git commit -qam "', { noremap = true, desc = 'git commit -am' })
-    end
-  },
-  {
     "lewis6991/gitsigns.nvim",
     config = function()
       require('gitsigns').setup()
@@ -41,20 +30,6 @@ require("lazy").setup({
       require('config.telescope')
     end
   },
-  {
-    "nvim-pack/nvim-spectre",
-    event = "VeryLazy",
-    config = function()
-      require("spectre").setup({
-        -- Optional: you can add your own configuration options here.
-        -- For example, to set the open command to a new split:
-        -- open_cmd = "vsplit",
-      })
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
   -- Telescope file browser
   {
     "nvim-telescope/telescope-file-browser.nvim",
@@ -63,6 +38,7 @@ require("lazy").setup({
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     dependencies = {
       { "prisma/vim-prisma", ft = "prisma" },
     },
@@ -70,14 +46,6 @@ require("lazy").setup({
       require('config.treesitter')
     end
   },
-  -- -- Auto tags
-  -- {
-  --   "windwp/nvim-ts-autotag",
-  --   dependencies = "nvim-treesitter/nvim-treesitter",
-  --   config = function()
-  --     require("config.nvim-ts-autotag")
-  --   end
-  -- },
   -- LSP
   {
     "neovim/nvim-lspconfig",
@@ -177,23 +145,6 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
     },
   },
-  -- Flash
-  {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-
-  -- Nvim-tree
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    opts = {
-      hijack_netrw = false
-    }
-  },
   -- Bufferline
   {
     'akinsho/bufferline.nvim',
@@ -203,14 +154,6 @@ require("lazy").setup({
       require('config.bufferline')
     end,
   },
-  -- Snipe
-  -- {
-  --   "leath-dub/snipe.nvim",
-  --   keys = {
-  --     { "pb", function() require("snipe").open_buffer_menu() end, desc = "Open Snipe buffer menu" }
-  --   },
-  --   opts = {}
-  -- },
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
@@ -258,14 +201,6 @@ require("lazy").setup({
       -- vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
     end,
-  },
-  {
-    'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    config = function()
-      require('config.dashboard')
-    end,
-    dependencies = { { 'nvim-tree/nvim-web-devicons' } }
   },
   {
     "catppuccin/nvim",
@@ -388,21 +323,6 @@ require("lazy").setup({
         end,
       })
     end,
-  },
-  {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local harpoon = require("harpoon")
-      harpoon:setup()
-    end
-  },
-  {
-    "marcocofano/excalidraw.nvim",
-    config = function()
-      require("excalidraw").setup()
-    end
   },
   {
     "mbbill/undotree",
