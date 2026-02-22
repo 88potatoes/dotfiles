@@ -6,23 +6,20 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Set up plugins
 require("lazy").setup({
-  -- Telescope
   {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.5',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      "nvim-tree/nvim-web-devicons", -- optional
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      picker = { enabled = true },
     },
-    config = function()
-      require('config.telescope')
-    end
   },
-  -- Telescope file browser
   {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+    "A7Lavinraj/fyler.nvim",
+    dependencies = { "nvim-mini/mini.icons" },
+    branch = "stable", -- Use stable branch for production
+    lazy = false,      -- Necessary for `default_explorer` to work properly
+    opts = {}
   },
   -- Treesitter
   {
@@ -131,44 +128,42 @@ require("lazy").setup({
       }
     }
   },
-  -- Yazi
-  ---@type LazySpec
   {
-    "mikavilpas/yazi.nvim",
-    dependencies = {
-      -- check the installation instructions at
-      -- https://github.com/folke/snacks.nvim
-      "folke/snacks.nvim"
-    },
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
     keys = {
-      -- 👇 in this section, choose your own keymappings!
       {
-        "<leader>ly",
-        mode = { "n", "v" },
-        "<cmd>Yazi<cr>",
-        desc = "Open yazi at the current file",
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
       },
       {
-        -- Open in the current working directory
-        "<leader>lY",
-        "<cmd>Yazi cwd<cr>",
-        desc = "Open the file manager in nvim's working directory",
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
       },
     },
-    ---@type YaziConfig | {}
-    opts = {
-      -- if you want to open yazi instead of netrw, see below for more info
-      open_for_directories = false,
-      keymaps = {
-        show_help = "<f1>",
-      },
-    },
-    -- 👇 if you use `open_for_directories=true`, this is recommended
-    init = function()
-      -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
-      -- vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end,
   },
   {
     "mfussenegger/nvim-lint",
@@ -290,7 +285,7 @@ require("lazy").setup({
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
