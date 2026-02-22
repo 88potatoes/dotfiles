@@ -6,17 +6,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Set up plugins
 require("lazy").setup({
-  {
-    "lewis6991/gitsigns.nvim",
-    config = function()
-      require('gitsigns').setup()
-      --gitsigns
-      vim.keymap.set("n", "<leader>gh", ":Gitsigns preview_hunk<CR>",
-        { noremap = true, desc = "Gitsigns: preview [h]unk" })
-      vim.keymap.set("n", "<leader>gi", ":Gitsigns preview_hunk_inline<CR>",
-        { noremap = true, desc = "Gitsigns: preview hunk [i]nline" })
-    end
-  },
   -- Telescope
   {
     'nvim-telescope/telescope.nvim',
@@ -145,15 +134,6 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
     },
   },
-  -- Bufferline
-  {
-    'akinsho/bufferline.nvim',
-    version = "*",
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function()
-      require('config.bufferline')
-    end,
-  },
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
@@ -201,17 +181,6 @@ require("lazy").setup({
       -- vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
     end,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-      require("catppuccin").setup({
-        flavour = "mocha",
-      })
-      vim.cmd.colorscheme("catppuccin")
-    end
   },
   {
     "mfussenegger/nvim-lint",
