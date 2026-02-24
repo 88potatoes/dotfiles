@@ -185,6 +185,10 @@ local lua_ls = {
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
       diagnostics = { disable = { 'missing-fields' } },
       hint = { enable = true },
+      globals = { 'vim' },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+      }
     },
   },
 }

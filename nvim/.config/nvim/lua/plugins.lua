@@ -21,17 +21,17 @@ require("lazy").setup({
     lazy = false,      -- Necessary for `default_explorer` to work properly
     opts = {}
   },
-  -- Treesitter
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    dependencies = {
-      { "prisma/vim-prisma", ft = "prisma" },
-    },
-    config = function()
-      require('config.treesitter')
-    end
-  },
+  -- -- Treesitter
+  -- {
+  --   "nvim-treesitter/nvim-treesitter",
+  --   build = ":TSUpdate",
+  --   dependencies = {
+  --     { "prisma/vim-prisma", ft = "prisma" },
+  --   },
+  --   config = function()
+  --     require('lua.config.treesitter')
+  --   end
+  -- },
   -- LSP
   {
     "neovim/nvim-lspconfig",
