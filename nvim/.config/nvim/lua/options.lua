@@ -24,10 +24,6 @@ vim.opt.termguicolors = true
 vim.treesitter.language.register('tsx', 'typescriptreact')
 vim.treesitter.language.register('prisma', 'prisma')
 
--- Set dashboard as the startup screen
-vim.g.dashboard_default_executive = "telescope"
-vim.g.dashboard_disable_statusline = 1
-vim.g.dashboard_disable_at_vimenter = 0
 
 -- Visual settings
 vim.opt.termguicolors = true                       -- Enable 24-bit colors
