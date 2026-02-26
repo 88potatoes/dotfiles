@@ -95,3 +95,5 @@ vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
 -- Fyler
 vim.keymap.set("n", "<leader>ly", function() require('fyler').open() end, { desc = "Fyler [E]xplorer" })
 
+
+
