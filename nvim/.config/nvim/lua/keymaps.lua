@@ -15,9 +15,9 @@ api.nvim_set_keymap('n', '<D-.>', '<Cmd>lua vim.lsp.buf.code_action()<CR>', { no
 api.nvim_set_keymap('v', '<D-.>', '<Cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
 api.nvim_set_keymap('n', '<leader>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 
--- Navigation
-api.nvim_set_keymap('n', '<S-l>', '<C-o>$', { noremap = true, silent = true })
-api.nvim_set_keymap('n', '<S-j>', '<C-o>^', { noremap = true, silent = true })
+-- Line navigation
+vim.keymap.set('n', '<S-l>', '$', { desc = 'Go to end of line' })
+vim.keymap.set('n', '<S-h>', '^', { desc = 'Go to start of line' })
 
 -- Grep
 -- api.nvim_set_keymap('n', '<leader>gw', 'viwy/<C-r>"<CR>', { noremap = true, silent = true })
@@ -46,14 +46,12 @@ map('i', '<C-k>', '<Esc>:m .-2<CR>==gi', { noremap = true, silent = true })
 map('v', '<C-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 map('v', '<C-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
+-- Select whole buffer
+map('n', '<D-a>', 'ggVG', { noremap = true, silent = true })
+map('v', '<D-a>', '<Esc>ggVG<CR>==gi', { noremap = true, silent = true })
+
 -- Diagnostics
 map('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
-
--- Alt+Backspace to delete word in insert mode
-map('i', '<A-BS>', '<C-w>')
-
--- Find text
-map("n", "<A-f>", "viwy /<D-v>", { noremap = true, silent = true })
 
 -- Snacks
 vim.keymap.set("n", "<leader>pf", function() Snacks.picker.files() end, { desc = "Find Files" })
