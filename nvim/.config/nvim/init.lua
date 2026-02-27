@@ -10,17 +10,12 @@ if vim.fn.has('nvim') == 1 and vim.fn.executable('nvr') == 1 then
 end
 
 vim.g.lazygit_use_custom_config_file_path = 1
-vim.g.lazygit_config_file_path = '/Users/eric/.config/lazygit/config.yml'
+vim.g.lazygit_config_file_path = vim.fn.expand('~/.config/lazygit/config.yml')
 vim.g.lazygit_use_neovim_remote = 1
 
 if vim.fn.executable('nvr') == 1 then
   vim.env.GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
 end
-
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
-
 
 vim.opt.scrolloff = 10    -- Keep 10 lines above/below cursor
 vim.opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor

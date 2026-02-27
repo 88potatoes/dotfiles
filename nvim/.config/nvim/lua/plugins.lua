@@ -48,20 +48,20 @@ require("lazy").setup({
   --     require('lua.config.treesitter')
   --   end
   -- },
-  {
-    'sainnhe/gruvbox-material',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- Optionally configure and load the colorscheme
-      -- directly inside the plugin declaration.
-      vim.g.gruvbox_material_enable_italic = true
-      vim.g.gruvbox_material_foreground = 'mix'
-      vim.g.gruvbox_material_background = 'hard'
-
-      vim.cmd.colorscheme('gruvbox-material')
-    end
-  },
+  -- {
+  --   'sainnhe/gruvbox-material',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- Optionally configure and load the colorscheme
+  --     -- directly inside the plugin declaration.
+  --     vim.g.gruvbox_material_enable_italic = true
+  --     vim.g.gruvbox_material_foreground = 'mix'
+  --     vim.g.gruvbox_material_background = 'hard'
+  --
+  --     vim.cmd.colorscheme('gruvbox-material')
+  --   end
+  -- },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -88,7 +88,7 @@ require("lazy").setup({
       require("config.lsp.init").setup()
     end,
   },
-    -- Mason LSP Config
+  -- Mason LSP Config
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
@@ -341,5 +341,13 @@ require("lazy").setup({
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {},
-  }
+  },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'tokyonight-night'
+    end
+ }
 })

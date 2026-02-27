@@ -60,7 +60,10 @@ vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = "LazyGit" })
 
 -- Supermaven Completion
-api.nvim_set_keymap('i', '<C-Tab>', [[<Cmd>lua require('supermaven').expand()<CR>]], { silent = true, noremap = true })
+-- api.nvim_set_keymap('i', '<C-Tab>', [[<Cmd>lua require('supermaven').expand()<CR>]], { silent = true, noremap = true })
+vim.keymap.set('i', '<C-Tab>', function()
+  require('supermaven').expand()
+end, { silent = true, desc = "Supermaven Expand" })
 
 
 -- LSP keymaps
