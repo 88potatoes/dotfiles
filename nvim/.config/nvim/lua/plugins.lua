@@ -148,9 +148,9 @@ require("lazy").setup({
       },
       hooks = {
         diff_buf_read = function(bufnr)
-          -- This singular hook ensures all folds are open by default
-          -- It solves the "ugly dotted lines" issue from your screenshot
           vim.opt_local.foldlevel = 99
+          vim.keymap.set('n', ']]', ']c', { buffer = bufnr, desc = "Next Hunk" })
+          vim.keymap.set('n', '[[', '[c', { buffer = bufnr, desc = "Prev Hunk" })
         end,
       },
     },

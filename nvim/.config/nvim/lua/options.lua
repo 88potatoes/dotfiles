@@ -110,12 +110,3 @@ vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#34462F' })
 vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#462F2F' })
 vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#2F4146' })
 vim.api.nvim_set_hl(0, 'DiffText', { bg = '#463C2F' })
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    if vim.wo.diff then
-      vim.keymap.set('n', ']]', ']c', { buffer = true, desc = "Next Hunk" })
-      vim.keymap.set('n', '[[', '[c', { buffer = true, desc = "Prev Hunk" })
-    end
-  end,
-})
