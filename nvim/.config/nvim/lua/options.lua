@@ -69,8 +69,39 @@ vim.opt.encoding = "UTF-8"              -- Set encoding
 
 vim.opt.statusline = " "
 
-local function get_filename()
-  return " %t %m "
+local function get_short_path()
+  -- There's the notion of a 'Buffer Name'
+  -- %:~ reduces the path to be relative to your Home (~) or Current Dir
+  local full_path = vim.fn.expand("%:~")
+  
+  -- If we are in an empty buffer, return a singular placeholder
+  if full_path == "" then return "[No Name]" end
+
+  -- Split the path into plural segments
+  local segments = {}
+  for segment in string.gmatch(full_path, "[^/]+") do
+    table.insert(segments, segment)
+  end
+
+  -- There's the notion of 'Slicing'
+  -- We take the last 3 segments if they exist
+  local count = #segments
+  local start_index = math.max(1, count - 2) -- -2 because it's inclusive (3 total)
+  
+  local result = {}
+  for i = start_index, count do
+    table.insert(result, segments[i])
+  end
+
+  -- Join them back into a singular string
+  local path_display = table.concat(result, "/")
+  
+  -- If we cut off folders, prepend '...' to show there's a parent relationship
+  if start_index > 1 then
+    path_display = ".../" .. path_display
+  end
+
+  return path_display
 end
 
 local cached_branch = ""
@@ -96,7 +127,7 @@ _G.MyCustomStatusline = function()
     " ",            -- Leading space
     get_git_branch(),
     "|",           -- Separator
-    get_filename(), -- Our filename component
+    get_short_path(), -- Our filename component
     "%=",           -- SPECIAL ITEM: This pushes everything after it to the right
     "Line: %l/%L ", -- %l is current line, %L is total lines
     "Col: %c ",     -- %c is column

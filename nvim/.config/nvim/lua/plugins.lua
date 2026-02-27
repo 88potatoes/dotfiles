@@ -62,32 +62,33 @@ require("lazy").setup({
       vim.cmd.colorscheme('gruvbox-material')
     end
   },
-  -- LSP
   {
-    "neovim/nvim-lspconfig",
+    "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "hrsh7th/nvim-cmp",
       "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim"
     },
     config = function()
-      require('config.lsp')
+      -- Your cmp setup code goes here
     end
+  },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load for lua files
+    opts = {},
   },
   -- Mason
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate", -- :MasonUpdate updates registry contents
     config = function()
-      require("mason").setup()
+      require("config.lsp.init").setup()
     end,
   },
-  -- Mason LSP Config
+    -- Mason LSP Config
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {

@@ -28,6 +28,10 @@ vim.keymap.set('n', '<leader>gW', function()
   })
 end, { noremap = true, silent = true, desc = 'LSP: Find references (exclude tests)' })
 
+-- Delete to start of word
+vim.keymap.set('i', '<A-BS>', '<C-w>', { desc = 'Delete word backward' })
+vim.keymap.set('n', '<A-BS>', 'db', { desc = 'Delete to start of word' })
+
 -- Move lines up/down
 -- Normal mode
 vim.keymap.set('n', '<C-j>', ':m .+1<CR>==', { noremap = true, silent = true })
