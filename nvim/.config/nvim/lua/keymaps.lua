@@ -95,5 +95,8 @@ vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
 -- Fyler
 vim.keymap.set("n", "<leader>ly", function() require('fyler').open() end, { desc = "Fyler [E]xplorer" })
 
-
-
+vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "[D]iff [F]ile History (Current File)" })
+vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "[D]iff [C]lose" })
+vim.keymap.set("n", "<leader>dm", "<cmd>DiffviewOpen main...HEAD<cr>", { desc = "Diff against merge-base of main" })
+vim.keymap.set("n", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git [Y]ank/Browse Link" })
+vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git Browse (Selection)" })

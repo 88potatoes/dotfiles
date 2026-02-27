@@ -19,7 +19,23 @@ require("lazy").setup({
     dependencies = { "nvim-mini/mini.icons" },
     branch = "stable", -- Use stable branch for production
     lazy = false,      -- Necessary for `default_explorer` to work properly
-    opts = {}
+    opts = {
+      views = {
+        finder = {
+          win = {
+            kind = "float",
+            kinds = {
+              float = {
+                height = "70%",
+                width = "70%",
+                top = "15%",
+                left = "15%",
+              },
+            },
+          },
+        },
+      },
+    }
   },
   -- -- Treesitter
   -- {
@@ -32,6 +48,20 @@ require("lazy").setup({
   --     require('lua.config.treesitter')
   --   end
   -- },
+  {
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- Optionally configure and load the colorscheme
+      -- directly inside the plugin declaration.
+      vim.g.gruvbox_material_enable_italic = true
+      vim.g.gruvbox_material_foreground = 'mix'
+      vim.g.gruvbox_material_background = 'hard'
+
+      vim.cmd.colorscheme('gruvbox-material')
+    end
+  },
   -- LSP
   {
     "neovim/nvim-lspconfig",
@@ -103,6 +133,27 @@ require("lazy").setup({
     config = function()
       require('config.comment')
     end
+  },
+  {
+    "sindrets/diffview.nvim",
+    -- There's the notion of an 'Initialization Table'
+    -- This 'opts' key automatically calls require("diffview").setup(opts)
+    opts = {
+      enhanced_diff_hl = true, -- Highly recommended for that GitHub look
+      view = {
+        merge_tool = {
+          layout = "diff3_horizontal",
+          disable_diagnostics = true,
+        },
+      },
+      hooks = {
+        diff_buf_read = function(bufnr)
+          -- This singular hook ensures all folds are open by default
+          -- It solves the "ugly dotted lines" issue from your screenshot
+          vim.opt_local.foldlevel = 99
+        end,
+      },
+    },
   },
   -- LazyGit
   {
