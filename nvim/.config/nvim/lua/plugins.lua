@@ -37,31 +37,45 @@ require("lazy").setup({
       },
     }
   },
-  -- -- Treesitter
-  -- {
-  --   "nvim-treesitter/nvim-treesitter",
-  --   build = ":TSUpdate",
-  --   dependencies = {
-  --     { "prisma/vim-prisma", ft = "prisma" },
-  --   },
-  --   config = function()
-  --     require('lua.config.treesitter')
-  --   end
-  -- },
-  -- {
-  --   'sainnhe/gruvbox-material',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     -- Optionally configure and load the colorscheme
-  --     -- directly inside the plugin declaration.
-  --     vim.g.gruvbox_material_enable_italic = true
-  --     vim.g.gruvbox_material_foreground = 'mix'
-  --     vim.g.gruvbox_material_background = 'hard'
-  --
-  --     vim.cmd.colorscheme('gruvbox-material')
-  --   end
-  -- },
+  -- Treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      local configs = require("nvim-treesitter.config") -- Fixed the 's' here
+
+      configs.setup({
+        -- Added TSX, TypeScript, and JSON for React/Fullstack work
+        ensure_installed = {
+          "lua", "vim", "vimdoc", "python",
+          "javascript", "typescript", "tsx", "html", "css", "json"
+        },
+
+        sync_install = false,
+        auto_install = true,
+
+        highlight = {
+          enable = true,
+          -- Python and React often have long files;
+          -- this keeps Neovim fast by not highlighting huge files
+          disable = function(lang, buf)
+            local max_filesize = 100 * 1024 -- 100 KB
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+            if ok and stats and stats.size > max_filesize then
+              return true
+            end
+          end,
+        },
+
+        indent = {
+          enable = true, -- Crucial for Python's whitespace-sensitive syntax
+        },
+
+        -- Enable 'autotag' if you install the nvim-ts-autotag plugin
+        -- It uses the Treesitter nodes to close your React <div> automatically
+      })
+    end
+  },
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -301,31 +315,31 @@ require("lazy").setup({
         function() return vim.api.nvim_buf_get_name(0) end,
       }
 
-      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-        group = vim.api.nvim_create_augroup("LinterAutocmds", { clear = true }),
-        callback = function()
-          -- Try local node_modules eslint first
-          local root_dir = vim.fs.dirname(vim.fs.find({ "package.json",
-            ".eslintrc.js", ".eslintrc.json" }, {
-            upward = true,
-            path = vim.fn.expand("%:p:h")
-          })[1])
-
-          if root_dir then
-            local local_eslint = root_dir .. "/node_modules/.bin/eslint_d"
-            if vim.fn.executable(local_eslint) == 1 then
-              lint.linters.eslint.cmd = local_eslint
-            end
-          end
-
-          -- Set ruff to use venv for Python files
-          if vim.bo.filetype == "python" then
-            lint.linters.ruff.cmd = get_ruff_cmd()
-          end
-
-          lint.try_lint()
-        end,
-      })
+      -- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+      --   group = vim.api.nvim_create_augroup("LinterAutocmds", { clear = true }),
+      --   callback = function()
+      --     -- Try local node_modules eslint first
+      --     local root_dir = vim.fs.dirname(vim.fs.find({ "package.json",
+      --       ".eslintrc.js", ".eslintrc.json" }, {
+      --       upward = true,
+      --       path = vim.fn.expand("%:p:h")
+      --     })[1])
+      --
+      --     if root_dir then
+      --       local local_eslint = root_dir .. "/node_modules/.bin/eslint_d"
+      --       if vim.fn.executable(local_eslint) == 1 then
+      --         lint.linters.eslint.cmd = local_eslint
+      --       end
+      --     end
+      --
+      --     -- Set ruff to use venv for Python files
+      --     if vim.bo.filetype == "python" then
+      --       lint.linters.ruff.cmd = get_ruff_cmd()
+      --     end
+      --
+      --     lint.try_lint()
+      --   end,
+      -- })
     end,
   },
   {
@@ -349,5 +363,5 @@ require("lazy").setup({
     config = function()
       vim.cmd.colorscheme 'tokyonight-night'
     end
- }
+  }
 })
