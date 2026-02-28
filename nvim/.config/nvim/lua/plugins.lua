@@ -14,28 +14,31 @@ require("lazy").setup({
       picker = { enabled = true },
     },
   },
+  -- Yazi
+  ---@type LazySpec
   {
-    "A7Lavinraj/fyler.nvim",
-    dependencies = { "nvim-mini/mini.icons" },
-    branch = "stable", -- Use stable branch for production
-    lazy = false,      -- Necessary for `default_explorer` to work properly
-    opts = {
-      views = {
-        finder = {
-          win = {
-            kind = "float",
-            kinds = {
-              float = {
-                height = "70%",
-                width = "70%",
-                top = "15%",
-                left = "15%",
-              },
-            },
-          },
-        },
+    "mikavilpas/yazi.nvim",
+    dependencies = {
+      "folke/snacks.nvim"
+    },
+    keys = {
+      {
+        "<leader>ly",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open yazi at the current file",
       },
-    }
+    },
+    ---@type YaziConfig | {}
+    opts = {
+      open_for_directories = false,
+      keymaps = {
+        show_help = "<f1>",
+      },
+    },
+    init = function()
+      vim.g.loaded_netrwPlugin = 1
+    end,
   },
   -- Treesitter
   {

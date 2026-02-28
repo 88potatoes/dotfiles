@@ -70,7 +70,7 @@ local function get_short_path()
   -- There's the notion of a 'Buffer Name'
   -- %:~ reduces the path to be relative to your Home (~) or Current Dir
   local full_path = vim.fn.expand("%:~")
-  
+
   -- If we are in an empty buffer, return a singular placeholder
   if full_path == "" then return "[No Name]" end
 
@@ -84,7 +84,7 @@ local function get_short_path()
   -- We take the last 3 segments if they exist
   local count = #segments
   local start_index = math.max(1, count - 2) -- -2 because it's inclusive (3 total)
-  
+
   local result = {}
   for i = start_index, count do
     table.insert(result, segments[i])
@@ -92,7 +92,7 @@ local function get_short_path()
 
   -- Join them back into a singular string
   local path_display = table.concat(result, "/")
-  
+
   -- If we cut off folders, prepend '...' to show there's a parent relationship
   if start_index > 1 then
     path_display = ".../" .. path_display
@@ -114,20 +114,20 @@ vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
 
 local function get_git_branch()
   if cached_branch ~= "" then
-    return "  "  .. cached_branch .. " "
+    return "  " .. cached_branch .. " "
   end
   return ""
 end
 
 _G.MyCustomStatusline = function()
   return table.concat({
-    " ",            -- Leading space
+    " ",              -- Leading space
     get_git_branch(),
-    "|",           -- Separator
+    "|",              -- Separator
     get_short_path(), -- Our filename component
-    "%=",           -- SPECIAL ITEM: This pushes everything after it to the right
-    "Line: %l/%L ", -- %l is current line, %L is total lines
-    "Col: %c ",     -- %c is column
+    "%=",             -- SPECIAL ITEM: This pushes everything after it to the right
+    "Line: %l/%L ",   -- %l is current line, %L is total lines
+    "Col: %c ",       -- %c is column
   })
 end
 

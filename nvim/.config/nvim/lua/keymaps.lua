@@ -1,6 +1,3 @@
--- Key mappings
-local map = vim.keymap.set
-local api = vim.api
 
 -- Save file
 vim.keymap.set({ 'n', 'i' }, '<D-s>', '<cmd>w<cr><Esc>', { desc = 'Save file' })
@@ -42,11 +39,11 @@ vim.keymap.set('v', '<C-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true
 vim.keymap.set('v', '<C-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
 -- Select whole buffer
-map('n', '<D-a>', 'ggVG', { noremap = true, silent = true })
-map('v', '<D-a>', '<Esc>ggVG<CR>==gi', { noremap = true, silent = true })
+vim.keymap.set('n', '<D-a>', 'ggVG', { noremap = true, silent = true })
+vim.keymap.set('v', '<D-a>', '<Esc>ggVG<CR>==gi', { noremap = true, silent = true })
 
 -- Diagnostics
-map('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
 
 -- Snacks
 vim.keymap.set("n", "<leader>pf", function() Snacks.picker.files() end, { desc = "Find Files" })
@@ -60,7 +57,6 @@ vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })
 vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = "LazyGit" })
 
 -- Supermaven Completion
--- api.nvim_set_keymap('i', '<C-Tab>', [[<Cmd>lua require('supermaven').expand()<CR>]], { silent = true, noremap = true })
 vim.keymap.set('i', '<C-Tab>', function()
   require('supermaven').expand()
 end, { silent = true, desc = "Supermaven Expand" })
@@ -89,8 +85,6 @@ vim.keymap.set('n', '<A-Down>', ':resize -2<CR>')
 
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
--- Fyler
-vim.keymap.set("n", "<leader>ly", function() require('fyler').open() end, { desc = "Fyler [E]xplorer" })
 
 vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "[D]iff [F]ile History (Current File)" })
 vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "[D]iff [C]lose" })
