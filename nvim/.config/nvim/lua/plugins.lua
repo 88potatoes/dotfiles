@@ -14,8 +14,6 @@ require("lazy").setup({
       picker = { enabled = true },
     },
   },
-  -- Yazi
-  ---@type LazySpec
   {
     "mikavilpas/yazi.nvim",
     dependencies = {
@@ -153,10 +151,6 @@ require("lazy").setup({
     lazy = true,
     cmd = {
       "LazyGit",
-      "LazyGitConfig",
-      "LazyGitCurrentFile",
-      "LazyGitFilter",
-      "LazyGitFilterCurrentFile",
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -237,8 +231,6 @@ require("lazy").setup({
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' }, -- if you use standalone mini plugins
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
     opts = {},
   },
   {
