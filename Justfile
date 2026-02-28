@@ -8,6 +8,7 @@ stow-all:
   stow karabiner
   stow yazi
   stow lazygit
+  stow local-bin
 
 install-all:
   brew bundle --file ./Brewfile

@@ -4,6 +4,52 @@
             "complex_modifications": {
                 "rules": [
                     {
+                        "description": "Zellij Session Switcher",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "1",
+                                    "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "~/.local/bin/switch-zellij.sh 1" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "2",
+                                    "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "~/.local/bin/switch-zellij.sh 2" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "3",
+                                    "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "~/.local/bin/switch-zellij.sh 3" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "4",
+                                    "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "~/.local/bin/switch-zellij.sh 4" }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "5",
+                                    "modifiers": { "mandatory": ["left_option"] }
+                                },
+                                "to": [{ "shell_command": "~/.local/bin/switch-zellij.sh 5" }],
+                                "type": "basic"
+                            }
+
+                        ]
+                    },
+                    {
                         "description": "Terminal Command Key Mappings",
                         "manipulators": [
                             {

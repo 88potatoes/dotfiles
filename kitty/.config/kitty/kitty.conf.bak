@@ -1,4 +1,4 @@
-font_size 11.0
+font_size 12.0
 # font_family Hack Nerd Font Regular
 # bold_font Hack Nerd Font Bold
 # italic_font Hack Nerd Font Italic
@@ -10,13 +10,13 @@ hide_window_decorations titlebar-only
 macos_titlebar_color system
 remember_window_size  yes
 
-listen_on unix:/tmp/mykitty
 allow_remote_control yes
+listen_on unix:/tmp/mykitty
 tab_bar_style hidden
 
 
 # BEGIN_KITTY_FONTS
-font_family      family="Fira Code"
+font_family      family="JetBrains Mono NL"
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
