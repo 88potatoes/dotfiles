@@ -119,15 +119,6 @@ require("lazy").setup({
       })
     end,
   },
-  -- Treesitter context comment string
-  {
-    'JoosepAlviste/nvim-ts-context-commentstring',
-    config = function()
-      require('ts_context_commentstring').setup({
-        enable_autocmd = false, -- Disable its autocommands because using Comment.nvim integration
-      })
-    end
-  },
   -- Surround
   {
     "kylechui/nvim-surround",
@@ -140,9 +131,6 @@ require("lazy").setup({
   -- Comments
   {
     'numToStr/Comment.nvim',
-    config = function()
-      require('config.comment')
-    end
   },
   {
     "sindrets/diffview.nvim",
