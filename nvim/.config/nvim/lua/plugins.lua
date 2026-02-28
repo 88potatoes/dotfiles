@@ -77,17 +77,26 @@ require("lazy").setup({
     end
   },
   {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
+    'saghen/blink.cmp',
+    version = "v1.9.0",
+    opts = {
+      keymap = {
+        preset = 'none',                                                    -- The Notion of a Clean Slate
+        ['<Up>'] = { 'select_prev', 'fallback' },
+        ['<Down>'] = { 'select_next', 'fallback' },
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' }, -- CR is the 'Enter' key
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+      },
+      completion = {
+        menu = { border = 'rounded' },
+        documentation = { window = { border = 'rounded' }, auto_show = true },
+      },
     },
-    config = function()
-      -- Your cmp setup code goes here
-    end
   },
   -- Mason
   {
