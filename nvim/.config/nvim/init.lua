@@ -4,6 +4,7 @@ require('plugins')  -- Plugin setup with lazy.nvim
 require('options')  -- Vim options and settings
 require('keymaps')  -- All keybindings
 
+
 -- Set GIT_EDITOR to use nvr if Neovim and nvr are available
 if vim.fn.has('nvim') == 1 and vim.fn.executable('nvr') == 1 then
   vim.env.GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
