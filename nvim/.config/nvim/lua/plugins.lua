@@ -128,14 +128,6 @@ require("lazy").setup({
       })
     end
   },
-  -- Null-ls
-  {
-    "nvimtools/none-ls.nvim",
-    config = function()
-      require('config.null-ls')
-    end,
-    requires = { "nvim-lua/plenary.nvim" },
-  },
   -- Surround
   {
     "kylechui/nvim-surround",
@@ -344,13 +336,6 @@ require("lazy").setup({
       --   end,
       -- })
     end,
-  },
-  {
-    "mbbill/undotree",
-    cmd = { "UndotreeToggle", "UndotreeShow", "UndotreeHide", "UndotreeFocus" },
-    keys = {
-      { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Toggle Undotree" },
-    },
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
