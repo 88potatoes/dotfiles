@@ -29,7 +29,6 @@ require("lazy").setup({
         desc = "Open yazi at the current file",
       },
     },
-    ---@type YaziConfig | {}
     opts = {
       open_for_directories = false,
       keymaps = {
@@ -61,7 +60,7 @@ require("lazy").setup({
           enable = true,
           -- Python and React often have long files;
           -- this keeps Neovim fast by not highlighting huge files
-          disable = function(lang, buf)
+          disable = function(_, buf)
             local max_filesize = 100 * 1024 -- 100 KB
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
             if ok and stats and stats.size > max_filesize then
@@ -91,11 +90,6 @@ require("lazy").setup({
     config = function()
       -- Your cmp setup code goes here
     end
-  },
-  {
-    "folke/lazydev.nvim",
-    ft = "lua", -- only load for lua files
-    opts = {},
   },
   -- Mason
   {
