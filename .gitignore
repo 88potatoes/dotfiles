@@ -1,5 +1,4 @@
 # Local override files - not tracked in git
-*.local
 **/config.local
 **/config.local.*
 

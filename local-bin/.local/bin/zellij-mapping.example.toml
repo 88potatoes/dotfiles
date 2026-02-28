@@ -1,0 +1,5 @@
+# Local mapping: Key -> Session Name
+1 = "up-app"
+2 = "notes"
+3 = "config"
+4 = "work-logs"
