@@ -21,7 +21,7 @@ require("lazy").setup({
     },
     keys = {
       {
-        "<leader>ly",
+        "<leader>ll",
         mode = { "n", "v" },
         "<cmd>Yazi<cr>",
         desc = "Open yazi at the current file",
@@ -42,7 +42,7 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-      local configs = require("nvim-treesitter.config") -- Fixed the 's' here
+      local configs = require("nvim-treesitter.configs") -- Fixed the 's' here
 
       configs.setup({
         -- Added TSX, TypeScript, and JSON for React/Fullstack work
