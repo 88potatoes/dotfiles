@@ -21,7 +21,7 @@ require("lazy").setup({
     },
     keys = {
       {
-        "<leader>ly",
+        "<leader>ll",
         mode = { "n", "v" },
         "<cmd>Yazi<cr>",
         desc = "Open yazi at the current file",
@@ -81,7 +81,7 @@ require("lazy").setup({
     version = "v1.9.0",
     opts = {
       keymap = {
-        preset = 'none',                                                    -- The Notion of a Clean Slate
+        preset = 'none', -- The Notion of a Clean Slate
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
@@ -128,10 +128,6 @@ require("lazy").setup({
     config = function()
       require("nvim-surround").setup({})
     end
-  },
-  -- Comments
-  {
-    'numToStr/Comment.nvim',
   },
   {
     "sindrets/diffview.nvim",
@@ -249,5 +245,39 @@ require("lazy").setup({
     config = function()
       vim.cmd.colorscheme 'tokyonight-night'
     end
-  }
+  },
+  {
+    'dmmulroy/ts-error-translator.nvim',
+    config = function()
+      require("ts-error-translator").setup({
+        auto_attach = true,
+        servers = {
+          "vtsls",
+        },
+      })
+    end
+  },
+  {
+    "Goose97/timber.nvim",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("timber").setup({
+        log_templates = {
+          default = {
+            typescriptreact = [[console.log("===%log_target", %log_target)]],
+          },
+          plain = {
+            typescriptreact = [[console.log("===%insert_cursor")]],
+          }
+        },
+        batch_log_templates = {
+          default = {
+            typescriptreact = [[console.log({ %repeat<"===%log_target": %log_target><, > })]],
+          }
+        }
+      })
+    end
+  },
+  { "chrisgrieser/nvim-spider", lazy = true },
 })
