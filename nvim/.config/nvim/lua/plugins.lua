@@ -41,40 +41,7 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    config = function()
-      local configs = require("nvim-treesitter.config") -- Fixed the 's' here
-
-      configs.setup({
-        -- Added TSX, TypeScript, and JSON for React/Fullstack work
-        ensure_installed = {
-          "lua", "vim", "vimdoc", "python",
-          "javascript", "typescript", "tsx", "html", "css", "json"
-        },
-
-        sync_install = false,
-        auto_install = true,
-
-        highlight = {
-          enable = true,
-          -- Python and React often have long files;
-          -- this keeps Neovim fast by not highlighting huge files
-          disable = function(_, buf)
-            local max_filesize = 100 * 1024 -- 100 KB
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-            if ok and stats and stats.size > max_filesize then
-              return true
-            end
-          end,
-        },
-
-        indent = {
-          enable = true, -- Crucial for Python's whitespace-sensitive syntax
-        },
-
-        -- Enable 'autotag' if you install the nvim-ts-autotag plugin
-        -- It uses the Treesitter nodes to close your React <div> automatically
-      })
-    end
+    lazy = false,
   },
   {
     'saghen/blink.cmp',
@@ -280,4 +247,13 @@ require("lazy").setup({
     end
   },
   { "chrisgrieser/nvim-spider", lazy = true },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && yarn install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
 })
