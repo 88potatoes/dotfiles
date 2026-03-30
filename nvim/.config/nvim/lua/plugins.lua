@@ -81,7 +81,7 @@ require("lazy").setup({
     version = "v1.9.0",
     opts = {
       keymap = {
-        preset = 'none',                                                    -- The Notion of a Clean Slate
+        preset = 'none', -- The Notion of a Clean Slate
         ['<Up>'] = { 'select_prev', 'fallback' },
         ['<Down>'] = { 'select_next', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
@@ -249,5 +249,89 @@ require("lazy").setup({
     config = function()
       vim.cmd.colorscheme 'tokyonight-night'
     end
-  }
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      -- 1. The Visual "Context" (Gutter signs)
+      signs = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+      },
+
+      -- 2. The Inline "Context" (Blame line)
+      -- This shows who committed the line you are currently on
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 300,           -- 1 second delay before it shows up
+        ignore_whitespace = false,
+      },
+      current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+    },
+  },
+  { "chrisgrieser/nvim-spider", lazy = true },
+  {
+    "Goose97/timber.nvim",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("timber").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = ':call mkdp#util#install()',
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
+  {
+    "ThePrimeagen/99",
+    config = function()
+      local _99 = require("99")
+      _99.setup({
+        -- provider = _99.Providers.ClaudeCodeProvider,  -- default: OpenCodeProvider
+        tmp_dir = "./tmp",
+
+        completion = {
+          custom_rules = {
+            "scratch/custom_rules/",
+          },
+
+          --- Configure @file completion (all fields optional, sensible defaults)
+          files = {
+            -- enabled = true,
+            -- max_file_size = 102400,     -- bytes, skip files larger than this
+            -- max_files = 5000,            -- cap on total discovered files
+            -- exclude = { ".env", ".env.*", "node_modules", ".git", ... },
+          },
+          source = "native",           -- "native" (default), "cmp", or "blink"
+        },
+      })
+
+      vim.keymap.set("v", "<leader>9v", function()
+        _99.visual()
+      end)
+
+      --- if you have a request you dont want to make any changes, just cancel it
+      vim.keymap.set("n", "<leader>9x", function()
+        _99.stop_all_requests()
+      end)
+
+      vim.keymap.set("n", "<leader>9s", function()
+        _99.search()
+      end)
+    end,
+  },
 })

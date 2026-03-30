@@ -1,4 +1,3 @@
-
 -- Save file
 vim.keymap.set({ 'n', 'i' }, '<D-s>', '<cmd>w<cr><Esc>', { desc = 'Save file' })
 
@@ -9,18 +8,19 @@ vim.keymap.set({ 'n', 'i' }, '<D-o>', vim.lsp.buf.format, { desc = 'LSP: Format 
 vim.keymap.set({ 'n', 'v' }, '<D-.>', vim.lsp.buf.code_action, { desc = 'LSP: Code action' })
 
 -- Grep
+local test_patterns = {
+  "**/__tests__/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/coverage/**",
+  "**/tests/**",
+  "**/test_*.py",
+  "**/*_test.py",
+}
 vim.keymap.set('n', '<leader>gW', function()
   Snacks.picker.lsp_references({
     filter = {
-      exclude = {
-        "**/__tests__/**",
-        "**/*.test.*",
-        "**/*.spec.*",
-        "**/coverage/**",
-        "**/tests/**",
-        "**/test_*.py",
-        "**/*_test.py",
-      }
+      exclude = test_patterns
     }
   })
 end, { noremap = true, silent = true, desc = 'LSP: Find references (exclude tests)' })
@@ -46,8 +46,22 @@ vim.keymap.set('v', '<D-a>', '<Esc>ggVG<CR>==gi', { noremap = true, silent = tru
 vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
 
 -- Snacks
-vim.keymap.set("n", "<leader>pf", function() Snacks.picker.files() end, { desc = "Find Files" })
-vim.keymap.set("n", "<leader>fg", function() Snacks.picker.grep() end, { desc = "Grep" })
+vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files() end, { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fj", function()
+  Snacks.picker.grep({
+    args = {
+      "--glob=!**/__tests__/**",
+      "--glob=!**/*.test.*",
+      "--glob=!**/*.spec.*",
+      "--glob=!**/coverage/**",
+      "--glob=!**/tests/**",
+      "--glob=!**/test_*.py",
+      "--glob=!**/*_test.py",
+    }
+  })
+end, { desc = "Grep (Exclude Tests)" })
+vim.keymap.set("n", "<leader>fJ", function() Snacks.picker.grep() end, { desc = "Grep" })
+
 vim.keymap.set("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 
 -- LazyGit
@@ -93,4 +107,3 @@ vim.keymap.set("n", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "G
 vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git Browse (Selection)" })
 
 vim.keymap.set('n', '<leader>u', function() Snacks.picker.undo() end, { desc = "Undotree Toggle" })
-

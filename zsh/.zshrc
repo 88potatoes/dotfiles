@@ -115,3 +115,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 eval "$(mise activate zsh)"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export COLORTERM=truecolor
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
