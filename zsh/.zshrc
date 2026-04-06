@@ -70,6 +70,7 @@ alias v="nvim"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
+export PATH="$HOME/dotfiles/scripts:$PATH"
 
 source <(fzf --zsh)
 
