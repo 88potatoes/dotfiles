@@ -19,3 +19,5 @@
 # Local secrets
 .env_secrets
 pi/.pi/agent/sessions
+/tmp
+/yazi/.config/yazi/flavors/tokyo-night.yazi
