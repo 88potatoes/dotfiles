@@ -24,3 +24,7 @@ gui:
       - "#db4b4b"
     defaultFgColor:
       - "#c0caf5"
+os:
+    edit: 'nvim --server "$NVIM" --remote-tab {{filename}} && nvim --server "$NVIM" --remote-send ":lua for _, b in ipairs(vim.api.nvim_list_bufs()) do if vim.api.nvim_buf_get_name(b):find(\"lazygit\") then vim.api.nvim_buf_delete(b, {force=true}) end end<CR>"'
+    editAtLine: 'nvim --server "$NVIM" --remote-tab {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>:lua for _, b in ipairs(vim.api.nvim_list_bufs()) do if vim.api.nvim_buf_get_name(b):find(\"lazygit\") then vim.api.nvim_buf_delete(b, {force=true}) end end<CR>"'
+
