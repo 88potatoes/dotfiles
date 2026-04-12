@@ -42,7 +42,27 @@ vim.keymap.set('n', '<D-a>', 'ggVG', { noremap = true, silent = true })
 vim.keymap.set('v', '<D-a>', '<Esc>ggVG<CR>==gi', { noremap = true, silent = true })
 
 -- Diagnostics
-vim.keymap.set('n', '<leader>e', function() vim.diagnostic.open_float() end, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", function()
+  -- Get all diagnostics for the current line
+  local line_num = vim.fn.line(".") - 1
+  local diagnostics = vim.diagnostic.get(0, { lnum = line_num })
+
+  if #diagnostics > 0 then
+    local messages = {}
+    for _, diag in ipairs(diagnostics) do
+      -- Clean up the message (optional: remove trailing/leading whitespace)
+      table.insert(messages, diag.message)
+    end
+
+    -- Join them with a newline for better readability when pasting
+    local full_message = table.concat(messages, "\n")
+
+    vim.fn.setreg("+", full_message)
+    print("Yanked " .. #diagnostics .. " diagnostics to clipboard!")
+  else
+    print("No diagnostics found on this line.")
+  end
+end, { desc = "Yank all line diagnostics to clipboard" })
 
 -- Snacks
 vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files() end, { desc = "Find Files" })
@@ -97,4 +117,3 @@ vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<C
 vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>")
 vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
 vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>")
-
