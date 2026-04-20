@@ -6,19 +6,21 @@
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { resolve, relative } from "node:path";
+import { resolve, relative, join } from "node:path";
 import { realpath } from "node:fs/promises";
+import { homedir } from "node:os";
 
 export default function (pi: ExtensionAPI) {
 	let allowedDirectory: string | null = null;
+	const dotfilesPiDirectory = join(homedir(), "dotfiles/pi/.pi");
 
 	// Capture the starting directory when session starts
 	pi.on("session_start", async (event, ctx) => {
 		allowedDirectory = ctx.cwd;
 		
 		if (ctx.hasUI) {
-			ctx.ui.notify(`Sandbox active: modifications restricted to ${allowedDirectory}`, "info");
-			ctx.ui.setStatus("sandbox", `📁 Sandbox: ${allowedDirectory}`);
+			ctx.ui.notify(`Sandbox active: modifications restricted to ${allowedDirectory} and ${dotfilesPiDirectory}`, "info");
+			ctx.ui.setStatus("sandbox", `📁 Sandbox: ${allowedDirectory} + dotfiles/pi/.pi`);
 		}
 	});
 
@@ -49,9 +51,13 @@ export default function (pi: ExtensionAPI) {
 				realPath = absolutePath;
 			}
 
-			// Check if the path is within the allowed directory
-			const relativePath = relative(allowedDirectory, realPath);
-			const isOutside = relativePath.startsWith("..") || relativePath === "" && realPath !== allowedDirectory;
+			// Check if the path is within the allowed directories
+			const relativePathToSession = relative(allowedDirectory, realPath);
+			const relativePathToDotfiles = relative(dotfilesPiDirectory, realPath);
+			
+			const isOutsideSession = relativePathToSession.startsWith("..") || relativePathToSession === "" && realPath !== allowedDirectory;
+			const isOutsideDotfiles = relativePathToDotfiles.startsWith("..") || relativePathToDotfiles === "" && realPath !== dotfilesPiDirectory;
+			const isOutside = isOutsideSession && isOutsideDotfiles;
 
 			if (isOutside) {
 				const message = `Blocked ${event.toolName} to ${targetPath}: outside sandbox directory`;
@@ -62,7 +68,7 @@ export default function (pi: ExtensionAPI) {
 
 				return {
 					block: true,
-					reason: `File "${targetPath}" is outside the allowed directory "${allowedDirectory}"`
+					reason: `File "${targetPath}" is outside the allowed directories ("${allowedDirectory}" and "${dotfilesPiDirectory}")`
 				};
 			}
 		} catch (error) {

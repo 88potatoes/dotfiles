@@ -8,8 +8,9 @@
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { resolve, relative } from "node:path";
+import { resolve, relative, join } from "node:path";
 import { realpath } from "node:fs/promises";
+import { homedir } from "node:os";
 
 export default function (pi: ExtensionAPI) {
 	let allowedDirectory: string | null = null;
@@ -17,7 +18,7 @@ export default function (pi: ExtensionAPI) {
 	
 	// Whitelist: paths that are always allowed even outside sandbox
 	const whitelist = [
-		// Add paths here, e.g., "/tmp/"
+		join(homedir(), "dotfiles/pi/.pi"),
 	];
 
 	// Capture the starting directory when session starts
@@ -25,7 +26,7 @@ export default function (pi: ExtensionAPI) {
 		allowedDirectory = ctx.cwd;
 		
 		if (ctx.hasUI && sandboxEnabled) {
-			ctx.ui.notify(`Sandbox active: ${allowedDirectory}`, "info");
+			ctx.ui.notify(`Sandbox active: ${allowedDirectory} (+ dotfiles/pi/.pi whitelist)`, "info");
 			updateStatus(ctx);
 		}
 	});
@@ -35,7 +36,7 @@ export default function (pi: ExtensionAPI) {
 		if (!ctx.hasUI) return;
 		
 		if (sandboxEnabled && allowedDirectory) {
-			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory}`);
+			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory} + dotfiles`);
 		} else if (!sandboxEnabled) {
 			ctx.ui.setStatus("sandbox", `🔓 Sandbox: disabled`);
 		} else {
