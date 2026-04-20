@@ -1,5 +1,5 @@
 {
   "lastChangelogVersion": "0.65.2",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-sonnet-4-5"
+  "defaultProvider": "lightning",
+  "defaultModel": "lightning-ai/gemma-4-31B-it"
 }
