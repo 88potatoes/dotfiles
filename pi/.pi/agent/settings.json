@@ -1,5 +1,6 @@
 {
   "lastChangelogVersion": "0.65.2",
-  "defaultProvider": "lightning",
-  "defaultModel": "lightning-ai/gemma-4-31B-it"
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-5",
+  "defaultThinkingLevel": "medium"
 }
