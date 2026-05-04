@@ -16,55 +16,28 @@ export default async function (pi: ExtensionAPI) {
   // Endpoint: https://api.lightning.ai/v1
 
   pi.registerProvider("lightning", {
-    baseUrl: "https://8001-dep-01kpmbhv87aq0y2bm35gxmpebn-d.cloudspaces.litng.ai/",
+    baseUrl: "https://8001-dep-01kpmbhv87aq0y2bm35gxmpebn-d.cloudspaces.litng.ai/v1",
     apiKey: "LIGHTNING_API_KEY",
     authHeader: true,
     api: "openai-completions",
     models: [
-      // Llama 3.1 models
       {
-        id: "meta-llama/Llama-3.1-8B-Instruct",
-        name: "Llama 3.1 8B Instruct",
-        reasoning: false,
-        input: ["text"],
-        cost: {
-          input: 0.1,   // $0.10 per million tokens (adjust based on actual pricing)
-          output: 0.1,
-          cacheRead: 0,
-          cacheWrite: 0,
-        },
-        contextWindow: 128000,
-        maxTokens: 8192,
-      },
-      // DeepSeek models
-      {
-        id: "deepseek-ai/DeepSeek-V3",
-        name: "DeepSeek V3",
-        reasoning: false,
-        input: ["text"],
-        cost: {
-          input: 0.5,
-          output: 0.5,
-          cacheRead: 0,
-          cacheWrite: 0,
-        },
-        contextWindow: 64000,
-        maxTokens: 8192,
-      },
-      // Gemma models
-      {
-        id: "lightning-ai/gemma-4-31B-it",
+        id: "google/gemma-4-31B-it",
         name: "Gemma 4 31B Instruct",
         reasoning: false,
         input: ["text"],
         cost: {
-          input: 0.3,
-          output: 0.3,
+          input: 0,
+          output: 0,
           cacheRead: 0,
           cacheWrite: 0,
         },
-        contextWindow: 128000,
+        contextWindow: 262144,  // from server's max_model_len
         maxTokens: 8192,
+        compat: {
+          supportsDeveloperRole: false,
+          maxTokensField: "max_tokens",
+        },
       },
     ],
   });

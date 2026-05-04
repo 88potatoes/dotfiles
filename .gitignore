@@ -22,3 +22,6 @@ pi/.pi/agent/sessions
 /tmp
 /yazi/.config/yazi/flavors/tokyo-night.yazi
 /pi/.pi/agent/bin
+/pi/.pi/agent/auth.json
+/pi/.pi/agent/history.jsonl
+/pi/.pi/agent/auth.json

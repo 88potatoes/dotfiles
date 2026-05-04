@@ -233,14 +233,23 @@ require("lazy").setup({
         log_templates = {
           default = {
             typescriptreact = [[console.log("===%log_target", %log_target)]],
+            tsx = [[console.log("===%log_target", %log_target)]],
+            javascript = [[console.log("===%log_target", %log_target)]],
+            typescript = [[console.log("===%log_target", %log_target)]],
           },
           plain = {
             typescriptreact = [[console.log("===%insert_cursor")]],
+            tsx = [[console.log("===%insert_cursor")]],
+            javascript = [[console.log("===$insert_cursor")]],
+            typescript = [[console.log("===$insert_cursor")]],
           }
         },
         batch_log_templates = {
           default = {
             typescriptreact = [[console.log({ %repeat<"===%log_target": %log_target><, > })]],
+            tsx = [[console.log({ %repeat<"===%log_target": %log_target><, > })]],
+            javascript = [[console.log({ %repeat<"===%log_target": %log_target><, > })]],
+            typescript = [[console.log({ %repeat<"===%log_target": %log_target><, > })]],
           }
         }
       })
