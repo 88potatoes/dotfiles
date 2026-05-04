@@ -2,13 +2,14 @@
  * Reverse history search extension (ctrl+r)
  * 
  * Fuzzy search through previous user messages.
+ * Uses fzf --filter for ranking (non-interactive).
  * History persists across sessions in ~/.pi/agent/history.jsonl
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-
 import { Input, Key, matchesKey, truncateToWidth } from "@mariozechner/pi-tui";
 import { readFileSync, appendFileSync, mkdirSync } from "node:fs";
+import { execSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { homedir } from "node:os";
 
@@ -19,7 +20,18 @@ function loadHistory(): string[] {
 	try {
 		const content = readFileSync(HISTORY_FILE, "utf-8");
 		const lines = content.trim().split("\n").filter(Boolean);
-		return lines.map((line) => JSON.parse(line).text);
+		const results: string[] = [];
+		for (const line of lines) {
+			try {
+				const parsed = JSON.parse(line);
+				if (parsed.text) {
+					results.push(parsed.text);
+				}
+			} catch {
+				// Skip malformed lines
+			}
+		}
+		return results;
 	} catch {
 		return [];
 	}
@@ -34,16 +46,41 @@ function appendHistory(text: string): void {
 	}
 }
 
-/** Simple fuzzy match - checks if all chars in query appear in order in text */
-function fuzzyMatch(text: string, query: string): boolean {
-	if (!query) return true;
-	const lowerText = text.toLowerCase();
-	const lowerQuery = query.toLowerCase();
-	let j = 0;
-	for (let i = 0; i < lowerText.length && j < lowerQuery.length; i++) {
-		if (lowerText[i] === lowerQuery[j]) j++;
+/**
+ * Use fzf --filter for fuzzy matching and ranking.
+ * Returns items sorted by relevance (best match first).
+ */
+function fzfFilter(items: string[], query: string): string[] {
+	if (!query.trim()) {
+		return items;
 	}
-	return j === lowerQuery.length;
+
+	try {
+		// Create input with index prefix so we can map back to original (preserving newlines)
+		const indexedItems = items.map((item, i) => `${i}\t${item.replace(/\n/g, " ")}`);
+		const input = indexedItems.join("\n");
+
+		const result = execSync(`fzf --filter=${JSON.stringify(query)}`, {
+			input,
+			encoding: "utf-8",
+			maxBuffer: 10 * 1024 * 1024,
+		});
+
+		// Parse results and map back to original items
+		const matchedIndices = result
+			.trim()
+			.split("\n")
+			.filter(Boolean)
+			.map((line) => parseInt(line.split("\t")[0], 10))
+			.filter((i) => !isNaN(i) && i >= 0 && i < items.length);
+
+		return matchedIndices.map((i) => items[i]);
+	} catch {
+		// fzf returns exit code 1 when no matches, or if fzf not installed
+		// Fall back to simple includes filter
+		const lowerQuery = query.toLowerCase();
+		return items.filter((item) => item.toLowerCase().includes(lowerQuery));
+	}
 }
 
 export default function (pi: ExtensionAPI) {
@@ -77,7 +114,7 @@ export default function (pi: ExtensionAPI) {
 				return;
 			}
 
-			// Dedupe and reverse for most recent first
+			// Dedupe and reverse for most recent first (when no query)
 			const unique = [...new Set(history)].reverse().slice(0, MAX_HISTORY);
 
 			const result = await ctx.ui.custom<string | null>((tui, theme, _kb, done) => {
@@ -86,17 +123,21 @@ export default function (pi: ExtensionAPI) {
 
 				let selectedIndex = 0;
 				let filtered = unique;
+				let lastQuery = "";
 				let cachedLines: string[] | null = null;
 
 				const updateFilter = () => {
 					const query = searchInput.getValue();
-					filtered = unique.filter((item) => fuzzyMatch(item, query));
-					selectedIndex = 0;
-					cachedLines = null;
+					if (query !== lastQuery) {
+						lastQuery = query;
+						filtered = fzfFilter(unique, query);
+						selectedIndex = 0;
+						cachedLines = null;
+					}
 				};
 
 				const formatItem = (text: string, width: number, isSelected: boolean): string => {
-					const oneLine = text.replace(/\n/g, "↵").trim();
+					const oneLine = text.replace(/\n/g, " ").trim();
 					const prefix = isSelected ? theme.fg("accent", "> ") : "  ";
 					const content = isSelected ? theme.fg("accent", oneLine) : oneLine;
 					return truncateToWidth(prefix + content, width);
@@ -109,21 +150,21 @@ export default function (pi: ExtensionAPI) {
 						const lines: string[] = [];
 
 						// Top border
-						lines.push(theme.fg("accent", "─".repeat(width)));
+						lines.push(theme.fg("accent", "-".repeat(width)));
 
 						// Search input
 						const inputLines = searchInput.render(width - 10);
 						lines.push(theme.fg("accent", "search: ") + (inputLines[0] || ""));
 
 						// Separator
-						lines.push(theme.fg("dim", "─".repeat(width)));
+						lines.push(theme.fg("dim", "-".repeat(width)));
 
-						// Results (max 15) - most recent at top, scroll keeps selection visible
+						// Results (max 15) - best match at top
 						const maxVisible = 15;
 						if (filtered.length === 0) {
 							lines.push(theme.fg("warning", "  No matches"));
 						} else {
-							// Keep selection in view, prefer showing from top
+							// Keep selection in view
 							let start = 0;
 							if (selectedIndex >= maxVisible) {
 								start = selectedIndex - maxVisible + 1;
@@ -142,11 +183,11 @@ export default function (pi: ExtensionAPI) {
 						}
 
 						// Help text
-						lines.push(theme.fg("dim", "─".repeat(width)));
-						lines.push(theme.fg("dim", "↑↓ navigate • enter select • esc cancel"));
+						lines.push(theme.fg("dim", "-".repeat(width)));
+						lines.push(theme.fg("dim", "up/down navigate, enter select, esc cancel"));
 
 						// Bottom border
-						lines.push(theme.fg("accent", "─".repeat(width)));
+						lines.push(theme.fg("accent", "-".repeat(width)));
 
 						cachedLines = lines;
 						return lines;
