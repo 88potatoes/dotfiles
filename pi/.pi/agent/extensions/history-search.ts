@@ -117,13 +117,19 @@ export default function (pi: ExtensionAPI) {
 			// Dedupe and reverse for most recent first (when no query)
 			const unique = [...new Set(history)].reverse().slice(0, MAX_HISTORY);
 
+			// Get current editor text to pre-fill search
+			const initialQuery = ctx.ui.getEditorText?.() || "";
+
 			const result = await ctx.ui.custom<string | null>((tui, theme, _kb, done) => {
 				const searchInput = new Input();
 				searchInput.focused = true;
+				if (initialQuery) {
+					searchInput.setValue(initialQuery);
+				}
 
 				let selectedIndex = 0;
-				let filtered = unique;
-				let lastQuery = "";
+				let filtered = initialQuery ? fzfFilter(unique, initialQuery) : unique;
+				let lastQuery = initialQuery;
 				let cachedLines: string[] | null = null;
 
 				const updateFilter = () => {
