@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""Track most-recently-focused Zellij panes per session+tab.
+
+Writes JSON state under $TMPDIR/zellij-pane-mru-$UID/<session>/tab_<tab_id>.json.
+Run from inside a Zellij session.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+from typing import Any
+
+
+def safe_part(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", value)[:120] or "unknown"
+
+
+def state_root() -> Path:
+    base = os.environ.get("ZELLIJ_MRU_DIR")
+    if base:
+        return Path(base)
+    return Path(tempfile.gettempdir()) / f"zellij-pane-mru-{os.getuid()}"
+
+
+def session_name() -> str:
+    return os.environ.get("ZELLIJ_SESSION_NAME") or os.environ.get("ZELLIJ") or "unknown"
+
+
+def pane_key(pane: dict[str, Any]) -> str:
+    prefix = "plugin" if pane.get("is_plugin") else "terminal"
+    return f"{prefix}_{pane['id']}"
+
+
+def state_path(session: str, tab_id: int) -> Path:
+    return state_root() / safe_part(session) / f"tab_{tab_id}.json"
+
+
+def list_panes() -> list[dict[str, Any]]:
+    out = subprocess.check_output(
+        ["zellij", "action", "list-panes", "--json", "--all", "--command", "--state", "--tab"],
+        text=True,
+        stderr=subprocess.DEVNULL,
+    )
+    return json.loads(out)
+
+
+def focused_terminal(panes: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for pane in panes:
+        if pane.get("is_focused") and not pane.get("is_plugin"):
+            return pane
+    return None
+
+
+def read_state(path: Path) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return {"panes": []}
+
+
+def write_state(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + f".{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    tmp.replace(path)
+
+
+def update_mru(panes: list[dict[str, Any]], now: float) -> tuple[str, int, str] | None:
+    focused = focused_terminal(panes)
+    if not focused:
+        return None
+
+    session = session_name()
+    tab_id = int(focused["tab_id"])
+    current = pane_key(focused)
+    path = state_path(session, tab_id)
+
+    live = {
+        pane_key(p)
+        for p in panes
+        if int(p.get("tab_id", -1)) == tab_id
+        and not p.get("is_plugin")
+        and not p.get("exited")
+        and p.get("is_selectable", True)
+    }
+
+    old = read_state(path).get("panes", [])
+    rows = [
+        row for row in old
+        if isinstance(row, dict) and row.get("id") in live and row.get("id") != current
+    ]
+
+    rows.insert(0, {
+        "id": current,
+        "raw_id": focused["id"],
+        "tab_id": tab_id,
+        "cmd": focused.get("pane_command"),
+        "cwd": focused.get("pane_cwd"),
+        "title": focused.get("title"),
+        "ts": now,
+    })
+
+    data = {
+        "session": session,
+        "tab_id": tab_id,
+        "updated_at": now,
+        "panes": rows[:10],
+    }
+    write_state(path, data)
+    return session, tab_id, current
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Track Zellij focused pane MRU per tab")
+    parser.add_argument("--interval", type=float, default=0.2, help="poll interval seconds")
+    parser.add_argument("--once", action="store_true", help="update once and exit")
+    parser.add_argument("--verbose", action="store_true")
+    args = parser.parse_args()
+
+    if "ZELLIJ" not in os.environ and "ZELLIJ_SESSION_NAME" not in os.environ:
+        print("zellij-pane-mru-poller: not inside zellij", file=sys.stderr)
+        return 2
+
+    last: tuple[str, int, str] | None = None
+    while True:
+        try:
+            current = update_mru(list_panes(), time.time())
+            if args.verbose and current and current != last:
+                print(f"{current[0]} tab {current[1]} focused {current[2]}", flush=True)
+            last = current
+        except KeyboardInterrupt:
+            return 0
+        except Exception as exc:
+            if args.verbose:
+                print(f"zellij-pane-mru-poller: {exc}", file=sys.stderr, flush=True)
+
+        if args.once:
+            return 0
+        time.sleep(args.interval)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

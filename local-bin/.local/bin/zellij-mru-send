@@ -1,0 +1,166 @@
+#!/usr/bin/env python3
+"""Send stdin/text to the previously-focused Zellij pane in the same tab."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+from typing import Any
+
+
+def safe_part(value: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", value)[:120] or "unknown"
+
+
+def state_root() -> Path:
+    base = os.environ.get("ZELLIJ_MRU_DIR")
+    if base:
+        return Path(base)
+    return Path(tempfile.gettempdir()) / f"zellij-pane-mru-{os.getuid()}"
+
+
+def session_name() -> str:
+    return os.environ.get("ZELLIJ_SESSION_NAME") or os.environ.get("ZELLIJ") or "unknown"
+
+
+def pane_key(pane: dict[str, Any]) -> str:
+    prefix = "plugin" if pane.get("is_plugin") else "terminal"
+    return f"{prefix}_{pane['id']}"
+
+
+def state_path(session: str, tab_id: int) -> Path:
+    return state_root() / safe_part(session) / f"tab_{tab_id}.json"
+
+
+def list_panes() -> list[dict[str, Any]]:
+    out = subprocess.check_output(
+        ["zellij", "action", "list-panes", "--json", "--all", "--command", "--state", "--tab"],
+        text=True,
+        stderr=subprocess.DEVNULL,
+    )
+    return json.loads(out)
+
+
+def focused_terminal(panes: list[dict[str, Any]]) -> dict[str, Any] | None:
+    for pane in panes:
+        if pane.get("is_focused") and not pane.get("is_plugin"):
+            return pane
+    return None
+
+
+def read_state(path: Path) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return {"panes": []}
+
+
+def write_state(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + f".{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    tmp.replace(path)
+
+
+def refresh_current(panes: list[dict[str, Any]]) -> tuple[str, int, str, set[str]]:
+    focused = focused_terminal(panes)
+    if not focused:
+        raise RuntimeError("no focused terminal pane")
+
+    session = session_name()
+    tab_id = int(focused["tab_id"])
+    current = pane_key(focused)
+    path = state_path(session, tab_id)
+
+    live = {
+        pane_key(p)
+        for p in panes
+        if int(p.get("tab_id", -1)) == tab_id
+        and not p.get("is_plugin")
+        and not p.get("exited")
+        and p.get("is_selectable", True)
+    }
+
+    old = read_state(path).get("panes", [])
+    rows = [
+        row for row in old
+        if isinstance(row, dict) and row.get("id") in live and row.get("id") != current
+    ]
+    rows.insert(0, {
+        "id": current,
+        "raw_id": focused["id"],
+        "tab_id": tab_id,
+        "cmd": focused.get("pane_command"),
+        "cwd": focused.get("pane_cwd"),
+        "title": focused.get("title"),
+        "ts": time.time(),
+    })
+    write_state(path, {
+        "session": session,
+        "tab_id": tab_id,
+        "updated_at": time.time(),
+        "panes": rows[:10],
+    })
+    return session, tab_id, current, live
+
+
+def choose_target(session: str, tab_id: int, current: str, live: set[str], offset: int) -> str:
+    rows = read_state(state_path(session, tab_id)).get("panes", [])
+    candidates = [
+        row.get("id") for row in rows
+        if isinstance(row, dict)
+        and row.get("id") in live
+        and row.get("id") != current
+    ]
+    if len(candidates) < offset:
+        raise RuntimeError(f"no previous pane #{offset} in this zellij tab")
+    return candidates[offset - 1]
+
+
+def send_to_pane(target: str, text: str, enter: bool) -> None:
+    subprocess.check_call(["zellij", "action", "paste", "-p", target, text])
+    if enter:
+        subprocess.check_call(["zellij", "action", "send-keys", "-p", target, "Enter"])
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Paste stdin to previous Zellij pane in same tab")
+    parser.add_argument("--enter", action="store_true", help="send Enter after paste")
+    parser.add_argument("--offset", type=int, default=1, help="1=previous pane, 2=pane before that")
+    parser.add_argument("--print-target", action="store_true", help="print target pane id to stderr")
+    parser.add_argument("text", nargs="?", help="text to send; defaults to stdin")
+    args = parser.parse_args()
+
+    if "ZELLIJ" not in os.environ and "ZELLIJ_SESSION_NAME" not in os.environ:
+        print("zellij-mru-send: not inside zellij", file=sys.stderr)
+        return 2
+
+    text = args.text if args.text is not None else sys.stdin.read()
+    if not text:
+        print("zellij-mru-send: empty input", file=sys.stderr)
+        return 2
+
+    try:
+        session, tab_id, current, live = refresh_current(list_panes())
+        target = choose_target(session, tab_id, current, live, args.offset)
+        if args.print_target:
+            print(target, file=sys.stderr)
+        send_to_pane(target, text, args.enter)
+        return 0
+    except subprocess.CalledProcessError as exc:
+        print(f"zellij-mru-send: zellij command failed: {exc}", file=sys.stderr)
+        return exc.returncode or 1
+    except Exception as exc:
+        print(f"zellij-mru-send: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

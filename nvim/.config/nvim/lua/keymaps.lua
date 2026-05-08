@@ -7,6 +7,14 @@ vim.keymap.set({ 'n', 'i' }, '<D-o>', vim.lsp.buf.format, { desc = 'LSP: Format 
 -- Code Action
 vim.keymap.set({ 'n', 'v' }, '<D-.>', vim.lsp.buf.code_action, { desc = 'LSP: Code action' })
 
+-- Send visual selection to previous Zellij pane
+vim.keymap.set('v', '<leader>ap', function()
+  require('zellij_mru').send_visual({
+    script = vim.fn.expand('~/.local/bin/zellij-mru-send'),
+    enter = true,
+  })
+end, { desc = 'Send selection to previous zellij pane' })
+
 -- Grep
 vim.keymap.set('n', '<leader>gW', function()
   Snacks.picker.lsp_references({
