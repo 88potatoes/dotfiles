@@ -117,3 +117,17 @@ vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<C
 vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>")
 vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
 vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>")
+
+-- Find and open .env file by searching up directory tree
+vim.keymap.set('n', '<leader>le', function()
+  local current = vim.fn.expand('%:p:h')
+  while current ~= '/' do
+    local env_path = current .. '/.env'
+    if vim.fn.filereadable(env_path) == 1 then
+      vim.cmd('edit ' .. vim.fn.fnameescape(env_path))
+      return
+    end
+    current = vim.fn.fnamemodify(current, ':h')
+  end
+  print('No .env found')
+end, { desc = 'Open .env (search up tree)' })

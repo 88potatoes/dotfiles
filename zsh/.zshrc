@@ -118,3 +118,7 @@ export PATH="$HOME/.local/share/mise/shims:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export DOCKER_HOST=unix://${HOME}/.colima/default/docker.sock
+
+grm() {
+  git restore --source=main "$1"
+}
