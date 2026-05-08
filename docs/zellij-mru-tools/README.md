@@ -51,9 +51,9 @@ local mru = require('zellij_mru')
 vim.keymap.set('v', '<leader>ap', function()
   mru.send_visual({
     script = '/Users/eric/.local/bin/zellij-mru-send',
-    enter = true, -- false = paste only, no submit
+    enter = false, -- paste only, no submit
   })
-end, { desc = 'Send selection to previous zellij pane' })
+end, { desc = 'Paste selection to previous zellij pane' })
 ```
 
 Workflow:

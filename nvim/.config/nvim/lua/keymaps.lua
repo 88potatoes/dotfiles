@@ -11,9 +11,9 @@ vim.keymap.set({ 'n', 'v' }, '<D-.>', vim.lsp.buf.code_action, { desc = 'LSP: Co
 vim.keymap.set('v', '<leader>ap', function()
   require('zellij_mru').send_visual({
     script = vim.fn.expand('~/.local/bin/zellij-mru-send'),
-    enter = true,
+    enter = false,
   })
-end, { desc = 'Send selection to previous zellij pane' })
+end, { desc = 'Paste selection to previous zellij pane' })
 
 -- Grep
 vim.keymap.set('n', '<leader>gW', function()
