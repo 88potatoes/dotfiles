@@ -29,9 +29,9 @@ if (command === 's') {
   if (isGithubPrUrl(input)) {
     console.log('yay this is a github pr url')
     let a = JSON.parse(execSync(`gh pr view ${input} --json headRefName,headRepository`).toString())
-    const worktreeName = `${a.headRepository.name}.${a.headRefName.replace('/', '-')}`
+    let worktreeName = `${a.headRepository.name}.${a.headRefName.replace('/', '-')}`
     console.log("===worktreeName", worktreeName)
-    const worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
+    let worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
     console.log("===worktreeDirPath", worktreeDirPath)
     console.log(a)
     console.log('====');
@@ -43,6 +43,9 @@ if (command === 's') {
       console.log('creating wt')
       execSync(`wt switch -b @ -c ${a.headRefName}`).toString()
     }
+
+    // linking worktree to remote
+    execSync(`cd ${worktreeDirPath} && git branch --set-upstream-to=origin/${a.headRefName} ${a.headRefName}`)
 
     // creating zellij session
     const zellijSessionName = getShortSessionName(a.headRepository.name, a.headRefName)
@@ -60,10 +63,74 @@ if (command === 's') {
     process.exit(0)
   } else {
     console.log('this is not a github pr url')
+
+    // see if it's a local branch
+    const localBranches = execSync('git branch --format="%(refname:short)"')
+      .toString()
+      .split('\n')
+      .map(bn => bn.trim())
+      .filter(Boolean);
+    console.log('islocalBranches', localBranches.includes(input))
+    if (localBranches.includes(input)) {
+      console.log('is a local branch')
+      let basename = execSync('basename $(pwd)').toString().split('.')[0].trim()
+      worktreeName = `${basename}.${input.replace('/', '-')}`
+      worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
+
+      // creating worktree
+      if (fs.existsSync(worktreeDirPath)) {
+        console.log('already exists - skipping wt creation')
+      } else {
+        console.log('creating wt')
+        execSync(`wt switch ${input}`).toString()
+      }
+
+      // creating zellij session
+      const zellijSessionName = getShortSessionName(basename, input)
+      console.log("===zellijSessionName", zellijSessionName)
+      let zellijSessions = execSync('zellij ls -sn').toString().split('\n')
+      if (zellijSessions.includes(zellijSessionName)) {
+        console.log('already exists - skipping zellij session creation')
+      } else {
+        console.log('creating zellij session')
+        execSync(`cd ${worktreeDirPath} && zellij attach --create-background ${zellijSessionName}`)
+      }
+
+      execSync(`zellij action switch-session "${zellijSessionName}"`)
+    }
+    // see if it's a remote branch
+
+    // const isRemoteBranch = execSync('git branch -r').toString().split('\n').map(bn => bn.trim().replace('origin\/', '')).includes(input)
+    // if (isRemoteBranch) {
+    //   // if it's not a  worktree, create one
+    //   console.log('creating worktree')
+    //   execSync(`wt switch -b @ -c ${input}`).toString()
+    //   process.exit(0)
+    // }
+
     process.exit(1)
   }
 } else if (command === 'k') {
   console.log('killing session (not implemented)')
+
+  // see if it's a local branch
+  const localBranches = execSync('git branch --format="%(refname:short)"')
+    .toString()
+    .split('\n')
+    .map(bn => bn.trim())
+    .filter(Boolean);
+
+  if (localBranches.includes(input)) {
+    let basename = execSync('basename $(pwd)').toString().split('.')[0].trim()
+    worktreeName = `${basename}.${input.replace('/', '-')}`
+    worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
+    if (fs.existsSync(worktreeDirPath)) {
+      execSync(`cd ${worktreeDirPath} && wt remove`)
+      const zellijSessionName = getShortSessionName(basename, input)
+      execSync(`zellij delete-session ${zellijSessionName} --force`)
+
+    }
+  }
 
 }
 
