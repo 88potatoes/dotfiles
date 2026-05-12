@@ -1,3 +1,8 @@
+---
+name: add-scribe-api-endpoint
+description: Add new Scribe API endpoint helpers from OpenAPI schema. Use when regenerating ml-scribe schema, extracting endpoint types, updating src/types exports, and adding functions in src/pages/api/scribeAPIV2.ts.
+---
+
 # Add Scribe API Endpoint
 
 This skill guides you through adding new API endpoints to the Scribe codebase after extracting them from a regenerated OpenAPI schema.

@@ -67,6 +67,7 @@ alias za='zellij attach'
 alias spt="TERM=tmux-256color spotify_player"
 alias zel="zellij -l welcome"
 alias v="nvim"
+alias grm="git restore --source=main"
 
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
