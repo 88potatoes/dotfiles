@@ -1,5 +1,11 @@
 # Global Coding Conventions
 
+## Project Aliases
+
+- "frontend" refers to `scribe-fe-v2`
+- "backend" refers to `ml-scribe`
+- "widget" refers to `scribe-js-plugin`
+
 ## Pi Extensions
 
 - `~/.pi` is symlinked (via stow) to `~/dotfiles/pi/.pi`
