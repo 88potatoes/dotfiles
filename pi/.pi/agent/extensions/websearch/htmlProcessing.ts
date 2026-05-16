@@ -1,4 +1,4 @@
-function transformHtmlSymbols(value: string): string {
+function decodeHtml(value: string): string {
   return value
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
@@ -10,3 +10,10 @@ function transformHtmlSymbols(value: string): string {
     .replace(/&#(\d+);/g, (_match, code) => String.fromCharCode(Number(code)))
     .replace(/&#x([0-9a-fA-F]+);/g, (_match, code) => String.fromCharCode(parseInt(code, 16)));
 }
+
+function stripHtmlTags(value: string): string {
+  return decodeHtml(value.replace(/<[^>]*>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
