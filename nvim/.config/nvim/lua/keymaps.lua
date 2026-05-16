@@ -114,8 +114,34 @@ vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
 
 vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "[D]iff [F]ile History (Current File)" })
-vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "[D]iff [C]lose" })
-vim.keymap.set("n", "<leader>dm", "<cmd>DiffviewOpen main...HEAD<cr>", { desc = "Diff against merge-base of main" })
+vim.keymap.set("n", "<leader>dc", function()
+  local ok, lib = pcall(require, "diffview.lib")
+  if not ok or not lib.get_current_view() then
+    return
+  end
+
+  local target_tab = lib.get_prev_non_view_tabpage()
+  if target_tab then
+    vim.api.nvim_set_current_tabpage(target_tab)
+  else
+    vim.notify("No non-Diffview tab to switch to", vim.log.levels.WARN)
+  end
+end, { desc = "[D]iff Hide ([C]ollapse)" })
+vim.keymap.set("n", "<leader>dx", "<cmd>DiffviewClose<cr>", { desc = "[D]iff Close" })
+vim.keymap.set("n", "<leader>dm", function()
+  local ok, lib = pcall(require, "diffview.lib")
+
+  if ok then
+    for _, view in ipairs(lib.views or {}) do
+      if view.tabpage and vim.api.nvim_tabpage_is_valid(view.tabpage) then
+        vim.api.nvim_set_current_tabpage(view.tabpage)
+        return
+      end
+    end
+  end
+
+  vim.cmd("DiffviewOpen main...HEAD")
+end, { desc = "Diff against merge-base of main" })
 vim.keymap.set("n", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git [Y]ank/Browse Link" })
 vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git Browse (Selection)" })
 
