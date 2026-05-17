@@ -25,3 +25,4 @@ pi/.pi/agent/sessions
 /pi/.pi/agent/auth.json
 /pi/.pi/agent/history.jsonl
 /pi/.pi/agent/auth.json
+**__pycache__**
