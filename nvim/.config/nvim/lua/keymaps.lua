@@ -73,9 +73,18 @@ vim.keymap.set("n", "<leader>e", function()
 end, { desc = "Yank all line diagnostics to clipboard" })
 
 -- Snacks
-vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files() end, { desc = "Find Files" })
-vim.keymap.set("n", "<leader>fj", function() Snacks.picker.grep() end, { desc = "Grep" })
+vim.keymap.set("n", "<leader>ff", function()
+  Snacks.picker.files({
+    hidden = true,
+  })
+end, { desc = "Find Files" })
+vim.keymap.set("n", "<leader>fj", function()
+  Snacks.picker.grep({
+    hidden = true
+  })
+end, { desc = "Grep" })
 vim.keymap.set("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
+vim.keymap.set("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
 
 -- LazyGit
 vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })

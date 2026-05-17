@@ -83,7 +83,7 @@ local function get_short_path()
   -- There's the notion of 'Slicing'
   -- We take the last 3 segments if they exist
   local count = #segments
-  local start_index = math.max(1, count - 2) -- -2 because it's inclusive (3 total)
+  local start_index = math.max(1, count - 5) -- -2 because it's inclusive (3 total)
 
   local result = {}
   for i = start_index, count do

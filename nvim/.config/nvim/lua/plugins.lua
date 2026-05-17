@@ -239,17 +239,17 @@ require("lazy").setup({
         },
         keymaps = {
           view = {
-            { "n", "<S-CR>", focus_next_diff_window, { desc = "Cycle old/new diff panes" } },
-            { "n", "<S-Down>", jump_next_hunk, { desc = "Jump to next hunk" } },
-            { "n", "<S-Up>", jump_prev_hunk, { desc = "Jump to previous hunk" } },
-            { "n", "gf", goto_file_and_close_diffview, { desc = "Open file and close diffview" } },
+            { "n", "<S-CR>",   focus_next_diff_window,       { desc = "Cycle old/new diff panes" } },
+            { "n", "<S-Down>", jump_next_hunk,               { desc = "Jump to next hunk" } },
+            { "n", "<S-Up>",   jump_prev_hunk,               { desc = "Jump to previous hunk" } },
+            { "n", "gf",       goto_file_and_close_diffview, { desc = "Open file and close diffview" } },
           },
           file_panel = {
-            { "n", "<S-CR>", select_entry_and_focus_first_diff_window, { desc = "Open selected diff and focus old pane" } },
-            { "n", "<S-Down>", jump_next_hunk, { desc = "Open selected diff and jump to next hunk" } },
-            { "n", "<S-Up>", jump_prev_hunk, { desc = "Open selected diff and jump to previous hunk" } },
-            { "n", "gf", goto_file_and_close_diffview, { desc = "Open file and close diffview" } },
-            { "n", "y", yank_file_panel_path, { desc = "Yank path relative to repo root" } },
+            { "n", "<S-CR>",   select_entry_and_focus_first_diff_window, { desc = "Open selected diff and focus old pane" } },
+            { "n", "<S-Down>", jump_next_hunk,                           { desc = "Open selected diff and jump to next hunk" } },
+            { "n", "<S-Up>",   jump_prev_hunk,                           { desc = "Open selected diff and jump to previous hunk" } },
+            { "n", "gf",       goto_file_and_close_diffview,             { desc = "Open file and close diffview" } },
+            { "n", "y",        yank_file_panel_path,                     { desc = "Yank path relative to repo root" } },
           },
         },
         hooks = {
