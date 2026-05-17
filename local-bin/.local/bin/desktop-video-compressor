@@ -1,0 +1,201 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["watchdog"]
+# ///
+
+from __future__ import annotations
+
+import queue
+import shutil
+import signal
+import subprocess
+import threading
+import time
+from pathlib import Path
+
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
+
+WATCH_DIR = Path.home() / "Desktop"
+STABLE_SECONDS = 4
+POLL_SECONDS = 1
+VIDEO_SUFFIX = ".mov"
+OUTPUT_SUFFIX = ".compressed.mp4"
+
+stop_event = threading.Event()
+work_queue: queue.Queue[Path] = queue.Queue()
+queued: set[Path] = set()
+queued_lock = threading.Lock()
+
+
+def log(message: str) -> None:
+    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {message}", flush=True)
+
+
+def output_path_for(input_path: Path) -> Path:
+    return input_path.with_name(f"{input_path.stem}{OUTPUT_SUFFIX}")
+
+
+def is_target(path: Path) -> bool:
+    return path.is_file() and path.suffix.lower() == VIDEO_SUFFIX and not path.name.endswith(OUTPUT_SUFFIX)
+
+
+def enqueue(path: Path) -> None:
+    path = path.resolve()
+    if not is_target(path):
+        return
+
+    with queued_lock:
+        if path in queued:
+            return
+        queued.add(path)
+
+    work_queue.put(path)
+    log(f"queued: {path}")
+
+
+def wait_until_stable(path: Path) -> bool:
+    last_size = -1
+    stable_for = 0
+
+    while not stop_event.is_set():
+        try:
+            size = path.stat().st_size
+        except FileNotFoundError:
+            log(f"missing before stable: {path}")
+            return False
+
+        if size > 0 and size == last_size:
+            stable_for += POLL_SECONDS
+            if stable_for >= STABLE_SECONDS:
+                return True
+        else:
+            stable_for = 0
+            last_size = size
+
+        time.sleep(POLL_SECONDS)
+
+    return False
+
+
+def compress(path: Path) -> None:
+    out_path = output_path_for(path)
+
+    if out_path.exists():
+        log(f"skip, output exists: {out_path}")
+        return
+
+    log(f"wait stable {STABLE_SECONDS}s: {path}")
+    if not wait_until_stable(path):
+        return
+
+    if out_path.exists():
+        log(f"skip, output exists: {out_path}")
+        return
+
+    cmd = [
+        "ffmpeg",
+        "-hide_banner",
+        "-y",
+        "-i",
+        str(path),
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "24",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        str(out_path),
+    ]
+
+    log(f"compress: {path} -> {out_path}")
+    result = subprocess.run(cmd)
+
+    if result.returncode == 0:
+        log(f"done: {out_path}")
+        return
+
+    log(f"ffmpeg failed ({result.returncode}): {path}")
+    try:
+        if out_path.exists():
+            out_path.unlink()
+            log(f"removed partial: {out_path}")
+    except OSError as exc:
+        log(f"failed removing partial {out_path}: {exc}")
+
+
+def worker() -> None:
+    while not stop_event.is_set():
+        try:
+            path = work_queue.get(timeout=0.5)
+        except queue.Empty:
+            continue
+
+        try:
+            compress(path)
+        except Exception as exc:
+            log(f"error processing {path}: {exc}")
+        finally:
+            with queued_lock:
+                queued.discard(path)
+            work_queue.task_done()
+
+
+class DesktopHandler(FileSystemEventHandler):
+    def on_created(self, event: FileSystemEvent) -> None:
+        if event.is_directory:
+            return
+        enqueue(Path(event.src_path))
+
+    def on_moved(self, event: FileSystemEvent) -> None:
+        if event.is_directory:
+            return
+        dest_path = getattr(event, "dest_path", None)
+        if dest_path:
+            enqueue(Path(dest_path))
+
+
+def main() -> int:
+    if not WATCH_DIR.exists():
+        log(f"watch dir missing: {WATCH_DIR}")
+        return 1
+
+    if shutil.which("ffmpeg") is None:
+        log("ffmpeg not found on PATH")
+        return 1
+
+    def handle_signal(signum: int, _frame: object) -> None:
+        log(f"signal {signum}, stopping")
+        stop_event.set()
+
+    signal.signal(signal.SIGINT, handle_signal)
+    signal.signal(signal.SIGTERM, handle_signal)
+
+    thread = threading.Thread(target=worker, daemon=True)
+    thread.start()
+
+    observer = Observer()
+    observer.schedule(DesktopHandler(), str(WATCH_DIR), recursive=False)
+    observer.start()
+
+    log(f"watching: {WATCH_DIR}")
+    log("only new .mov files will be processed")
+
+    try:
+        while not stop_event.is_set():
+            time.sleep(0.5)
+    finally:
+        observer.stop()
+        observer.join(timeout=5)
+        stop_event.set()
+        log("stopped")
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
