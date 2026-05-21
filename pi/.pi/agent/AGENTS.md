@@ -15,6 +15,27 @@
 ## TypeScript / JavaScript
 
 - **Never use barrel files** (`index.ts` that only re-exports from other files). Import directly from the source module instead.
+- Prefer object parameters for functions when it improves readability or future extensibility, including callbacks that may gain more fields later. Example: use `onSubmit({ optionId })` instead of `onSubmit(optionId)`.
+- When aliasing React Query mutation `mutate`, use a `mutate*` name, e.g. `const { mutate: mutateSyncDocument } = useMutateIntegrationsMixinSyncDocument();`.
+
+## scribe-fe-v2 Localization
+
+- Use `react-intl` for new UI and hook user-facing strings. Prefer `useIntl().formatMessage(...)` or `<FormattedMessage />` over legacy `useTranslations` / i18next patterns.
+- React-intl IDs must be content hashes: `sha512(defaultMessage)` as base64, first 10 chars. Example: `defaultMessage: 'Notes successfully pushed'` -> `id: 'QYKLru0Wm4'`.
+
+## scribe-fe-v2 Dialogs
+
+- For design-system dialogs, keep Radix accessibility primitives while using typography components: wrap typography with `DialogTitle asChild` and `DialogDescription asChild`.
+- Preferred modal header pattern:
+  ```tsx
+  <DialogTitle asChild>
+    <TypographyH5>Title</TypographyH5>
+  </DialogTitle>
+  <DialogDescription asChild>
+    <TypographyP2 className="text-text-tertiary">Description</TypographyP2>
+  </DialogDescription>
+  ```
+- Do not replace `DialogTitle` / `DialogDescription` with plain typography only; this breaks dialog accessible names/descriptions.
 
 ## React Modals
 

@@ -217,11 +217,44 @@ If the component is intentionally generic, do not mention backend-specific conte
 
 ## Code examples
 
-- Prefer concise, real-ish TypeScript/TSX.
+- Prefer concise, real-ish TypeScript/TSX/Python examples.
 - Use neutral names.
 - Show minimal valid usage before advanced usage.
+- Format code for readability, not line count. Avoid dense one-liners for nested objects, callbacks, lists, or function arguments. Break these across multiple lines with clear indentation.
 - Escape JSX in HTML docs: `&lt;Component /&gt;`.
 - Include invalid examples if the failure mode is important.
+- Add Highlight.js CDN syntax highlighting unless the user asks for fully offline/no-CDN docs:
+
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script defer>
+  window.addEventListener('DOMContentLoaded', () => hljs.highlightAll());
+</script>
+```
+
+- Tag code blocks with language classes so highlighting works and future tooling can replace Highlight.js easily:
+
+```html
+<pre><code class="language-python">...</code></pre>
+<pre><code class="language-typescript">...</code></pre>
+<pre><code class="language-bash">...</code></pre>
+<pre><code class="language-text">...</code></pre>
+```
+
+- Keep local code-block styles compatible with Highlight.js:
+
+```css
+pre code,
+pre code.hljs {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+```
 
 ## Navigation conventions
 

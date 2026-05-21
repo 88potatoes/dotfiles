@@ -12,15 +12,23 @@ This skill guides you through adding new API endpoints to the Scribe codebase af
 Use this skill when you need to:
 1. Extract specific endpoints from a fresh schema generation
 2. Add type definitions for those endpoints
-3. Create API functions in the scribeAPIV2 file
+3. Create API functions in `src/pages/api/scribeAPIV2.ts`
 
 ## Workflow
 
 ### Step 1: Generate Fresh Schema
 
+Use dev, not staging:
+
 ```bash
 cd /Users/eric/Code/scribe-fe-v2
-pnpm schema-ml-scribe:staging
+pnpm schema-ml-scribe
+```
+
+Expected package script:
+
+```json
+"schema-ml-scribe": "node scripts/generate-ml-scribe-schema.mjs dev"
 ```
 
 ### Step 2: Extract Endpoint Definitions
@@ -75,6 +83,8 @@ export type YourRequestType =
 **Location:** Find similar types and add yours in alphabetical order within that section.
 
 ### Step 6: Add API Functions to src/pages/api/scribeAPIV2.ts
+
+All new Scribe API helpers must live in `src/pages/api/scribeAPIV2.ts` with the existing API functions. Do not create separate `scribeAPIV2*` helper files for new endpoints.
 
 #### Import the Types
 
@@ -151,6 +161,7 @@ Add functions near related endpoints. For integration endpoints, place them near
 4. **GET Parameters:** Use a single object with named properties: `(params: { name: string; limit?: number })`
 5. **Alphabetical Imports:** Maintain alphabetical order in import statements
 6. **Type Naming:** Match the schema type names exactly (e.g., `SendSealedMessageRequest`, not `sendSealedMessageRequest`)
+7. **API Function Location:** Put helpers in `src/pages/api/scribeAPIV2.ts`; do not split them into separate API files.
 
 ## Example: Adding Two Related Endpoints
 
@@ -213,6 +224,7 @@ npx tsc --noEmit src/types/index.ts
 - ❌ Don't destructure the body parameter in POST functions
 - ❌ Don't spread the body with `...body` syntax
 - ❌ Don't put body before path parameters (sessionId, etc.)
+- ❌ Don't create separate `src/pages/api/scribeAPIV2*` files for new Scribe endpoint helpers
 - ✅ Do use imported types from `@/types`
 - ✅ Do make body a separate parameter (after path params, before optional params)
 - ✅ Do maintain alphabetical order in imports and type definitions
