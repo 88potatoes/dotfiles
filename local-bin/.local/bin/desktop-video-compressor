@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import argparse
 import queue
 import shutil
 import signal
@@ -26,6 +27,7 @@ stop_event = threading.Event()
 work_queue: queue.Queue[Path] = queue.Queue()
 queued: set[Path] = set()
 queued_lock = threading.Lock()
+delete_original = False
 
 
 def log(message: str) -> None:
@@ -117,6 +119,12 @@ def compress(path: Path) -> None:
 
     if result.returncode == 0:
         log(f"done: {out_path}")
+        if delete_original:
+            try:
+                path.unlink()
+                log(f"deleted original: {path}")
+            except OSError as exc:
+                log(f"failed deleting original {path}: {exc}")
         return
 
     log(f"ffmpeg failed ({result.returncode}): {path}")
@@ -159,7 +167,24 @@ class DesktopHandler(FileSystemEventHandler):
             enqueue(Path(dest_path))
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Watch ~/Desktop for new .mov files and compress them with ffmpeg."
+    )
+    parser.add_argument(
+        "--delete-original",
+        action="store_true",
+        help="delete the original .mov after successful compression",
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    global delete_original
+
+    args = parse_args()
+    delete_original = args.delete_original
+
     if not WATCH_DIR.exists():
         log(f"watch dir missing: {WATCH_DIR}")
         return 1
@@ -184,6 +209,8 @@ def main() -> int:
 
     log(f"watching: {WATCH_DIR}")
     log("only new .mov files will be processed")
+    if delete_original:
+        log("delete original enabled")
 
     try:
         while not stop_event.is_set():

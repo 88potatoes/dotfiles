@@ -25,6 +25,16 @@ function getShortSessionName(repoName, branchName) {
   return `${cleanName}-${hash}`;
 }
 
+function copyEnvToWorktree(worktreeDirPath) {
+  const sourceEnvPath = `${process.cwd()}/.env`;
+  const targetEnvPath = `${worktreeDirPath}/.env`;
+
+  if (fs.existsSync(sourceEnvPath) && !fs.existsSync(targetEnvPath)) {
+    console.log('copying .env to wt')
+    fs.copyFileSync(sourceEnvPath, targetEnvPath);
+  }
+}
+
 if (command === 's') {
   if (isGithubPrUrl(input)) {
     console.log('yay this is a github pr url')
@@ -42,6 +52,7 @@ if (command === 's') {
     } else {
       console.log('creating wt')
       execSync(`wt switch -b @ -c ${a.headRefName}`).toString()
+      copyEnvToWorktree(worktreeDirPath)
     }
 
     // linking worktree to remote
@@ -83,6 +94,7 @@ if (command === 's') {
       } else {
         console.log('creating wt')
         execSync(`wt switch ${input}`).toString()
+        copyEnvToWorktree(worktreeDirPath)
       }
 
       // creating zellij session
