@@ -138,12 +138,38 @@ vim.keymap.set("n", "<leader>dc", function()
 end, { desc = "[D]iff Hide ([C]ollapse)" })
 vim.keymap.set("n", "<leader>dx", "<cmd>DiffviewClose<cr>", { desc = "[D]iff Close" })
 vim.keymap.set("n", "<leader>dm", function()
+  local diff_args = { "main...HEAD" }
   local ok, lib = pcall(require, "diffview.lib")
 
   if ok then
     for _, view in ipairs(lib.views or {}) do
-      if view.tabpage and vim.api.nvim_tabpage_is_valid(view.tabpage) then
-        vim.api.nvim_set_current_tabpage(view.tabpage)
+      if view.rev_arg == "main...HEAD" and view.tabpage and vim.api.nvim_tabpage_is_valid(view.tabpage) then
+        local selected_file = view.panel and view.panel.cur_file and view.panel.cur_file.path
+        local panel_focused = view.panel and view.panel.is_focused and view.panel:is_focused()
+
+        view:close()
+        lib.dispose_view(view)
+
+        if selected_file then
+          vim.list_extend(diff_args, { "--selected-file", selected_file })
+        end
+
+        require("diffview").open(diff_args)
+
+        if not panel_focused then
+          vim.defer_fn(function()
+            local wins = vim.api.nvim_tabpage_list_wins(0)
+            for _, win in ipairs(wins) do
+              local bufnr = vim.api.nvim_win_get_buf(win)
+              local ft = vim.bo[bufnr].filetype
+              if ft ~= "DiffviewFiles" and ft ~= "DiffviewFileHistory" then
+                vim.api.nvim_set_current_win(win)
+                return
+              end
+            end
+          end, 100)
+        end
+
         return
       end
     end

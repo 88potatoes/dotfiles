@@ -7,9 +7,16 @@ local function shell_quote(s)
   return vim.fn.shellescape(s)
 end
 
-local function visual_range()
-  local s = vim.fn.getpos("'<")
-  local e = vim.fn.getpos("'>")
+local function visual_range(opts)
+  opts = opts or {}
+
+  -- In an active visual mapping, '< and '> can still point at the previous
+  -- selection. Use live visual endpoints instead.
+  local mode = opts.mode or vim.fn.mode()
+  local active_visual = mode == 'v' or mode == 'V' or mode == '\22'
+  local s = active_visual and vim.fn.getpos('v') or vim.fn.getpos("'<")
+  local e = active_visual and vim.fn.getpos('.') or vim.fn.getpos("'>")
+
   local start_line, start_col = s[2], s[3]
   local end_line, end_col = e[2], e[3]
 
@@ -18,18 +25,22 @@ local function visual_range()
     start_col, end_col = end_col, start_col
   end
 
-  return start_line, start_col, end_line, end_col
+  return start_line, start_col, end_line, end_col, mode
 end
 
-local function selected_text()
-  local start_line, start_col, end_line, end_col = visual_range()
+local function selected_text(opts)
+  local start_line, start_col, end_line, end_col, mode = visual_range(opts)
   local lines = vim.fn.getline(start_line, end_line)
   if #lines == 0 then
     return "", start_line, end_line
   end
 
-  local mode = vim.fn.visualmode()
-  if mode ~= 'V' then
+  local selection_mode = mode
+  if selection_mode ~= 'v' and selection_mode ~= 'V' and selection_mode ~= '\22' then
+    selection_mode = vim.fn.visualmode()
+  end
+
+  if selection_mode ~= 'V' then
     lines[#lines] = string.sub(lines[#lines], 1, end_col)
     lines[1] = string.sub(lines[1], start_col)
   end
@@ -42,7 +53,7 @@ function M.send_visual(opts)
   local script = opts.script or "zellij-mru-send"
   local enter = opts.enter ~= false
 
-  local text, start_line, end_line = selected_text()
+  local text, start_line, end_line = selected_text({ mode = opts.mode })
   if text == "" then
     vim.notify("No visual selection", vim.log.levels.WARN)
     return

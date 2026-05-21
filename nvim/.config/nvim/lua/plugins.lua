@@ -84,6 +84,11 @@ require("lazy").setup({
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "prismals" },
         automatic_installation = true,
+        -- TS LSP is selected explicitly in lua/config/lsp/init.lua.
+        -- Prevent mason-lspconfig from auto-starting vtsls/ts_ls beside tsgo.
+        automatic_enable = {
+          exclude = { "vtsls", "ts_ls" },
+        },
       })
     end,
   },
