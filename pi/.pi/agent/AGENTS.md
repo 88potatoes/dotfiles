@@ -1,5 +1,9 @@
 # Global Coding Conventions
 
+## Context Updates
+
+- When I ask to add something to "context", default to the Pi agent context (`~/.pi/agent/AGENTS.md` / `~/dotfiles/pi/.pi/agent/AGENTS.md`), not repo context. Only edit repo context when explicitly asked.
+
 ## Project Aliases
 
 - "frontend" refers to `scribe-fe-v2`
@@ -14,6 +18,7 @@
 
 ## TypeScript / JavaScript
 
+- Do not run full repo typecheck commands unless explicitly asked. They are too slow/OOM-prone. Only type-check changed files.
 - **Never use barrel files** (`index.ts` that only re-exports from other files). Import directly from the source module instead.
 - Prefer object parameters for functions when it improves readability or future extensibility, including callbacks that may gain more fields later. Example: use `onSubmit({ optionId })` instead of `onSubmit(optionId)`.
 - When aliasing React Query mutation `mutate`, use a `mutate*` name, e.g. `const { mutate: mutateSyncDocument } = useMutateIntegrationsMixinSyncDocument();`.

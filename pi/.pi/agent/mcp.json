@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "toolPrefix": "server",
+    "idleTimeout": 10,
+    "directTools": false
+  },
+  "mcpServers": {
+    "figma-api": {
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp", "--stdio"],
+      "env": {
+        "FIGMA_API_KEY": "${FIGMA_TOKEN}"
+      },
+      "lifecycle": "lazy",
+      "idleTimeout": 10
+    }
+  }
+}
