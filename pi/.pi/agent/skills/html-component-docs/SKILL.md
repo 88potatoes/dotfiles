@@ -57,7 +57,7 @@ Use embedded CSS with:
 - subtle borders (`#dbe3ef`)
 - rounded cards (`18px`-`28px`)
 - accent purple (`#5956d6` / `#7c3aed`)
-- monospace code blocks with dark background
+- monospace code blocks with dark background and explicit high-contrast text colors
 - responsive mobile behavior: sidebar becomes top block, single-column grids
 
 Main CSS requirements:
@@ -245,13 +245,29 @@ If the component is intentionally generic, do not mention backend-specific conte
 <pre><code class="language-text">...</code></pre>
 ```
 
-- Keep local code-block styles compatible with Highlight.js:
+- Always set explicit high-contrast colors for inline code and code blocks. Avoid white-on-white when Highlight.js or local styles fail to load:
 
 ```css
+code {
+  background: #eef2ff;
+  color: #312e81;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+pre {
+  overflow-x: auto;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 16px;
+}
+
 pre code,
 pre code.hljs {
   background: transparent;
-  color: inherit;
+  color: #e2e8f0;
   padding: 0;
 }
 ```

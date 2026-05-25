@@ -19,6 +19,7 @@
 ## TypeScript / JavaScript
 
 - Do not run full repo typecheck commands unless explicitly asked. They are too slow/OOM-prone. Only type-check changed files.
+- Do not run prettier/eslint after every small edit. Batch validation when useful, before handoff, or when explicitly requested.
 - **Never use barrel files** (`index.ts` that only re-exports from other files). Import directly from the source module instead.
 - Prefer object parameters for functions when it improves readability or future extensibility, including callbacks that may gain more fields later. Example: use `onSubmit({ optionId })` instead of `onSubmit(optionId)`.
 - When aliasing React Query mutation `mutate`, use a `mutate*` name, e.g. `const { mutate: mutateSyncDocument } = useMutateIntegrationsMixinSyncDocument();`.

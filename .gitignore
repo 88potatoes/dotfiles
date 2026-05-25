@@ -28,3 +28,4 @@ pi/.pi/agent/sessions
 **__pycache__**
 /pi/.pi/agent/mcp-cache.json
 /pi/.pi/agent/mcp-npx-cache.json
+/pi/.pi/agent/test-after-changes.json
