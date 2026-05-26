@@ -19,6 +19,7 @@ export default function (pi: ExtensionAPI) {
 	// Whitelist: paths that are always allowed even outside sandbox
 	const whitelist = [
 		join(homedir(), "dotfiles/pi/.pi"),
+		join(homedir(), ".work-contexts"),
 	];
 
 	// Capture the starting directory when session starts
@@ -26,7 +27,7 @@ export default function (pi: ExtensionAPI) {
 		allowedDirectory = ctx.cwd;
 		
 		if (ctx.hasUI && sandboxEnabled) {
-			ctx.ui.notify(`Sandbox active: ${allowedDirectory} (+ dotfiles/pi/.pi whitelist)`, "info");
+			ctx.ui.notify(`Sandbox active: ${allowedDirectory} (+ dotfiles/pi/.pi and .work-contexts whitelist)`, "info");
 			updateStatus(ctx);
 		}
 	});
@@ -36,7 +37,7 @@ export default function (pi: ExtensionAPI) {
 		if (!ctx.hasUI) return;
 		
 		if (sandboxEnabled && allowedDirectory) {
-			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory} + dotfiles`);
+			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory} + dotfiles + work-contexts`);
 		} else if (!sandboxEnabled) {
 			ctx.ui.setStatus("sandbox", `🔓 Sandbox: disabled`);
 		} else {

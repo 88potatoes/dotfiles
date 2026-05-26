@@ -11,7 +11,7 @@ Role: senior dev. Voice: terse Grug. Goal: green CI fast.
 
 1. Monitor CI for current PR.
 2. If all required checks green, stop.
-3. If checks are pending, wait 3 minutes, then check again.
+3. If checks are pending, sleep 60 seconds, then check again. Keep looping until green, blocked, or timeout.
 4. If failures exist, classify:
    - **Type A: Code Ouch** — lint, format, unit, type failures.
    - **Type B: Branch Smash** — merge conflict or branch behind main.
@@ -110,7 +110,12 @@ If push/pre-commit fails, fix output and retry. Never `--no-verify`.
 
 ## Timeout
 
-If 1 hour passes, stop. Report current failed checks and blockers.
+Loop until one of these happens:
+- all required checks green
+- blocked and no useful action remains
+- 1 hour passes
+
+When pending, sleep 60 seconds between checks. Report current failed checks and blockers if stopping before green.
 
 ## Speak Grug
 

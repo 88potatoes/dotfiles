@@ -2,7 +2,7 @@
 """Track most-recently-focused Zellij panes per session+tab.
 
 Writes JSON state under $TMPDIR/zellij-pane-mru-$UID/<session>/tab_<tab_id>.json.
-Run from inside a Zellij session.
+Run from inside a Zellij session, or pass --session to poll from outside.
 """
 
 from __future__ import annotations
@@ -30,8 +30,8 @@ def state_root() -> Path:
     return Path(tempfile.gettempdir()) / f"zellij-pane-mru-{os.getuid()}"
 
 
-def session_name() -> str:
-    return os.environ.get("ZELLIJ_SESSION_NAME") or os.environ.get("ZELLIJ") or "unknown"
+def session_name(override: str | None = None) -> str:
+    return override or os.environ.get("ZELLIJ_SESSION_NAME") or os.environ.get("ZELLIJ") or "unknown"
 
 
 def pane_key(pane: dict[str, Any]) -> str:
@@ -43,9 +43,14 @@ def state_path(session: str, tab_id: int) -> Path:
     return state_root() / safe_part(session) / f"tab_{tab_id}.json"
 
 
-def list_panes() -> list[dict[str, Any]]:
+def list_panes(session: str | None = None) -> list[dict[str, Any]]:
+    command = ["zellij"]
+    if session:
+        command.extend(["--session", session])
+    command.extend(["action", "list-panes", "--json", "--all", "--command", "--state", "--tab"])
+
     out = subprocess.check_output(
-        ["zellij", "action", "list-panes", "--json", "--all", "--command", "--state", "--tab"],
+        command,
         text=True,
         stderr=subprocess.DEVNULL,
     )
@@ -73,12 +78,14 @@ def write_state(path: Path, data: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
-def update_mru(panes: list[dict[str, Any]], now: float) -> tuple[str, int, str] | None:
+def update_mru(
+    panes: list[dict[str, Any]], now: float, session_override: str | None = None
+) -> tuple[str, int, str] | None:
     focused = focused_terminal(panes)
     if not focused:
         return None
 
-    session = session_name()
+    session = session_name(session_override)
     tab_id = int(focused["tab_id"])
     current = pane_key(focused)
     path = state_path(session, tab_id)
@@ -121,18 +128,19 @@ def update_mru(panes: list[dict[str, Any]], now: float) -> tuple[str, int, str] 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Track Zellij focused pane MRU per tab")
     parser.add_argument("--interval", type=float, default=0.2, help="poll interval seconds")
+    parser.add_argument("--session", help="zellij session to poll; allows running outside zellij")
     parser.add_argument("--once", action="store_true", help="update once and exit")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
-    if "ZELLIJ" not in os.environ and "ZELLIJ_SESSION_NAME" not in os.environ:
+    if not args.session and "ZELLIJ" not in os.environ and "ZELLIJ_SESSION_NAME" not in os.environ:
         print("zellij-pane-mru-poller: not inside zellij", file=sys.stderr)
         return 2
 
     last: tuple[str, int, str] | None = None
     while True:
         try:
-            current = update_mru(list_panes(), time.time())
+            current = update_mru(list_panes(args.session), time.time(), args.session)
             if args.verbose and current and current != last:
                 print(f"{current[0]} tab {current[1]} focused {current[2]}", flush=True)
             last = current

@@ -1,17 +1,44 @@
 #!/usr/bin/env node
-const { execSync } = require('child_process');
+const { execSync, spawn, spawnSync } = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
-const commands = ['s', 'k']
+const commands = ['s', 'k'];
 
 const args = process.argv.slice(2);
 const command = args[0];
 const input = args[1];
 
 if (!commands.includes(command)) {
-  console.error("Please provide a valid command: s (switch) or k (kill)");
+  console.error('Please provide a valid command: s (switch) or k (kill)');
   process.exit(1);
+}
+
+function shellQuote(value) {
+  return `'${String(value).replace(/'/g, `'\\''`)}'`;
+}
+
+function safePart(value) {
+  return String(value).replace(/[^A-Za-z0-9_.-]+/g, '_').slice(0, 120) || 'unknown';
+}
+
+function run(command, options = {}) {
+  return execSync(command, { stdio: 'inherit', ...options });
+}
+
+function output(command, options = {}) {
+  return execSync(command, { encoding: 'utf8', ...options }).trim();
+}
+
+function commandExists(cmd) {
+  try {
+    execSync(`command -v ${shellQuote(cmd)}`, { stdio: 'ignore', shell: '/bin/sh' });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function isGithubPrUrl(url) {
@@ -30,181 +57,218 @@ function copyEnvToWorktree(worktreeDirPath) {
   const targetEnvPath = `${worktreeDirPath}/.env`;
 
   if (fs.existsSync(sourceEnvPath) && !fs.existsSync(targetEnvPath)) {
-    console.log('copying .env to wt')
+    console.log('copying .env to wt');
     fs.copyFileSync(sourceEnvPath, targetEnvPath);
   }
 }
 
+function hasFile(dir, filename) {
+  return fs.existsSync(path.join(dir, filename));
+}
+
+function pyprojectUsesPoetry(dir) {
+  const pyproject = path.join(dir, 'pyproject.toml');
+  return fs.existsSync(pyproject) && fs.readFileSync(pyproject, 'utf8').includes('[tool.poetry]');
+}
+
+function detectInstallTasks(worktreeDirPath) {
+  const tasks = [];
+
+  if (hasFile(worktreeDirPath, 'package.json')) {
+    if (hasFile(worktreeDirPath, 'pnpm-lock.yaml')) {
+      tasks.push({ label: 'Node packages (pnpm)', cmd: 'pnpm', args: ['install', '--frozen-lockfile'] });
+    } else if (hasFile(worktreeDirPath, 'yarn.lock')) {
+      const args = hasFile(worktreeDirPath, '.yarnrc.yml') ? ['install', '--immutable'] : ['install', '--frozen-lockfile'];
+      tasks.push({ label: 'Node packages (yarn)', cmd: 'yarn', args });
+    } else if (hasFile(worktreeDirPath, 'bun.lock') || hasFile(worktreeDirPath, 'bun.lockb')) {
+      tasks.push({ label: 'Node packages (bun)', cmd: 'bun', args: ['install', '--frozen-lockfile'] });
+    } else if (hasFile(worktreeDirPath, 'package-lock.json') || hasFile(worktreeDirPath, 'npm-shrinkwrap.json')) {
+      tasks.push({ label: 'Node packages (npm)', cmd: 'npm', args: ['ci'] });
+    } else {
+      tasks.push({ label: 'Node packages (npm)', cmd: 'npm', args: ['install'] });
+    }
+  }
+
+  if (hasFile(worktreeDirPath, 'uv.lock')) {
+    tasks.push({ label: 'Python packages (uv)', cmd: 'uv', args: ['sync'] });
+  } else if (hasFile(worktreeDirPath, 'poetry.lock') || pyprojectUsesPoetry(worktreeDirPath)) {
+    tasks.push({ label: 'Python packages (poetry)', cmd: 'poetry', args: ['install'] });
+  } else if (hasFile(worktreeDirPath, 'requirements.txt')) {
+    tasks.push({ label: 'Python packages (pip)', cmd: 'python3', args: ['-m', 'pip', 'install', '-r', 'requirements.txt'] });
+  } else if (hasFile(worktreeDirPath, 'Pipfile') || hasFile(worktreeDirPath, 'Pipfile.lock')) {
+    tasks.push({ label: 'Python packages (pipenv)', cmd: 'pipenv', args: ['install', '--dev'] });
+  }
+
+  if (hasFile(worktreeDirPath, 'Cargo.toml')) {
+    tasks.push({ label: 'Rust packages', cmd: 'cargo', args: ['fetch'] });
+  }
+
+  if (hasFile(worktreeDirPath, 'go.mod')) {
+    tasks.push({ label: 'Go packages', cmd: 'go', args: ['mod', 'download'] });
+  }
+
+  if (hasFile(worktreeDirPath, 'Gemfile')) {
+    tasks.push({ label: 'Ruby packages', cmd: 'bundle', args: ['install'] });
+  }
+
+  return tasks;
+}
+
+function installPackages(worktreeDirPath) {
+  if (process.env.WTZ_INSTALL === '0' || process.env.WTZ_INSTALL === 'false') {
+    console.log('WTZ_INSTALL disabled - skipping package install');
+    return;
+  }
+
+  const tasks = detectInstallTasks(worktreeDirPath);
+  if (tasks.length === 0) {
+    console.log('no package manifest found - skipping package install');
+    return;
+  }
+
+  for (const task of tasks) {
+    if (!commandExists(task.cmd)) {
+      console.log(`${task.cmd} not found - skipping ${task.label}`);
+      continue;
+    }
+
+    console.log(`installing ${task.label}: ${task.cmd} ${task.args.join(' ')}`);
+    const result = spawnSync(task.cmd, task.args, { cwd: worktreeDirPath, stdio: 'inherit' });
+    if (result.status !== 0) {
+      throw new Error(`${task.label} install failed`);
+    }
+  }
+}
+
+function prepareNewWorktree(worktreeDirPath) {
+  copyEnvToWorktree(worktreeDirPath);
+  installPackages(worktreeDirPath);
+}
+
+function zellijSessions() {
+  return output('zellij ls -sn')
+    .split('\n')
+    .map(session => session.trim())
+    .filter(Boolean);
+}
+
+function startZellijMruPoller(zellijSessionName) {
+  if (!commandExists('zellij-pane-mru-poller')) {
+    console.log('zellij-pane-mru-poller not found - skipping MRU poller');
+    return;
+  }
+
+  const root = path.join(os.tmpdir(), `zellij-mru-poller-${process.getuid?.() ?? 'user'}`);
+  fs.mkdirSync(root, { recursive: true });
+  const pidPath = path.join(root, `${safePart(zellijSessionName)}.pid`);
+  const logPath = path.join(root, `${safePart(zellijSessionName)}.log`);
+
+  if (fs.existsSync(pidPath)) {
+    const pid = Number(fs.readFileSync(pidPath, 'utf8'));
+    if (pid && !Number.isNaN(pid)) {
+      try {
+        process.kill(pid, 0);
+        console.log('zellij MRU poller already running');
+        return;
+      } catch {
+        fs.rmSync(pidPath, { force: true });
+      }
+    }
+  }
+
+  console.log('starting zellij MRU poller');
+  const logFd = fs.openSync(logPath, 'a');
+  const child = spawn('zellij-pane-mru-poller', ['--session', zellijSessionName], {
+    detached: true,
+    stdio: ['ignore', logFd, logFd],
+    env: { ...process.env, ZELLIJ_SESSION_NAME: zellijSessionName },
+  });
+  child.unref();
+  fs.writeFileSync(pidPath, `${child.pid}\n`);
+}
+
+function ensureZellijSession(worktreeDirPath, repoName, branchName) {
+  const zellijSessionName = getShortSessionName(repoName, branchName);
+  console.log('===zellijSessionName', zellijSessionName);
+
+  if (zellijSessions().includes(zellijSessionName)) {
+    console.log('already exists - skipping zellij session creation');
+  } else {
+    console.log('creating zellij session');
+    run(`cd ${shellQuote(worktreeDirPath)} && zellij attach --create-background ${shellQuote(zellijSessionName)}`);
+  }
+
+  startZellijMruPoller(zellijSessionName);
+  run(`zellij action switch-session ${shellQuote(zellijSessionName)}`);
+}
+
 if (command === 's') {
   if (isGithubPrUrl(input)) {
-    console.log('yay this is a github pr url')
-    let a = JSON.parse(execSync(`gh pr view ${input} --json headRefName,headRepository`).toString())
-    let worktreeName = `${a.headRepository.name}.${a.headRefName.replace('/', '-')}`
-    console.log("===worktreeName", worktreeName)
-    let worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
-    console.log("===worktreeDirPath", worktreeDirPath)
-    console.log(a)
+    console.log('yay this is a github pr url');
+    const pr = JSON.parse(output(`gh pr view ${shellQuote(input)} --json headRefName,headRepository`));
+    const worktreeName = `${pr.headRepository.name}.${pr.headRefName.replace(/\//g, '-')}`;
+    console.log('===worktreeName', worktreeName);
+    const worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`;
+    console.log('===worktreeDirPath', worktreeDirPath);
+    console.log(pr);
     console.log('====');
 
-    // creating worktree
     if (fs.existsSync(worktreeDirPath)) {
-      console.log('already exists - skipping wt creation')
+      console.log('already exists - skipping wt creation');
     } else {
-      console.log('creating wt')
-      execSync(`wt switch -b @ -c ${a.headRefName}`).toString()
-      copyEnvToWorktree(worktreeDirPath)
+      console.log('creating wt');
+      run(`wt switch -b @ -c ${shellQuote(pr.headRefName)}`);
+      prepareNewWorktree(worktreeDirPath);
     }
 
-    // linking worktree to remote
-    execSync(`cd ${worktreeDirPath} && git branch --set-upstream-to=origin/${a.headRefName} ${a.headRefName}`)
-
-    // creating zellij session
-    const zellijSessionName = getShortSessionName(a.headRepository.name, a.headRefName)
-    console.log("===zellijSessionName", zellijSessionName)
-    let zellijSessions = execSync('zellij ls -sn').toString().split('\n')
-    if (zellijSessions.includes(zellijSessionName)) {
-      console.log('already exists - skipping zellij session creation')
-    } else {
-      console.log('creating zellij session')
-      execSync(`cd ${worktreeDirPath} && zellij attach --create-background ${zellijSessionName}`)
-    }
-
-    execSync(`zellij action switch-session "${zellijSessionName}"`)
-
-    process.exit(0)
-  } else {
-    console.log('this is not a github pr url')
-
-    // see if it's a local branch
-    const localBranches = execSync('git branch --format="%(refname:short)"')
-      .toString()
-      .split('\n')
-      .map(bn => bn.trim())
-      .filter(Boolean);
-    console.log('islocalBranches', localBranches.includes(input))
-    if (localBranches.includes(input)) {
-      console.log('is a local branch')
-      let basename = execSync('basename $(pwd)').toString().split('.')[0].trim()
-      worktreeName = `${basename}.${input.replace('/', '-')}`
-      worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
-
-      // creating worktree
-      if (fs.existsSync(worktreeDirPath)) {
-        console.log('already exists - skipping wt creation')
-      } else {
-        console.log('creating wt')
-        execSync(`wt switch ${input}`).toString()
-        copyEnvToWorktree(worktreeDirPath)
-      }
-
-      // creating zellij session
-      const zellijSessionName = getShortSessionName(basename, input)
-      console.log("===zellijSessionName", zellijSessionName)
-      let zellijSessions = execSync('zellij ls -sn').toString().split('\n')
-      if (zellijSessions.includes(zellijSessionName)) {
-        console.log('already exists - skipping zellij session creation')
-      } else {
-        console.log('creating zellij session')
-        execSync(`cd ${worktreeDirPath} && zellij attach --create-background ${zellijSessionName}`)
-      }
-
-      execSync(`zellij action switch-session "${zellijSessionName}"`)
-    }
-    // see if it's a remote branch
-
-    // const isRemoteBranch = execSync('git branch -r').toString().split('\n').map(bn => bn.trim().replace('origin\/', '')).includes(input)
-    // if (isRemoteBranch) {
-    //   // if it's not a  worktree, create one
-    //   console.log('creating worktree')
-    //   execSync(`wt switch -b @ -c ${input}`).toString()
-    //   process.exit(0)
-    // }
-
-    process.exit(1)
+    run(`cd ${shellQuote(worktreeDirPath)} && git branch --set-upstream-to=${shellQuote(`origin/${pr.headRefName}`)} ${shellQuote(pr.headRefName)}`);
+    ensureZellijSession(worktreeDirPath, pr.headRepository.name, pr.headRefName);
+    process.exit(0);
   }
-} else if (command === 'k') {
-  console.log('killing session (not implemented)')
 
-  // see if it's a local branch
-  const localBranches = execSync('git branch --format="%(refname:short)"')
-    .toString()
+  console.log('this is not a github pr url');
+
+  const localBranches = output('git branch --format="%(refname:short)"')
+    .split('\n')
+    .map(bn => bn.trim())
+    .filter(Boolean);
+
+  console.log('islocalBranches', localBranches.includes(input));
+  if (localBranches.includes(input)) {
+    console.log('is a local branch');
+    const basename = output('basename $(pwd)').split('.')[0].trim();
+    const worktreeName = `${basename}.${input.replace(/\//g, '-')}`;
+    const worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`;
+
+    if (fs.existsSync(worktreeDirPath)) {
+      console.log('already exists - skipping wt creation');
+    } else {
+      console.log('creating wt');
+      run(`wt switch ${shellQuote(input)}`);
+      prepareNewWorktree(worktreeDirPath);
+    }
+
+    ensureZellijSession(worktreeDirPath, basename, input);
+    process.exit(0);
+  }
+
+  process.exit(1);
+} else if (command === 'k') {
+  console.log('killing session');
+
+  const localBranches = output('git branch --format="%(refname:short)"')
     .split('\n')
     .map(bn => bn.trim())
     .filter(Boolean);
 
   if (localBranches.includes(input)) {
-    let basename = execSync('basename $(pwd)').toString().split('.')[0].trim()
-    worktreeName = `${basename}.${input.replace('/', '-')}`
-    worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`
+    const basename = output('basename $(pwd)').split('.')[0].trim();
+    const worktreeName = `${basename}.${input.replace(/\//g, '-')}`;
+    const worktreeDirPath = process.env.HOME + `/Code/${worktreeName}`;
     if (fs.existsSync(worktreeDirPath)) {
-      execSync(`cd ${worktreeDirPath} && wt remove`)
-      const zellijSessionName = getShortSessionName(basename, input)
-      execSync(`zellij delete-session ${zellijSessionName} --force`)
-
+      run(`cd ${shellQuote(worktreeDirPath)} && wt remove`);
+      const zellijSessionName = getShortSessionName(basename, input);
+      run(`zellij delete-session ${shellQuote(zellijSessionName)} --force`);
     }
   }
-
 }
-
-// if (!branchName) {
-//   console.error("Please provide a branch name");
-//   process.exit(1);
-// }
-
-// actualBranchName1 = getShortSessionName3(basename, proposedBranchName)
-// }␍  return `${cleanName}-${hash}`;␍  ␍  const cleanName = `${basename}.${branchName.replace(/\//g, '-')}`.slice(0, 28);␍  // Clean the name (remove dots, etc.) and truncate so total length is < 36␍const hash = crypto.randomInt(100000, 999999);␍  // Create a 6-character ␍function getShortSessionName3(repoName, branchName) {
-// }␍  return `${cleanName}-${hash}`;␍  ␍  const cleanName = `${basename}.${branchName.replace(/\//g, '-')}`.slice(0, 28);␍  // Clean the name (remove dots, etc.) and truncate so total length is < 36␍  const hash = crypto.createHash('md5').update(branchName).digest('hex').slice(0, 6);␍  // Create a 6-character hash␍function getShortSessionName2(repoName, branchName) {
-// actualBranchName1.length
-// actualBranchName1 = getShortSessionName2(basename, proposedBranchName)
-// }␍  return `${cleanName}-${hash}`;␍  ␍  const cleanName = `${basename}.${branchName.replace(/\//g, '-')}`.slice(0, 28);␍  // Clean the name (remove dots, etc.) and truncate so total length is < 36␍  const hash = crypto.createHash('md5').update(branchName).digest('hex').slice(0, 6);␍  
-// // Create a 6-character hash␍function 
-// getShortSessionName2(repoName, branchName) {
-// return `${cleanName}-${hash}`;␍  ␍  const cleanName = branchName.replace(/\./g, '-').slice(0, 28);␍  // Clean the name (remove dots, etc.) and truncate so total length is < 36␍  ␍  const hash = crypto.createHash('md5').update(branchName).digest('hex').slice(0, 6);␍  // Create a 6-character hash
-// function getShortSessionName(branchName) {
-// actualBranchName1 = getShortSessionName(`${basename}.${proposedBranchName}`)
-// let actualBranchName1 = getShortSessionName(`${basename}.${proposedBranchName})
-// basename = execSync('basename $(pwd)').toString().trim()
-// basename
-// let basename = execSync('basename $(pwd)').toString()
-// actualBranchName1
-// let actualBranchName1 = getShortSessionName(proposedBranchName)
-// const actualBranchName = getShortSessionName(proposedBranchName)
-// const actualBranchName = getShortBranchName(proposedBranchName)
-// let proposedBranchName="somethingreally-long-to-tests"
-// history
-// .history
-// execSync('basename $(pwd)').toString()
-// execSync('basename $(pwd)')
-// getShortSessionName(worktreeName)
-// getShortSessionName('worktreeName')
-// }␍  return `${ cleanName } - ${ hash }`;␍  ␍  const cleanName = branchName.replace(/\./g, '-').slice(0, 28);␍  // Clean the name (remove dots, etc.) and truncate so total length is < 36␍  ␍  const hash = crypto.createHash('md5').update(branchName).digest('hex').slice(0, 6);␍  // Create a 6-character hash␍function getShortSessionName(branchName) {
-// const crypto = require('crypto');
-// 'scribe-fe-v2'.length
-// 'template-gallery'.length
-// command
-// let command = `zellij attach--create - background ${ worktreeName }`
-// zellijSessions.includes(worktreeName)
-// let zellijSessions = execSync('zellij ls -sn').toString().split('\n')
-// worktreeName = `${ a.headRepository.name }.${ a.headRefName.replace('/', '-') }`
-// worktreeName = `${ a.headRepository.name }.${ a.headRefName }`
-// worktreeName = `${ a.headRefName }.${ a.headRepository.name }`
-// let worktreeName = `${ a.headRefName }.${ a.headRepository.name }`
-// worktreeName
-// let worktreeName = `${ a.headRefName }.${ a.headRepository.name }`
-// execSync('zellij ls -sn').toString().split('\n')
-// execSync('zellij ls -sn').toString()
-// execSyc('zellij ls -sn').toString()
-// a
-// let a = JSON.parse(execSync('gh pr view https://github.com/oscerai/scribe-fe-v2/pull/10353 --json headRefName,headRepository').toString())
-// JSON.parse(execSync('gh pr view https://github.com/oscerai/scribe-fe-v2/pull/10353 --json headRefName,headRepository').toString())
-// execSync('gh pr view https://github.com/oscerai/scribe-fe-v2/pull/10353 --json headRefName,headRepository').toString()
-// execSync('gh pr view https://github.com/oscerai/scribe-fe-v2/pull/10353 --json headRefName,repository').toString()
-// execSync('gh pr view https://github.com/oscerai/scribe-fe-v2/pull/10353').toString()
-// execSync('ls -l').toString()
-// execSync('ls -l')
-// const { execSync } = require('child_process')
-// execSync('ls -l')
-// x.trim()
-// x.strip()
-// x
-// let x =' https://github.com/oscerai/scribe-fe-v2/pull/10353'

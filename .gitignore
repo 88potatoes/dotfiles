@@ -24,8 +24,8 @@ pi/.pi/agent/sessions
 /pi/.pi/agent/bin
 /pi/.pi/agent/auth.json
 /pi/.pi/agent/history.jsonl
-/pi/.pi/agent/auth.json
 **__pycache__**
 /pi/.pi/agent/mcp-cache.json
 /pi/.pi/agent/mcp-npx-cache.json
 /pi/.pi/agent/test-after-changes.json
+/pi/.pi/agent/auth**json
