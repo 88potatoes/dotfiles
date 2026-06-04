@@ -2,6 +2,8 @@
 
 ## Context Updates
 
+- When I say "remember", treat it as a request to add the information to the appropriate context in a meaningful way.
+- When I say "harness", I may mean the Pi/context harness; update context when that is the meaningful interpretation.
 - When I ask to add something to "context", decide whether it belongs in work context or global Pi context.
 - Prefer work context (`~/.work-contexts/README.md`) for company-specific facts, repo aliases, private team conventions, PR templates, product-specific workflows, and Scribe-specific guidance.
 - Use global Pi context (`~/.pi/agent/AGENTS.md` / `~/dotfiles/pi/.pi/agent/AGENTS.md`) only for company-agnostic personal coding preferences, Pi/dotfiles mechanics, or reusable OSS workflows.
