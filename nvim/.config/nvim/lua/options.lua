@@ -134,6 +134,9 @@ end
 vim.opt.winbar = "%!v:lua.MyCustomStatusline()"
 vim.opt.laststatus = 0
 
+-- Ignore whitespace changes in diff views
+vim.opt.diffopt:append("iwhite")
+
 -- vim.api.nvim_set_hl(0, 'DiffAdd', { bg = '#34462F' })
 -- vim.api.nvim_set_hl(0, 'DiffDelete', { bg = '#462F2F' })
 -- vim.api.nvim_set_hl(0, 'DiffChange', { bg = '#2F4146' })

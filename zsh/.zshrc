@@ -104,8 +104,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-clear
-
 
 # bun completions
 [ -s "/Users/eric/.bun/_bun" ] && source "/Users/eric/.bun/_bun"
@@ -120,6 +118,14 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export DOCKER_HOST=unix://${HOME}/.colima/default/docker.sock
 
-grm() {
-  git restore --source=main "$1"
+wtfev() {
+  # Fail instantly if no branch name ($1) is provided
+  if [ -z "$1" ]; then
+    echo "❌ Error: You must provide a branch name! Usage: wtfev <branch-name>"
+    return 1
+  fi
+
+    cd ~/Code/scribe-fe-v2 && git checkout main && git pull && wt switch -c "$1"
 }
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

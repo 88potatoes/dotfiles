@@ -238,8 +238,8 @@ require("lazy").setup({
         },
         file_panel = {
           win_config = {
-            position = "bottom",
-            height = 16,
+            position = "left",
+            width = 35,
           },
         },
         keymaps = {
@@ -361,6 +361,12 @@ require("lazy").setup({
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'tokyonight-night'
+
+      -- Softer diff backgrounds for diffview
+      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#1a2f1a" })
+      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2f1a1a" })
+      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1a1a2f" })
+      vim.api.nvim_set_hl(0, "DiffText", { bg = "#2a2a4f" })
     end
   },
   {

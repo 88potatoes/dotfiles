@@ -18,19 +18,9 @@ end, { desc = 'Paste selection to previous zellij pane' })
 -- Grep
 vim.keymap.set('n', '<leader>gW', function()
   Snacks.picker.lsp_references({
-    filter = {
-      exclude = {
-        "**/__tests__/**",
-        "**/*.test.*",
-        "**/*.spec.*",
-        "**/coverage/**",
-        "**/tests/**",
-        "**/test_*.py",
-        "**/*_test.py",
-      }
-    }
+    pattern = "!test",
   })
-end, { noremap = true, silent = true, desc = 'LSP: Find references (exclude tests)' })
+end, { noremap = true, silent = true, desc = 'LSP: Find references (exclude tests by default)' })
 
 -- Delete to start of word
 vim.keymap.set('i', '<A-BS>', '<C-w>', { desc = 'Delete word backward' })
@@ -83,6 +73,9 @@ vim.keymap.set("n", "<leader>fj", function()
     hidden = true
   })
 end, { desc = "Grep" })
+vim.keymap.set("n", "<leader>g.", function()
+  Snacks.picker.grep({ cwd = vim.fn.expand("%:p:h") })
+end, { desc = "Grep in current file dir" })
 vim.keymap.set("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
 
@@ -138,7 +131,7 @@ vim.keymap.set("n", "<leader>dc", function()
 end, { desc = "[D]iff Hide ([C]ollapse)" })
 vim.keymap.set("n", "<leader>dx", "<cmd>DiffviewClose<cr>", { desc = "[D]iff Close" })
 vim.keymap.set("n", "<leader>dm", function()
-  local diff_args = { "main...HEAD" }
+  local diff_args = { "main...HEAD", "--imply-local" }
   local ok, lib = pcall(require, "diffview.lib")
 
   if ok then
@@ -175,7 +168,7 @@ vim.keymap.set("n", "<leader>dm", function()
     end
   end
 
-  vim.cmd("DiffviewOpen main...HEAD")
+  vim.cmd("DiffviewOpen main...HEAD --imply-local")
 end, { desc = "Diff against merge-base of main" })
 vim.keymap.set("n", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git [Y]ank/Browse Link" })
 vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git Browse (Selection)" })

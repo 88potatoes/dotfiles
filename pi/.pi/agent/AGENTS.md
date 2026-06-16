@@ -22,6 +22,8 @@
 - `grm` is available from zshrc as `git restore --source=main "$1"`. When asked to `grm` a file, restore that file to how it is on `main` (not `git rm`).
 - When asked to "commit", interpret it as "stage all current repo changes, then commit" unless explicitly told otherwise.
 - Before pushing code changes, run the relevant smoke test or validation command unless explicitly told to skip it.
+- Never rebase. Always merge when bringing in changes from another branch.
+- **Never use `--no-verify`** when committing. Always let pre-commit hooks run.
 
 ## Pi Extensions
 

@@ -409,6 +409,6 @@ show_startup_tips false
 // 
 // show_release_notes false
 
-load_plugins {
-    "file:~/.config/zellij/plugins/zrpc.wasm"
-}
+// load_plugins {
+//     "file:~/.config/zellij/plugins/zrpc.wasm"
+// }

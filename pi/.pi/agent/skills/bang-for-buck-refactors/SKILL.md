@@ -30,9 +30,11 @@ Use when user asks for:
 3. Suggest only high-ROI splits. Avoid architecture astronaut.
 4. Prefer interfaces for hard-to-test boundaries.
 5. Use dependency injection only where it improves tests or reduces coupling.
-6. Keep public APIs stable unless user asks for a rename.
-7. Add docstrings to new exported types, interfaces, classes, and functions.
-8. Add focused unit tests using fake implementations where useful.
+6. Reduce parameter passing when it improves abstraction: prefer hooks/components that read nearby context or own their side effects instead of threading callback/ID props through parents.
+7. Prefer grouped return objects or small child components over hooks that expose many loose values.
+8. Keep public APIs stable unless user asks for a rename.
+9. Add docstrings to new exported types, interfaces, classes, and functions.
+10. Add focused unit tests using fake implementations where useful.
 
 ## Good Refactor Targets
 
