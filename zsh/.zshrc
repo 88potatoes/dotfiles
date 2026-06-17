@@ -69,6 +69,8 @@ alias zel="zellij -l welcome"
 alias v="nvim"
 alias grm="git restore --source=main"
 
+alias secret="openssl rand -base64 32"
+
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
 export PATH="$HOME/dotfiles/scripts:$PATH"

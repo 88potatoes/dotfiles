@@ -200,7 +200,6 @@ function M.add()
   local start_line, end_line
 
   if mode == "v" or mode == "V" or mode == "\22" then
-    -- Exit visual mode to populate marks
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "nx", false)
     start_line = vim.fn.line("'<")
     end_line = vim.fn.line("'>")
@@ -211,16 +210,64 @@ function M.add()
 
   local file = vim.fn.expand("%:.")
   local lines_arg = start_line == end_line and tostring(start_line) or (start_line .. ":" .. end_line)
+  local lines_label = start_line == end_line and ("L" .. start_line) or ("L" .. start_line .. "-" .. end_line)
 
-  vim.ui.input({ prompt = "Comment: " }, function(message)
-    if not message or message == "" then
+  -- Create floating buffer at bottom of screen
+  local width = vim.o.columns - 4
+  local height = 5
+  local buf = vim.api.nvim_create_buf(false, true)
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    row = vim.o.lines - height - 3,
+    col = 2,
+    width = width,
+    height = height,
+    style = "minimal",
+    border = "rounded",
+    title = " 💬 Comment on " .. vim.fn.fnamemodify(file, ":t") .. ":" .. lines_label .. " ",
+    title_pos = "left",
+  })
+
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].filetype = "markdown"
+  vim.wo[win].wrap = true
+  vim.wo[win].winhl = "Normal:AgentCommentText,FloatBorder:AgentCommentBorder,FloatTitle:AgentCommentIcon"
+
+  -- Start in insert mode
+  vim.cmd("startinsert")
+
+  -- Submit with <CR> in normal mode, <C-CR> or <C-s> in insert mode
+  local function submit()
+    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local message = vim.trim(table.concat(lines, "\n"))
+    vim.api.nvim_win_close(win, true)
+    vim.api.nvim_buf_delete(buf, { force = true })
+
+    if message == "" then
+      vim.notify("Comment cancelled (empty)", vim.log.levels.WARN)
       return
     end
+
     local cmd = string.format("agent-comments add %s %s %s", vim.fn.shellescape(file), lines_arg, vim.fn.shellescape(message))
     local result = vim.fn.system(cmd)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
-  end)
+  end
+
+  local function cancel()
+    vim.api.nvim_win_close(win, true)
+    vim.api.nvim_buf_delete(buf, { force = true })
+    vim.notify("Comment cancelled", vim.log.levels.INFO)
+  end
+
+  local opts = { buffer = buf, silent = true }
+  -- Submit
+  vim.keymap.set("n", "<CR>", submit, opts)
+  vim.keymap.set("i", "<C-s>", submit, opts)
+  vim.keymap.set("n", "<C-s>", submit, opts)
+  -- Cancel
+  vim.keymap.set("n", "q", cancel, opts)
+  vim.keymap.set("n", "<Esc>", cancel, opts)
 end
 
 -- Pick a comment on the current file to resolve

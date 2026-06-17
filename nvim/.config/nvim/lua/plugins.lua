@@ -283,7 +283,7 @@ require("lazy").setup({
     "supermaven-inc/supermaven-nvim",
     opts = {
       keymaps = {
-        accept_suggestion = "<D-d>",
+        accept_suggestion = "<D-z>",
       }
     }
   },

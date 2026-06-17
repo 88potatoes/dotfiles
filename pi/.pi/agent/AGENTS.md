@@ -19,7 +19,6 @@
 
 ## Git
 
-- `grm` is available from zshrc as `git restore --source=main "$1"`. When asked to `grm` a file, restore that file to how it is on `main` (not `git rm`).
 - When asked to "commit", interpret it as "stage all current repo changes, then commit" unless explicitly told otherwise.
 - Before pushing code changes, run the relevant smoke test or validation command unless explicitly told to skip it.
 - Never rebase. Always merge when bringing in changes from another branch.
@@ -30,6 +29,36 @@
 - `~/.pi` is symlinked (via stow) to `~/dotfiles/pi/.pi`
 - Write pi extensions to `~/dotfiles/pi/.pi/agent/extensions/`
 - Do NOT write directly to `~/.pi/agent/extensions/`
+
+## Agent Comments
+
+`agent-comments` is a per-repo inline comment system stored in `.idea/agent-comments.json`. Use it to leave review notes, TODOs, or feedback on specific lines of code.
+
+### CLI Usage
+
+```bash
+agent-comments add <file> <lines> <message>   # lines: 10 or 10:20
+agent-comments get [resolved|unresolved]       # list comments (JSON when piped)
+agent-comments get <file>                      # comments for a specific file
+agent-comments resolve <comment_id>            # mark as resolved
+agent-comments unresolve <comment_id>          # reopen
+agent-comments delete <comment_id>             # remove
+```
+
+Short 8-char ID prefixes work for `comment_id`.
+
+### When to use
+
+- **Reviewing code:** leave comments on specific lines with `agent-comments add` instead of just describing issues in chat.
+- **Addressing comments:** when Eric says "address comments" or "fix comments", run `agent-comments get unresolved` to see open comments, fix the code, then `agent-comments resolve <id>` each one.
+- **Checking for comments:** before finishing a task, run `agent-comments get unresolved` to see if there are outstanding comments to address.
+
+### Workflow for addressing comments
+
+1. `agent-comments get unresolved` — read all open comments
+2. For each comment: fix the code at the referenced file/lines
+3. `agent-comments resolve <id>` — mark resolved after fixing
+4. Repeat until `agent-comments get unresolved` returns empty
 
 ## TypeScript / JavaScript
 
