@@ -11,14 +11,6 @@ const service = new CommentService({
   commentsRepo: CommentRepo.instance
 });
 
-// Usage:
-//   agent-comments add <file> <lines> <message>
-//   agent-comments add <file> -l <lines> -m <message>
-//   agent-comments delete <comment_id>
-//   agent-comments resolve <comment_id>
-//   agent-comments unresolve <comment_id>
-//   agent-comments get [-f <file>] [-s <resolved|unresolved|active>]
-
 cli.command("add <file> <lines> <message>", "Add a comment").action(action(async (file, lines, message) => {
   const lineRange = parseLineInput(lines);
 
