@@ -12,12 +12,8 @@ export class CommentService {
     this.commentsRepo = commentsRepo
   }
 
-  async getAllCommentsForFile(file: string): Promise<CommentEntity[]> {
-    return this.commentsRepo.getAllComments()
-  }
-
-  async getAllComments(): Promise<CommentEntity[]> {
-    return this.commentsRepo.getAllComments()
+  async getAllComments(filter?: { file?: string; status?: CommentStatus }): Promise<CommentEntity[]> {
+    return this.commentsRepo.queryComments(filter ?? {})
   }
 
   async addComment(comment: OptionalField<CreateCommentEntityInput, "status">): Promise<CommentEntity> {

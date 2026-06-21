@@ -1,5 +1,5 @@
 import { db } from "../lib/db.ts";
-import { CommentEntity } from "./comments.domain.ts";
+import { CommentEntity, CommentStatus } from "./comments.domain.ts";
 import { CommentRecord, CreateCommentInput, UpdateCommentInput } from "./comments.table.ts";
 
 
@@ -22,6 +22,16 @@ export class CommentRepo {
 
   async getAllComments(): Promise<CommentEntity[]> {
     return this.db.data.comments.map((comment) => this.toDomain(comment));
+  }
+
+  async queryComments(filter: { file?: string; status?: CommentStatus }): Promise<CommentEntity[]> {
+    return this.db.data.comments
+      .filter((comment) => {
+        if (filter.file !== undefined && comment.file !== filter.file) return false;
+        if (filter.status !== undefined && comment.status !== filter.status) return false;
+        return true;
+      })
+      .map((comment) => this.toDomain(comment));
   }
 
   async createComment(comment: CreateCommentInput): Promise<CommentEntity> {
