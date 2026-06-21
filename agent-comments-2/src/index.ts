@@ -58,4 +58,12 @@ cli.command("get", "Get comments").option("-f, --file <file>", "Filter by file p
   service.getAllComments(filter).then(comments => console.log(comments.map((comment) => `${comment.id}|${comment.file}:${comment.startLine}-${comment.endLine}|${comment.message}|${comment.status}`).join('\n')));
 });
 
+cli.help()
+cli.version('1.0.0')
+
+cli.addEventListener('command:*', () => {
+  console.error(`Unknown command: ${cli.args.join(' ')}`)
+  process.exit(1)
+})
+
 cli.parse()
