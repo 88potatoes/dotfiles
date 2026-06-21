@@ -1,3 +1,4 @@
+import { CommentEntity, CommentStatus, CreateCommentEntityInput } from "./comments.domain.ts";
 import { CommentRepo } from "./repo.ts"
 
 export class CommentService {
@@ -11,25 +12,20 @@ export class CommentService {
     this.commentsRepo = commentsRepo
   }
 
-  getAllComments(): Comment[] {
-    this.commentsRepo.getAllComments()
+  async getAllComments(): Promise<CommentEntity[]> {
+    return this.commentsRepo.getAllComments()
   }
-  addComment(comment: Comment): void {
-    this.db.comments.push(comment)
+
+  async addComment(comment: CreateCommentEntityInput): Promise<CommentEntity> {
+    return this.commentsRepo.createComment(comment)
   }
-  deleteComment(id: string): void {
-    this.db.comments = this.db.comments.filter((c) => c.id !== id)
+  async deleteComment(id: string): Promise<void> {
+    this.commentsRepo.deleteComment(id)
   }
-  resolveComment(id: string): void {
-    const comment = this.db.comments.find((c) => c.id === id)
-    if (!comment) return
-    comment.status = "resolved"
-    comment.updatedAt = new Date().toISOString()
+  async resolveComment(id: string): Promise<CommentEntity> {
+    return this.commentsRepo.updateComment({ id, status: CommentStatus.Resolved })
   }
-  unresolveComment(id: string): void {
-    const comment = this.db.comments.find((c) => c.id === id)
-    if (!comment) return
-    comment.status = "active"
-    comment.updatedAt = new Date().toISOString()
+  async unresolveComment(id: string): Promise<CommentEntity> {
+    return this.commentsRepo.updateComment({ id, status: CommentStatus.Active })
   }
 }
