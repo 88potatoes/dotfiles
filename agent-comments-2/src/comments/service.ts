@@ -1,4 +1,4 @@
-import { CommentEntity, CommentStatus, CreateCommentEntityInput } from "./comments.domain.ts";
+import { CommentEntity, CommentStatus, CreateCommentEntityInput, OptionalField } from "./comments.domain.ts";
 import { CommentRepo } from "./repo.ts"
 
 export class CommentService {
@@ -12,12 +12,16 @@ export class CommentService {
     this.commentsRepo = commentsRepo
   }
 
+  async getAllCommentsForFile(file: string): Promise<CommentEntity[]> {
+    return this.commentsRepo.getAllComments()
+  }
+
   async getAllComments(): Promise<CommentEntity[]> {
     return this.commentsRepo.getAllComments()
   }
 
-  async addComment(comment: CreateCommentEntityInput): Promise<CommentEntity> {
-    return this.commentsRepo.createComment(comment)
+  async addComment(comment: OptionalField<CreateCommentEntityInput, "status">): Promise<CommentEntity> {
+    return this.commentsRepo.createComment({ status: CommentStatus.Active, ...comment })
   }
   async deleteComment(id: string): Promise<void> {
     this.commentsRepo.deleteComment(id)
