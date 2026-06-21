@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
 import { execFileSync } from 'child_process'
 import { mkdtempSync, rmSync, mkdirSync } from 'fs'
 import { join } from 'path'
@@ -8,17 +8,18 @@ const projectRoot = '/Users/ericlang/dotfiles/agent-comments-2'
 const TSX = join(projectRoot, 'node_modules', '.bin', 'tsx')
 const CLI = join(projectRoot, 'src/index.ts')
 
+
 let tmpDir: string
 let repoDir: string
 
-beforeAll(() => {
+beforeEach(() => {
   tmpDir = mkdtempSync('/tmp/ac-integration-')
   repoDir = join(tmpDir, 'test-repo')
   mkdirSync(repoDir, { recursive: true })
   execFileSync('git', ['init'], { cwd: repoDir, stdio: 'pipe' })
 })
 
-afterAll(() => {
+afterEach(() => {
   rmSync(tmpDir, { recursive: true, force: true })
 })
 
