@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# resolve the real directory regardless of CWD
+target="$(readlink "$0" || echo "$0")"
+case "$target" in
+  /*) script="$target" ;;
+  *)  script="$(cd -P "$(dirname "$0")" && pwd -P)/$target" ;;
+esac
+dir="$(cd -P "$(dirname "$script")" && pwd -P)"
+exec "$dir/../../node_modules/.bin/tsx" "$dir/../../src/index.ts" "$@"

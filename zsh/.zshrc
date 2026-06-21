@@ -11,7 +11,7 @@ if [ -f ~/.env_secrets ]; then
 fi
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# export ZSH="$HOME/.oh-my-zsh"
 
 # --- VERSION MANAGERS START ---
 #
@@ -25,14 +25,14 @@ export ZSH="$HOME/.oh-my-zsh"
 # eval "$(pyenv init - zsh)"
 
 # CHRUBY (Ruby Version Manager)
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 
 # --- VERSION MANAGERS END ---
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 zstyle ':omz:lib:nvm' load no
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
 
 # User configuration
 

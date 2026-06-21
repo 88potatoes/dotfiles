@@ -1,5 +1,5 @@
 -- agent-comments.nvim
--- Shows inline agent comments from .idea/agent-comments.json as virtual text boxes
+-- Shows inline agent comments from db.json as virtual text boxes
 
 local M = {}
 
@@ -19,16 +19,17 @@ local function get_repo_root()
   return root
 end
 
-local function load_comments()
-  local root = get_repo_root()
-  local path = root .. "/.idea/agent-comments.json"
-  local f = io.open(path, "r")
-  if not f then
+local function load_comments(show_all)
+  local cmd = "agent-comments get --view json"
+  if show_all then
+    cmd = cmd .. " -s all"
+  end
+  local result = vim.fn.system(cmd)
+  if vim.v.shell_error ~= 0 then
+    vim.notify("agent-comments: " .. vim.trim(result), vim.log.levels.WARN)
     return {}
   end
-  local content = f:read("*a")
-  f:close()
-  local ok, data = pcall(vim.json.decode, content)
+  local ok, data = pcall(vim.json.decode, result)
   if not ok or not data or not data.comments then
     return {}
   end
@@ -49,7 +50,7 @@ local function get_file_comments(bufnr)
     rel_path = buf_path:sub(#root + 2)
   end
 
-  local all = load_comments()
+  local all = load_comments(M.show_resolved)
   local result = {}
   for _, c in ipairs(all) do
     if c.file == rel_path then
@@ -75,6 +76,44 @@ local function setup_highlights()
   -- Line highlight for commented lines
   vim.api.nvim_set_hl(0, "AgentCommentLine", { bg = "#141d2b" })
   vim.api.nvim_set_hl(0, "AgentCommentLineResolved", { bg = "#142014" })
+end
+
+local function word_wrap(text, max_width)
+  local lines = {}
+  for _, paragraph in ipairs(vim.split(text, "\n")) do
+    if #paragraph == 0 then
+      table.insert(lines, "")
+    else
+      while #paragraph > max_width do
+        -- Find a space to break at within max_width
+        local segment = paragraph:sub(1, max_width)
+        local space_idx = segment:match("^.+"):find(" +$")
+        -- Actually just find last space in the segment
+        local last_space = nil
+        for i = #segment, 1, -1 do
+          if segment:sub(i, i) == " " then
+            last_space = i
+            break
+          end
+        end
+        if last_space then
+          table.insert(lines, segment:sub(1, last_space - 1))
+          paragraph = paragraph:sub(last_space + 1):match("^%s*(.*)") or ""
+        else
+          -- No space found, hard break at max_width
+          table.insert(lines, segment)
+          paragraph = paragraph:sub(max_width + 1)
+        end
+      end
+      if #paragraph > 0 then
+        local trimmed = paragraph:match("^%s*(.*)") or paragraph
+        if #trimmed > 0 then
+          table.insert(lines, trimmed)
+        end
+      end
+    end
+  end
+  return lines
 end
 
 -- ── Rendering ──────────────────────────────────────────────────────────
@@ -105,12 +144,13 @@ local function render_comment(bufnr, comment)
   end
 
   -- Build box lines
-  local msg_lines = vim.split(comment.message, "\n")
+  local raw_msg_lines = vim.split(comment.message, "\n")
   local short_id = comment.id:sub(1, 8)
-  local max_width = 0
-  for _, ml in ipairs(msg_lines) do
+  local max_width = 60 -- cap box width for wrapping
+  for _, ml in ipairs(raw_msg_lines) do
     if #ml > max_width then
-      max_width = #ml
+      max_width = 60
+      break
     end
   end
   local header = icon .. " " .. short_id
@@ -118,6 +158,15 @@ local function render_comment(bufnr, comment)
     max_width = #header
   end
   max_width = math.max(max_width, 30)
+
+  -- Wrap long messages
+  local msg_lines = {}
+  for _, ml in ipairs(raw_msg_lines) do
+    local wrapped = word_wrap(ml, max_width)
+    for _, wl in ipairs(wrapped) do
+      table.insert(msg_lines, wl)
+    end
+  end
 
   local pad = "  " -- left padding to indent the box
 
@@ -289,7 +338,8 @@ function M.resolve_pick()
 
   if #under_cursor == 1 then
     local c = under_cursor[1]
-    local result = vim.fn.system("agent-comments resolve " .. c.id)
+    local cid = c.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
     return
@@ -311,7 +361,8 @@ function M.resolve_pick()
     format_item = function(item) return item.label end,
   }, function(choice)
     if not choice then return end
-    local result = vim.fn.system("agent-comments resolve " .. choice.id)
+    local cid = choice.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
   end)
@@ -342,7 +393,8 @@ function M.delete_pick()
     format_item = function(item) return item.label end,
   }, function(choice)
     if not choice then return end
-    local result = vim.fn.system("agent-comments delete " .. choice.id)
+    local cid = choice.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments delete " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
   end)

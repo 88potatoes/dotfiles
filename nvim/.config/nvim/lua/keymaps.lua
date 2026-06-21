@@ -1,7 +1,6 @@
 -- Save file
 vim.keymap.set({ 'n', 'i' }, '<D-s>', '<cmd>w<cr><Esc>', { desc = 'Save file' })
 
--- Formatting
 vim.keymap.set({ 'n', 'i' }, '<D-o>', function()
   require('conform').format({ async = false, lsp_fallback = true, timeout_ms = 3000 })
 end, { desc = 'Format buffer (conform)' })
