@@ -2,7 +2,7 @@
 vim.keymap.set({ 'n', 'i' }, '<D-s>', '<cmd>w<cr><Esc>', { desc = 'Save file' })
 
 -- Formatting
-vim.keymap.set({ 'n', 'i' }, '<leader>fo', vim.lsp.buf.format, { desc = 'LSP: Format buffer' })
+vim.keymap.set({ 'n', 'i' }, '<D-o>', vim.lsp.buf.format, { desc = 'LSP: Format buffer' })
 
 -- Code Action
 vim.keymap.set({ 'n', 'v' }, '<D-.>', vim.lsp.buf.code_action, { desc = 'LSP: Code action' })
