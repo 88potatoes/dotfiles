@@ -84,23 +84,4 @@ cli.addEventListener('command:*', () => {
   process.exit(1)
 })
 
-export function run(args: string[] = process.argv.slice(2)) {
-  try {
-    cli.parse(args.length > 0 ? ['node', 'agent-comments', ...args] : undefined)
-  } catch (e) {
-    if ((e as any)?.name === 'CACError') {
-      console.error(`
-  ✖ ${(e as Error).message}
-`)
-      if (cli.matchedCommand) cli.matchedCommand.outputHelp()
-      process.exit(1)
-    }
-    throw e
-  }
-}
-
-// Auto-run when executed directly
-const isMain = process.argv[1]?.endsWith('src/index.ts') || process.argv[1]?.endsWith('agent-comments')
-if (isMain) {
-  run()
-}
+cli.parse()

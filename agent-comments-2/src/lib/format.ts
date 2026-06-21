@@ -27,9 +27,11 @@ export function wordWrap(text: string, maxWidth: number): string[] {
 }
 
 export function formatDefault(comments: CommentEntity[]): string {
-  return comments
+  const header = 'ID|File:Line|Message|Status'
+  const body = comments
     .map((c) => `${c.id}|${c.file}:${c.startLine}-${c.endLine}|${c.message}|${c.status}`)
     .join('\n')
+  return body.length > 0 ? `${header}\n${body}` : ''
 }
 
 export function formatJson(comments: CommentEntity[]): string {
@@ -47,9 +49,10 @@ export function formatTable(comments: CommentEntity[], messageWidth = 80): strin
     const fileLine = `${c.file}:${linesLabel}`
     const header = `${icon} ${shortId}  ${fileLine}`
     const lines: string[] = [header]
+    const continuationIndent = `${icon} ${shortId}  `.length
     const wrapped = wordWrap(c.message, messageWidth)
     for (const wl of wrapped) {
-      lines.push(`  ${wl}`)
+      lines.push(`${' '.repeat(continuationIndent)}${wl}`)
     }
     lines.push('')
     blocks.push(lines.join('\n'))
