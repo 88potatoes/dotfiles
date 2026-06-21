@@ -21,7 +21,6 @@ cli.command("add <file> <lines> <message>", "Add a comment").action(action(async
     const comment = await service.addComment({ file, startLine: lineRange.startLine, endLine: lineRange.endLine, message })
     console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.startLine}-${lineRange.endLine}`);
   }
-
 }));
 
 cli.command("delete <comment_id>", "Delete a comment").action(action(async (commentId) => {
@@ -39,16 +38,30 @@ cli.command("unresolve <comment_id>", "Unresolve a comment").action(action(async
   console.log(`Unresolved ${commentId.slice(0, 8)}`);
 }));
 
-cli.command("get", "Get comments").option("-f, --file <file>", "Filter by file path").option("-s, --status <status>", "Filter by status (resolved|active)").action(action(async (options) => {
-  const filter: { file?: string; status?: CommentStatus } = {};
-  if (options.file) filter.file = options.file;
-  if (options.status === "resolved") filter.status = CommentStatus.Resolved;
-  else if (options.status === "active") filter.status = CommentStatus.Active;
-  else if (options.status) throw new Error(`Invalid status: "${options.status}". Use resolved, unresolved, or active.`);
+import { formatDefault, formatJson, formatTable, wordWrap } from './lib/format.ts';
+export { formatDefault, formatJson, formatTable, wordWrap };
+cli.command("get", "Get comments")
+  .option("-f, --file <file>", "Filter by file path")
+  .option("-s, --status <status>", "Filter by status: resolved, active, or all (default: active)")
+  .option("--view <view>", "Output format: default, table, or json", { default: "default" })
+  .action(action(async (options) => {
+    const filter: { file?: string; status?: CommentStatus } = { status: CommentStatus.Active };
+    if (options.file) filter.file = options.file;
+    if (options.status === "resolved") filter.status = CommentStatus.Resolved;
+    else if (options.status === "active") filter.status = CommentStatus.Active;
+    else if (options.status === "all") filter.status = undefined as any;
+    else if (options.status) throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
 
-  const comments = await service.getAllComments(filter)
-  console.log(comments.map((comment) => `${comment.id}|${comment.file}:${comment.startLine}-${comment.endLine}|${comment.message}|${comment.status}`).join('\n'))
-}));
+    const comments = await service.getAllComments(filter)
+
+    if (options.view === "json") {
+      console.log(formatJson(comments))
+    } else if (options.view === "table") {
+      console.log(formatTable(comments))
+    } else {
+      console.log(formatDefault(comments))
+    }
+  }));
 
 cli.help()
 cli.version('1.0.0')
@@ -71,15 +84,23 @@ cli.addEventListener('command:*', () => {
   process.exit(1)
 })
 
-try {
-  cli.parse()
-} catch (e) {
-  if ((e as any)?.name === 'CACError') {
-    console.error(`
-  ✖ ${e.message}
+export function run(args: string[] = process.argv.slice(2)) {
+  try {
+    cli.parse(args.length > 0 ? ['node', 'agent-comments', ...args] : undefined)
+  } catch (e) {
+    if ((e as any)?.name === 'CACError') {
+      console.error(`
+  ✖ ${(e as Error).message}
 `)
-    if (cli.matchedCommand) cli.matchedCommand.outputHelp()
-    process.exit(1)
+      if (cli.matchedCommand) cli.matchedCommand.outputHelp()
+      process.exit(1)
+    }
+    throw e
   }
-  throw e
+}
+
+// Auto-run when executed directly
+const isMain = process.argv[1]?.endsWith('src/index.ts') || process.argv[1]?.endsWith('agent-comments')
+if (isMain) {
+  run()
 }
