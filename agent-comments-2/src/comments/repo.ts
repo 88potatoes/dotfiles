@@ -20,6 +20,24 @@ export class CommentRepo {
     return this.toDomain(comment);
   }
 
+  async resolveCommentId(input: string): Promise<string> {
+    const normalized = input.replace(/-/g, '').toLowerCase();
+
+    const matches = this.db.data.comments.filter(c =>
+      c.id.replace(/-/g, '').toLowerCase().startsWith(normalized)
+    );
+
+    if (matches.length === 0) {
+      throw new Error(`No comment found matching id "${input}"`);
+    }
+    if (matches.length > 1) {
+      const ids = matches.map(m => m.id).join(', ');
+      throw new Error(`Ambiguous id "${input}" matches multiple comments: ${ids}`);
+    }
+
+    return matches[0].id;
+  }
+
   async getAllComments(): Promise<CommentEntity[]> {
     return this.db.data.comments.map((comment) => this.toDomain(comment));
   }

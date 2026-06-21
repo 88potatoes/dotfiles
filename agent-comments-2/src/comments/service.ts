@@ -19,13 +19,17 @@ export class CommentService {
   async addComment(comment: OptionalField<CreateCommentEntityInput, "status">): Promise<CommentEntity> {
     return this.commentsRepo.createComment({ status: CommentStatus.Active, ...comment })
   }
+
   async deleteComment(id: string): Promise<void> {
-    this.commentsRepo.deleteComment(id)
+    const fullId = await this.commentsRepo.resolveCommentId(id)
+    this.commentsRepo.deleteComment(fullId)
   }
   async resolveComment(id: string): Promise<CommentEntity> {
-    return this.commentsRepo.updateComment({ id, status: CommentStatus.Resolved })
+    const fullId = await this.commentsRepo.resolveCommentId(id)
+    return this.commentsRepo.updateComment({ id: fullId, status: CommentStatus.Resolved })
   }
   async unresolveComment(id: string): Promise<CommentEntity> {
-    return this.commentsRepo.updateComment({ id, status: CommentStatus.Active })
+    const fullId = await this.commentsRepo.resolveCommentId(id)
+    return this.commentsRepo.updateComment({ id: fullId, status: CommentStatus.Active })
   }
 }
