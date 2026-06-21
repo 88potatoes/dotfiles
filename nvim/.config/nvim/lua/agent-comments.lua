@@ -1,5 +1,5 @@
 -- agent-comments.nvim
--- Shows inline agent comments from .idea/agent-comments.json as virtual text boxes
+-- Shows inline agent comments from db.json as virtual text boxes
 
 local M = {}
 
@@ -21,7 +21,8 @@ end
 
 local function load_comments()
   local root = get_repo_root()
-  local path = root .. "/.idea/agent-comments.json"
+  local name = vim.fn.fnamemodify(root, ":t")
+  local path = vim.fn.expand("~/.local/share/agent-comments/" .. name .. ".json")
   local f = io.open(path, "r")
   if not f then
     return {}
@@ -289,7 +290,8 @@ function M.resolve_pick()
 
   if #under_cursor == 1 then
     local c = under_cursor[1]
-    local result = vim.fn.system("agent-comments resolve " .. c.id)
+    local cid = c.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
     return
@@ -311,7 +313,8 @@ function M.resolve_pick()
     format_item = function(item) return item.label end,
   }, function(choice)
     if not choice then return end
-    local result = vim.fn.system("agent-comments resolve " .. choice.id)
+    local cid = choice.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
   end)
@@ -342,7 +345,8 @@ function M.delete_pick()
     format_item = function(item) return item.label end,
   }, function(choice)
     if not choice then return end
-    local result = vim.fn.system("agent-comments delete " .. choice.id)
+    local cid = choice.id:sub(1, 8)
+    local result = vim.fn.system("agent-comments delete " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
     M.render()
   end)

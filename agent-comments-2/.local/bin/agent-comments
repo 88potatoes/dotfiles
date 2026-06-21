@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# resolve the real directory even when invoked through a symlink
+# resolve the real directory regardless of CWD
 target="$(readlink "$0" || echo "$0")"
-dir="$(cd -P "$(dirname "$target")" && pwd -P)"
+case "$target" in
+  /*) script="$target" ;;
+  *)  script="$(cd -P "$(dirname "$0")" && pwd -P)/$target" ;;
+esac
+dir="$(cd -P "$(dirname "$script")" && pwd -P)"
 exec "$dir/../../node_modules/.bin/tsx" "$dir/../../src/index.ts" "$@"
