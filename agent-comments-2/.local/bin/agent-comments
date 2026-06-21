@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# resolve the real directory even when invoked through a symlink
+target="$(readlink "$0" || echo "$0")"
+dir="$(cd -P "$(dirname "$target")" && pwd -P)"
+exec "$dir/../../node_modules/.bin/tsx" "$dir/../../src/index.ts" "$@"

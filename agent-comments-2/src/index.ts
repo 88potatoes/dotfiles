@@ -57,3 +57,5 @@ cli.command("get", "Get comments").option("-f, --file <file>", "Filter by file p
 
   service.getAllComments(filter).then(comments => console.log(comments.map((comment) => `${comment.id}|${comment.file}:${comment.startLine}-${comment.endLine}|${comment.message}|${comment.status}`).join('\n')));
 });
+
+cli.parse()

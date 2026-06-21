@@ -19,6 +19,10 @@
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
     "@types/node": "^26.0.0",
-    "eslint": "^10.5.0"
+    "eslint": "^10.5.0",
+    "eslint-plugin-n": "^18.1.0",
+    "eslint-plugin-promise": "^7.3.0",
+    "eslint-plugin-security": "^4.0.1",
+    "tsx": "^4.22.4"
   }
 }
