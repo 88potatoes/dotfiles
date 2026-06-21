@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { wordWrap, formatDefault, formatJson, formatTable } from '../src/lib/format.ts'
-import { CommentStatus } from '../src/comments/comments.domain.ts'
+import { wordWrap, formatDefault, formatJson, formatTable } from './format.ts'
+import { CommentStatus } from '../comments/comments.domain.ts'
 
 const active = CommentStatus.Active
 const resolved = CommentStatus.Resolved
