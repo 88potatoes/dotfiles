@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { wordWrap, formatDefault, formatJson, formatTable } from './format.ts'
+import { wordWrap, formatDefault, formatJson, formatGraph } from './format.ts'
 import { CommentStatus } from '../comments/comments.domain.ts'
 
 const active = CommentStatus.Active
@@ -41,12 +41,18 @@ describe('wordWrap', () => {
 // ── formatDefault ──────────────────────────────────────────────────────
 
 describe('formatDefault', () => {
-  it('formats comments as pipe-delimited lines', () => {
+  it('formats comments as tab-delimited lines', () => {
     const output = formatDefault(sampleComments)
     const lines = output.split('\n')
-    expect(lines).toHaveLength(3)
-    expect(lines[0]).toBe('550e8400-e29b-41d4-a716-446655440000|src/foo.ts:1-5|fix this|active')
-    expect(lines[1]).toBe('660e8400-e29b-41d4-a716-446655440001|src/bar.ts:10-10|done|resolved')
+    expect(lines).toHaveLength(4)
+    expect(lines[1]).toContain('550e8400-e29b-41d4-a716-446655440000\tsrc/foo.ts:1-5\tfix this\tactive')
+    expect(lines[2]).toContain('660e8400-e29b-41d4-a716-446655440001\tsrc/bar.ts:10-10\tdone\tresolved')
+  })
+
+  it('includes a header line', () => {
+    const output = formatDefault(sampleComments)
+    const lines = output.split('\n')
+    expect(lines[0]).toBe('ID\tFile:Line\tMessage\tStatus')
   })
 
   it('returns empty string for no comments', () => {
@@ -78,23 +84,23 @@ describe('formatJson', () => {
   })
 })
 
-// ── formatTable ────────────────────────────────────────────────────────
+// ── formatGraph ────────────────────────────────────────────────────────
 
-describe('formatTable', () => {
+describe('formatGraph', () => {
   it('shows icon and short id', () => {
-    const output = formatTable(sampleComments, 80)
+    const output = formatGraph(sampleComments, 80)
     expect(output).toContain('● 550e8400')
     expect(output).toContain('✓ 660e8400')
   })
 
   it('shows file:lines on header line', () => {
-    const output = formatTable(sampleComments, 80)
+    const output = formatGraph(sampleComments, 80)
     expect(output).toContain('● 550e8400  src/foo.ts:1-5')
     expect(output).toContain('✓ 660e8400  src/bar.ts:10')
   })
 
   it('wraps long messages', () => {
-    const output = formatTable(sampleComments, 80)
+    const output = formatGraph(sampleComments, 80)
     const longSection = output.split('770e8400')[1]
     expect(longSection).toBeTruthy()
     const lines = longSection.trim().split('\n')
@@ -102,12 +108,32 @@ describe('formatTable', () => {
   })
 
   it('separates comments with blank line', () => {
-    const output = formatTable(sampleComments, 80)
+    const output = formatGraph(sampleComments, 80)
     const sections = output.split('\n\n')
     expect(sections).toHaveLength(3)
   })
 
   it('handles empty list', () => {
-    expect(formatTable([], 80)).toBe('')
+    expect(formatGraph([], 80)).toBe('')
+  })
+
+  it('wraps continuation lines indented to file:line column', () => {
+    const output = formatGraph(sampleComments, 80)
+    const lines = output.split('\n')
+    const headerLine = lines.find(l => l.includes('770e8400'))!
+    const headerIdx = lines.indexOf(headerLine)
+    const continuation = lines[headerIdx + 1]
+    expect(continuation.startsWith('            ')).toBe(true)
+  })
+
+  it('applies ANSI codes when highlight is true', () => {
+    const output = formatGraph(sampleComments, 80, true)
+    expect(output).toContain('\x1b[')
+    expect(output).toContain('550e8400')
+  })
+
+  it('no ANSI codes without highlight', () => {
+    const output = formatGraph(sampleComments, 80, false)
+    expect(output).not.toContain('\x1b[')
   })
 })

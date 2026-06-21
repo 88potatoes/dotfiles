@@ -1,72 +1,19 @@
-import cac from 'cac';
+import { Command } from 'commander';
 import { CommentService } from './comments/service.ts';
 import { CommentRepo } from './comments/repo.ts';
 import { CommentStatus } from './comments/comments.domain.ts';
 import { LineRangeType, parseLineInput } from './lib/helpers.ts';
+import { formatDefault, formatJson, formatGraph, wordWrap } from './lib/format.ts';
 
+export { formatDefault, formatJson, formatGraph, wordWrap };
 
-const cli = cac('agent-comments');
+const program = new Command();
 
 const service = new CommentService({
   commentsRepo: CommentRepo.instance
 });
 
-cli.command("add <file> <lines> <message>", "Add a comment").action(action(async (file, lines, message) => {
-  const lineRange = parseLineInput(lines);
-
-  if (lineRange.type === LineRangeType.Single) {
-    const comment = await service.addComment({ file, startLine: lineRange.line, endLine: lineRange.line, message })
-    console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.line}`);
-  } else {
-    const comment = await service.addComment({ file, startLine: lineRange.startLine, endLine: lineRange.endLine, message })
-    console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.startLine}-${lineRange.endLine}`);
-  }
-}));
-
-cli.command("delete <comment_id>", "Delete a comment").action(action(async (commentId) => {
-  await service.deleteComment(commentId)
-  console.log(`Deleted ${commentId.slice(0, 8)}`);
-}));
-
-cli.command("resolve <comment_id>", "Resolve a comment").action(action(async (commentId) => {
-  await service.resolveComment(commentId)
-  console.log(`Resolved ${commentId.slice(0, 8)}`);
-}));
-
-cli.command("unresolve <comment_id>", "Unresolve a comment").action(action(async (commentId) => {
-  await service.unresolveComment(commentId)
-  console.log(`Unresolved ${commentId.slice(0, 8)}`);
-}));
-
-import { formatDefault, formatJson, formatTable, wordWrap } from './lib/format.ts';
-export { formatDefault, formatJson, formatTable, wordWrap };
-cli.command("get", "Get comments")
-  .option("-f, --file <file>", "Filter by file path")
-  .option("-s, --status <status>", "Filter by status: resolved, active, or all (default: active)")
-  .option("--view <view>", "Output format: default, table, or json", { default: "default" })
-  .action(action(async (options) => {
-    const filter: { file?: string; status?: CommentStatus } = { status: CommentStatus.Active };
-    if (options.file) filter.file = options.file;
-    if (options.status === "resolved") filter.status = CommentStatus.Resolved;
-    else if (options.status === "active") filter.status = CommentStatus.Active;
-    else if (options.status === "all") filter.status = undefined as any;
-    else if (options.status) throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
-
-    const comments = await service.getAllComments(filter)
-
-    if (options.view === "json") {
-      console.log(formatJson(comments))
-    } else if (options.view === "table") {
-      console.log(formatTable(comments))
-    } else {
-      console.log(formatDefault(comments))
-    }
-  }));
-
-cli.help()
-cli.version('1.0.0')
-
-function action<T extends any[]>(handler: (...args: T) => Promise<void>) {
+function wrap<T extends any[]>(handler: (...args: T) => Promise<void>) {
   return async (...args: T) => {
     try {
       await handler(...args)
@@ -79,9 +26,78 @@ function action<T extends any[]>(handler: (...args: T) => Promise<void>) {
   }
 }
 
-cli.addEventListener('command:*', () => {
-  console.error(`Unknown command: ${cli.args.join(' ')}`)
-  process.exit(1)
-})
+program
+  .name('agent-comments')
+  .version('1.0.0')
+  .description('Inline comment system for code reviews')
 
-cli.parse()
+program
+  .command('add <file> <lines> <message>')
+  .description('Add a comment')
+  .action(wrap(async (file: string, lines: string, message: string) => {
+    const lineRange = parseLineInput(lines);
+
+    if (lineRange.type === LineRangeType.Single) {
+      const comment = await service.addComment({ file, startLine: lineRange.line, endLine: lineRange.line, message })
+      console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.line}`);
+    } else {
+      const comment = await service.addComment({ file, startLine: lineRange.startLine, endLine: lineRange.endLine, message })
+      console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.startLine}-${lineRange.endLine}`);
+    }
+  }))
+
+program
+  .command('delete <commentId>')
+  .description('Delete a comment')
+  .action(wrap(async (commentId: string) => {
+    await service.deleteComment(commentId)
+    console.log(`Deleted ${commentId.slice(0, 8)}`);
+  }))
+
+program
+  .command('resolve <commentIds...>')
+  .description('Resolve one or more comments')
+  .action(wrap(async (commentIds: string[]) => {
+    for (const id of commentIds) {
+      await service.resolveComment(id)
+      console.log(`Resolved ${id.slice(0, 8)}`);
+    }
+  }))
+
+program
+  .command('unresolve <commentIds...>')
+  .description('Unresolve one or more comments')
+  .action(wrap(async (commentIds: string[]) => {
+    for (const id of commentIds) {
+      await service.unresolveComment(id)
+      console.log(`Unresolved ${id.slice(0, 8)}`);
+    }
+  }))
+
+program
+  .command('get')
+  .description('Get comments')
+  .option('-f, --file <file>', 'Filter by file path')
+  .option('-s, --status <status>', 'Filter by status: resolved, active, or all (default: active)')
+  .option('--view <view>', 'Output format: default, graph, or json', 'default')
+  .option('--highlight', 'Enable terminal text highlighting')
+  .action(wrap(async (options) => {
+    const filter: { file?: string; status?: CommentStatus } = { status: CommentStatus.Active };
+    if (options.file) filter.file = options.file;
+    if (options.status === "resolved") filter.status = CommentStatus.Resolved;
+    else if (options.status === "active") filter.status = CommentStatus.Active;
+    else if (options.status === "all") filter.status = undefined as any;
+    else if (options.status) throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
+
+    const comments = await service.getAllComments(filter)
+
+    if (options.view === "json") {
+      console.log(formatJson(comments))
+    } else if (options.view === "graph") {
+      console.log(formatGraph(comments, 80, options.highlight))
+    } else {
+      console.log(formatDefault(comments))
+    }
+  }))
+
+program.parse()

@@ -27,9 +27,9 @@ export function wordWrap(text: string, maxWidth: number): string[] {
 }
 
 export function formatDefault(comments: CommentEntity[]): string {
-  const header = 'ID|File:Line|Message|Status'
+  const header = 'ID\tFile:Line\tMessage\tStatus'
   const body = comments
-    .map((c) => `${c.id}|${c.file}:${c.startLine}-${c.endLine}|${c.message}|${c.status}`)
+    .map((c) => `${c.id}\t${c.file}:${c.startLine}-${c.endLine}\t${c.message}\t${c.status}`)
     .join('\n')
   return body.length > 0 ? `${header}\n${body}` : ''
 }
@@ -38,18 +38,35 @@ export function formatJson(comments: CommentEntity[]): string {
   return JSON.stringify({ comments }, null, 2)
 }
 
-export function formatTable(comments: CommentEntity[], messageWidth = 80): string {
+const ansi = {
+  bold: (s: string) => `\x1b[1m${s}\x1b[22m`,
+  dim: (s: string) => `\x1b[2m${s}\x1b[22m`,
+  yellow: (s: string) => `\x1b[33m${s}\x1b[39m`,
+  green: (s: string) => `\x1b[32m${s}\x1b[39m`,
+}
+
+function formatId(shortId: string, highlight: boolean): string {
+  return highlight ? ansi.dim(shortId) : shortId
+}
+
+function formatIcon(icon: string, status: string, highlight: boolean): string {
+  if (!highlight) return icon
+  const colored = status === 'active' ? ansi.yellow(icon) : ansi.green(icon)
+  return ansi.bold(colored)
+}
+
+export function formatGraph(comments: CommentEntity[], messageWidth = 80, highlight = false): string {
   const blocks: string[] = []
   for (const c of comments) {
-    const icon = c.status === 'active' ? '●' : '✓'
-    const shortId = c.id.slice(0, 8)
+    const icon = formatIcon(c.status === 'active' ? '●' : '✓', c.status, highlight)
+    const shortId = formatId(c.id.slice(0, 8), highlight)
     const linesLabel = c.startLine === c.endLine
       ? `${c.startLine}`
       : `${c.startLine}-${c.endLine}`
     const fileLine = `${c.file}:${linesLabel}`
     const header = `${icon} ${shortId}  ${fileLine}`
     const lines: string[] = [header]
-    const continuationIndent = `${icon} ${shortId}  `.length
+    const continuationIndent = 12
     const wrapped = wordWrap(c.message, messageWidth)
     for (const wl of wrapped) {
       lines.push(`${' '.repeat(continuationIndent)}${wl}`)
