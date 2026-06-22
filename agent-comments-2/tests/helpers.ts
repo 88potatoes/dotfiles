@@ -11,8 +11,8 @@ const TSX = join(projectRoot, 'node_modules', '.bin', 'tsx')
 const CLI = join(projectRoot, 'src/index.ts')
 
 export function createRepoFixture() {
-  const tmpDir = mkdtempSync('/tmp/ac-integration-')
-  const repoDir = join(tmpDir, 'test-repo')
+  const tmpDir = mkdtempSync('/tmp/agent-comment-integration-tests')
+  const repoDir = join(tmpDir, `test-repo-${Math.random().toString(24).slice(2)}`)
 
   mkdirSync(repoDir, { recursive: true })
   execFileSync('git', ['init'], {
@@ -21,13 +21,12 @@ export function createRepoFixture() {
   })
 
   function tsx(...args: string[]) {
-    const result = execFileSync(TSX, [CLI, ...args], {
+    const result: string = execFileSync(TSX, [CLI, ...args], {
       cwd: repoDir,
       encoding: 'utf-8' as const,
       timeout: 10000,
-    })
-    const trimmed = typeof result === 'string' ? result.trim() : result.toString().trim()
-    return trimmed
+    }).trim();
+    return result;
   }
 
   function cleanup() {

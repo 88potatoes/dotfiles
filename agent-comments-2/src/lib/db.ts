@@ -21,7 +21,7 @@ function getRepoRoot(): string {
   }
 }
 
-function getDbPath(): string {
+export function getDbPath(): string {
   const repoRoot = getRepoRoot();
   // Use the repo directory name as the filename (unique enough in practice)
   const name = basename(repoRoot);

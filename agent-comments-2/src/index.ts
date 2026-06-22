@@ -4,6 +4,7 @@ import { CommentRepo } from './comments/repo.ts';
 import { CommentStatus } from './comments/comments.domain.ts';
 import { LineRangeType, parseLineInput } from './lib/helpers.ts';
 import { formatDefault, formatJson, formatGraph, wordWrap } from './lib/format.ts';
+import { getDbPath } from './lib/db.ts';
 
 export { formatDefault, formatJson, formatGraph, wordWrap };
 
@@ -106,6 +107,17 @@ program
     } else {
       console.log(formatDefault(comments))
     }
+  }))
+
+const debug = program
+  .command('debug')
+  .description('Debug commands')
+
+debug
+  .command('pwd')
+  .description('Print the database directory path')
+  .action(wrap(async () => {
+    console.log(getDbPath())
   }))
 
 await program.parseAsync()

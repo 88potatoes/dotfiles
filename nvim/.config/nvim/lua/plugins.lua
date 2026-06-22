@@ -229,7 +229,7 @@ require("lazy").setup({
       end
 
       return {
-        enhanced_diff_hl = true, -- Highly recommended for that GitHub look
+        enhanced_diff_hl = false,
         view = {
           merge_tool = {
             layout = "diff3_horizontal",
