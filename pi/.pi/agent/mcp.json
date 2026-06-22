@@ -5,6 +5,11 @@
     "directTools": false
   },
   "mcpServers": {
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "lifecycle": "lazy",
+      "idleTimeout": 10
+    },
     "figma-api": {
       "command": "npx",
       "args": ["-y", "figma-developer-mcp", "--stdio"],

@@ -30,3 +30,4 @@ pi/.pi/agent/sessions
 /pi/.pi/agent/test-after-changes.json
 /pi/.pi/agent/auth**json
 agent-comments-2/node_modules
+**/tokens.json

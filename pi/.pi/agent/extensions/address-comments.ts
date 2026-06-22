@@ -5,36 +5,10 @@ export default function (pi: ExtensionAPI) {
   pi.registerCommand("address", {
     description: "Fetch unresolved agent-comments and ask the agent to address them",
     handler: async (_args, ctx) => {
-      const projectDir = ctx.cwd;
-
-      // Try to find agent-comments-2 from cwd or common paths
-      const possibleDirs = [
-        projectDir,
-        `${projectDir}/agent-comments-2`,
-        `${projectDir}/..`,
-        `${projectDir}/../agent-comments-2`,
-      ];
-
-      let commentsDir = "";
-      for (const dir of possibleDirs) {
-        try {
-          execSync("test -f src/index.ts", { cwd: dir, stdio: "pipe" });
-          commentsDir = dir;
-          break;
-        } catch {
-          // not this dir
-        }
-      }
-
-      if (!commentsDir) {
-        ctx.ui.notify("Could not find agent-comments-2 project", "error");
-        return;
-      }
-
       let output: string;
       try {
         output = execSync("agent-comments get", {
-          cwd: commentsDir,
+          cwd: ctx.cwd,
           encoding: "utf-8",
           timeout: 10000,
         }).trim();
