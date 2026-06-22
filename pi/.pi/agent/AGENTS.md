@@ -49,7 +49,7 @@ Short 8-char ID prefixes work for `comment_id`.
 
 ### When to use
 
-- **Reviewing code:** leave comments on specific lines with `agent-comments add` instead of just describing issues in chat.
+- **Reviewing code:** leave comments on specific lines with `agent-comments add` instead of just describing issues in chat. When running the `code-review` skill, always use `agent-comments add` for each finding.
 - **Addressing comments:** when Eric says "address comments" or "fix comments", run `agent-comments get unresolved` to see open comments, fix the code, then `agent-comments resolve <id>` each one.
 - **Checking for comments:** before finishing a task, run `agent-comments get unresolved` to see if there are outstanding comments to address.
 
