@@ -107,6 +107,8 @@ def compress(path: Path) -> None:
         "medium",
         "-crf",
         "24",
+        "-pix_fmt",
+        "yuv420p",
         "-c:a",
         "aac",
         "-b:a",

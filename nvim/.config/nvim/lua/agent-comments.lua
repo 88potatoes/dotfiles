@@ -400,6 +400,34 @@ function M.delete_pick()
   end)
 end
 
+-- ── Quickfix ───────────────────────────────────────────────────────────
+
+function M.quickfix()
+  local comments = load_comments(M.show_resolved)
+  if #comments == 0 then
+    vim.notify("No agent comments", vim.log.levels.INFO)
+    return
+  end
+
+  local root = get_repo_root()
+  local items = {}
+  for _, c in ipairs(comments) do
+    local filepath = root .. "/" .. c.file
+    local status = c.status == "resolved" and "✓" or "●"
+    local short_id = c.id:sub(1, 8)
+    table.insert(items, {
+      filename = filepath,
+      lnum = c.startLine,
+      end_lnum = c.endLine,
+      col = 1,
+      text = status .. " [" .. short_id .. "] " .. c.message:gsub("\n", " "),
+    })
+  end
+
+  vim.fn.setqflist({}, " ", { title = "Agent Comments", items = items })
+  vim.cmd("copen")
+end
+
 -- ── Commands ───────────────────────────────────────────────────────────
 
 function M.toggle()
@@ -454,6 +482,7 @@ function M.setup()
   vim.api.nvim_create_user_command("AgentCommentsAdd", M.add, { range = true })
   vim.api.nvim_create_user_command("AgentCommentsResolve", M.resolve_pick, {})
   vim.api.nvim_create_user_command("AgentCommentsDelete", M.delete_pick, {})
+  vim.api.nvim_create_user_command("AgentCommentsQuickfix", M.quickfix, {})
 
   -- Keymaps
   vim.keymap.set("n", "<leader>ac", M.toggle, { desc = "Toggle agent comments" })
@@ -462,6 +491,7 @@ function M.setup()
   vim.keymap.set({ "n", "v" }, "<leader>aa", M.add, { desc = "Add agent comment" })
   vim.keymap.set("n", "<leader>ad", M.delete_pick, { desc = "Delete agent comment" })
   vim.keymap.set("n", "<leader>ax", M.resolve_pick, { desc = "Resolve agent comment" })
+  vim.keymap.set("n", "<leader>aq", M.quickfix, { desc = "Agent comments quickfix" })
 end
 
 return M
