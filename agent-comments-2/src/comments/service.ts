@@ -32,4 +32,12 @@ export class CommentService {
     const fullId = await this.commentsRepo.resolveCommentId(id)
     return this.commentsRepo.updateComment({ id: fullId, status: CommentStatus.Active })
   }
+
+  async clearResolved(): Promise<number> {
+    const resolved = await this.commentsRepo.queryComments({ status: CommentStatus.Resolved })
+    for (const c of resolved) {
+      this.commentsRepo.deleteComment(c.id)
+    }
+    return resolved.length
+  }
 }

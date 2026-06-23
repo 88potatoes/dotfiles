@@ -75,12 +75,19 @@ program
   }))
 
 program
+  .command('clean')
+  .description('Delete all resolved comments (aliases: prune, purge, clear-resolved, cleanup)')
+  .action(wrap(async () => {
+    const count = await service.clearResolved()
+    console.log(`Cleared ${count} resolved comment${count === 1 ? '' : 's'}`)
+  }))
+
+program
   .command('get')
   .description('Get comments')
   .option('-f, --file <file>', 'Filter by file path')
   .option('-s, --status <status>', 'Filter by status: resolved, active, or all (default: active)')
   .option('--view <view>', 'Output format: default, graph, or json', 'default')
-  .option('--highlight', 'Enable terminal text highlighting')
   .action(wrap(async (options) => {
     const filter: { file?: string; status?: CommentStatus } = { status: CommentStatus.Active };
     if (options.file) filter.file = options.file;
@@ -94,10 +101,11 @@ program
     if (options.view === "json") {
       console.log(formatJson(comments))
     } else if (options.view === "graph") {
-      console.log(formatGraph(comments, 80, options.highlight))
+      const highlight = !!(process.stdout.isTTY && !process.env.NO_COLOR)
+      console.log(formatGraph(comments, 80, highlight))
     } else {
       console.log(formatDefault(comments))
     }
   }))
 
-program.parse()
+await program.parseAsync()

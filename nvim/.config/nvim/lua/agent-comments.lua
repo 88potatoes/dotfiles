@@ -178,7 +178,7 @@ local function render_comment(bufnr, comment)
   })
 
   -- Header line
-  local header_pad = string.rep(" ", max_width - #header + 1)
+  local header_pad = string.rep(" ", max_width - #header + 2)
   table.insert(virt_lines, {
     { pad, "Normal" },
     { "│", border_hl },
@@ -314,9 +314,25 @@ function M.add()
   vim.keymap.set("n", "<CR>", submit, opts)
   vim.keymap.set("i", "<C-s>", submit, opts)
   vim.keymap.set("n", "<C-s>", submit, opts)
-  -- Cancel
-  vim.keymap.set("n", "q", cancel, opts)
-  vim.keymap.set("n", "<Esc>", cancel, opts)
+  -- Cancel with draft save: removes q and <Esc> (too easy to fat-finger),
+  -- uses <C-c> and :cq instead. <Esc> just exits to normal mode.
+  local function cancel_with_draft()
+    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    local text = table.concat(lines, "\n")
+    local trimmed = vim.trim(text)
+    if trimmed ~= "" then
+      local draft_dir = vim.fn.expand("~/.local/share/agent-comments/drafts")
+      vim.fn.mkdir(draft_dir, "p")
+      local draft_file = draft_dir .. "/" .. os.date("%Y%m%d-%H%M%S") .. "-" .. file:gsub("/", "_")
+      vim.fn.writefile(vim.split(text, "\n"), draft_file)
+      vim.notify("Comment cancelled — draft saved to " .. draft_file, vim.log.levels.WARN)
+    end
+    vim.api.nvim_win_close(win, true)
+    vim.api.nvim_buf_delete(buf, { force = true })
+  end
+  vim.keymap.set("i", "<C-c>", cancel_with_draft, opts)
+  vim.keymap.set("n", "<C-c>", cancel_with_draft, opts)
+  vim.keymap.set({ "n", "i" }, "<C-q>", cancel_with_draft, opts)
 end
 
 -- Pick a comment on the current file to resolve
