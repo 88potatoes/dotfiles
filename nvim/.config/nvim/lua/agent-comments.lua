@@ -330,8 +330,6 @@ function M.add()
     vim.api.nvim_win_close(win, true)
     vim.api.nvim_buf_delete(buf, { force = true })
   end
-  vim.keymap.set("i", "<C-c>", cancel_with_draft, opts)
-  vim.keymap.set("n", "<C-c>", cancel_with_draft, opts)
   vim.keymap.set({ "n", "i" }, "<C-q>", cancel_with_draft, opts)
 end
 
