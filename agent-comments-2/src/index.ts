@@ -15,7 +15,7 @@ const service = new CommentService({
   commentsRepo: CommentRepo.instance
 });
 
-function wrap<T extends any[]>(handler: (...args: T) => Promise<void>) {
+function wrap<T extends unknown[]>(handler: (...args: T) => Promise<void>) {
   return async (...args: T) => {
     try {
       await handler(...args)
