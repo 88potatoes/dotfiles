@@ -88,7 +88,8 @@ export class CommentRepo {
       throw new Error(`Comment with id ${updateCommentPayload.id} not found`);
     }
 
-    const { id: _, ...updates } = updateCommentPayload;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id: _id, ...updates } = updateCommentPayload;
 
     const now = new Date().toISOString();
     const updatedComment = {
