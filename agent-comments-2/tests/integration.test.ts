@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+
 import { createRepoFixture } from './helpers.ts';
 
 describe('agent-comments integration', () => {
@@ -13,21 +14,10 @@ describe('agent-comments integration', () => {
   })
 
   it('adds a comment and lists it', () => {
-    console.log(fixture.repoDir)
     const addOut = fixture.tsx('add', 'src/main.ts', '10', 'fix the bug')
-    console.log('DEBUG addOut:', JSON.stringify(addOut), typeof addOut)
     expect(addOut).toMatch(/^Added [a-f0-9]{8} at src\/main\.ts:10$/)
 
-    const dbDir = fixture.tsx('debug', 'pwd');
-
-    // Check the db file after add
-    const { execFileSync: exec } = require('child_process')
-    const catOut = exec('cat', [dbDir], { encoding: 'utf-8' })
-    console.log('DEBUG db content:', catOut)
-
     const listOut = fixture.tsx('get')
-    console.log(fixture.repoDir)
-    console.log('DEBUG listOut:', JSON.stringify(listOut), typeof listOut)
     expect(listOut).toContain('fix the bug')
     expect(listOut).toContain('active')
   })

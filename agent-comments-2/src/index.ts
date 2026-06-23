@@ -1,10 +1,11 @@
 import { Command } from 'commander';
-import { CommentService } from './comments/service.ts';
-import { CommentRepo } from './comments/repo.ts';
+
 import { CommentStatus } from './comments/comments.domain.ts';
-import { LineRangeType, parseLineInput } from './lib/helpers.ts';
-import { formatDefault, formatJson, formatGraph, wordWrap } from './lib/format.ts';
+import { CommentRepo } from './comments/repo.ts';
+import { CommentService } from './comments/service.ts';
 import { getDbPath } from './lib/db.ts';
+import { formatDefault, formatJson, formatGraph, wordWrap } from './lib/format.ts';
+import { LineRangeType, parseLineInput } from './lib/helpers.ts';
 
 export { formatDefault, formatJson, formatGraph, wordWrap };
 
@@ -18,9 +19,9 @@ function wrap<T extends any[]>(handler: (...args: T) => Promise<void>) {
   return async (...args: T) => {
     try {
       await handler(...args)
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(`
-  ✖ ${e.message}
+  ✖ ${e instanceof Error ? e.message : String(e)}
 `)
       process.exit(1)
     }
@@ -91,11 +92,11 @@ program
   .option('--view <view>', 'Output format: default, graph, or json', 'default')
   .action(wrap(async (options) => {
     const filter: { file?: string; status?: CommentStatus } = { status: CommentStatus.Active };
-    if (options.file) filter.file = options.file;
-    if (options.status === "resolved") filter.status = CommentStatus.Resolved;
-    else if (options.status === "active") filter.status = CommentStatus.Active;
-    else if (options.status === "all") filter.status = undefined as any;
-    else if (options.status) throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
+    if (options.file) { filter.file = options.file; }
+    if (options.status === "resolved") { filter.status = CommentStatus.Resolved; }
+    else if (options.status === "active") { filter.status = CommentStatus.Active; }
+    else if (options.status === "all") { filter.status = undefined; }
+    else if (options.status) { throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`); }
 
     const comments = await service.getAllComments(filter)
 

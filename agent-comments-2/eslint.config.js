@@ -23,21 +23,18 @@ export default [
   // TypeScript recommended (non-type-aware)
   ...tseslint.configs.recommended.map((conf) => ({
     ...conf,
-    files: ['src/**/*.ts'],
+    files: ['src/**/*.ts', 'tests/**/*.ts'],
   })),
 
   // Promise plugin
   promise.configs['flat/recommended'],
 
-  // Import plugin
-  importPlugin.flatConfigs.recommended,
-  importPlugin.flatConfigs.typescript,
-
-  // Custom rules — applies only to TypeScript files
+  // Custom rules — applies to src and test TypeScript files
   {
     files: ['src/**/*.ts', 'tests/**/*.ts'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
+      'import-x': importPlugin,
     },
     rules: {
       // ── Style / Best Practices ──
@@ -65,7 +62,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
 
-      // ── Imports ──
+      // ── Imports (no resolver-dependent rules to avoid resolver compat issues) ──
       'import-x/order': ['warn', {
         'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',

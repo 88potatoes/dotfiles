@@ -1,10 +1,13 @@
-import { JSONFilePreset } from 'lowdb/node'
-import { Comment } from '../comments/comments.table.ts'
-import { Low } from 'lowdb';
 import { execSync } from 'child_process';
-import { join, basename } from 'path';
-import { homedir } from 'os';
 import { mkdirSync, existsSync } from 'fs';
+import { homedir } from 'os';
+import { join, basename } from 'path';
+
+import { Low } from 'lowdb';
+import { JSONFilePreset } from 'lowdb/node'
+
+import { Comment } from '../comments/comments.table.ts'
+
 
 interface Data {
   comments: Comment[];
