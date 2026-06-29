@@ -4,8 +4,7 @@
   "defaultModel": "deepseek/deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "packages": [
-    "npm:pi-mcp-adapter",
-    "npm:pi-cursor-sdk"
+    "npm:pi-mcp-adapter"
   ],
   "enableInstallTelemetry": false,
   "defaultProjectTrust": "always",
