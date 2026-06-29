@@ -43,6 +43,7 @@ program
   .description("Add a comment")
   .action(
     wrap(async (file: string, lines: string, message: string) => {
+      console.log("FILE:", file);
       const lineRange = parseLineInput(lines);
 
       if (lineRange.type === LineRangeType.Single) {
@@ -80,13 +81,22 @@ program
   );
 
 program
-  .command("resolve <commentIds...>")
-  .description("Resolve one or more comments")
+  .command("resolve")
+  .description("Resolve one or more comments, or all unresolved with --all")
+  .argument("[commentIds...]", "Comment IDs to resolve")
+  .option("-a, --all", "Resolve all unresolved comments")
   .action(
-    wrap(async (commentIds: string[]) => {
-      for (const id of commentIds) {
-        await service.resolveComment(id);
-        console.log(`Resolved ${id.slice(0, 8)}`);
+    wrap(async (commentIds: string[], options: { all?: boolean }) => {
+      if (options.all) {
+        const count = await service.resolveAll();
+        console.log(`Resolved ${count} comment${count === 1 ? "" : "s"}`);
+      } else if (commentIds.length === 0) {
+        throw new Error("Provide comment IDs or use --all");
+      } else {
+        for (const id of commentIds) {
+          await service.resolveComment(id);
+          console.log(`Resolved ${id.slice(0, 8)}`);
+        }
       }
     }),
   );
@@ -103,17 +113,39 @@ program
     }),
   );
 
-program
+const clean = program
   .command("clean")
   .description(
-    "Delete all resolved comments (aliases: prune, purge, clear-resolved, cleanup)",
-  )
+    "Delete comments (default: resolved)",
+  );
+
+clean
+  .command("resolved")
+  .description("Delete all resolved comments")
   .action(
     wrap(async () => {
       const count = await service.clearResolved();
       console.log(`Cleared ${count} resolved comment${count === 1 ? "" : "s"}`);
     }),
   );
+
+clean
+  .command("unresolved")
+  .description("Delete all unresolved (active) comments")
+  .action(
+    wrap(async () => {
+      const count = await service.clearUnresolved();
+      console.log(`Cleared ${count} unresolved comment${count === 1 ? "" : "s"}`);
+    }),
+  );
+
+// Default: `agent-comments clean` does same as `agent-comments clean resolved`
+clean.action(
+  wrap(async () => {
+    const count = await service.clearResolved();
+    console.log(`Cleared ${count} resolved comment${count === 1 ? "" : "s"}`);
+  }),
+);
 
 program
   .command("get")

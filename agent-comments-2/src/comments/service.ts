@@ -34,6 +34,20 @@ export class CommentService {
     const fullId = await this.commentsRepo.resolveCommentId(id);
     await this.commentsRepo.deleteComment(fullId);
   }
+
+  async resolveAll(): Promise<number> {
+    const active = await this.commentsRepo.queryComments({
+      status: CommentStatus.Active,
+    });
+    for (const c of active) {
+      await this.commentsRepo.updateComment({
+        id: c.id,
+        status: CommentStatus.Resolved,
+      });
+    }
+    return active.length;
+  }
+
   async resolveComment(id: string): Promise<CommentEntity> {
     const fullId = await this.commentsRepo.resolveCommentId(id);
     const commentEntity = await this.commentsRepo.updateComment({
@@ -42,6 +56,7 @@ export class CommentService {
     });
     return commentEntity;
   }
+  
   async unresolveComment(id: string): Promise<CommentEntity> {
     const fullId = await this.commentsRepo.resolveCommentId(id);
     const commentEntity = await this.commentsRepo.updateComment({
@@ -59,5 +74,15 @@ export class CommentService {
       await this.commentsRepo.deleteComment(c.id);
     }
     return resolved.length;
+  }
+
+  async clearUnresolved(): Promise<number> {
+    const unresolved = await this.commentsRepo.queryComments({
+      status: CommentStatus.Active,
+    });
+    for (const c of unresolved) {
+      await this.commentsRepo.deleteComment(c.id);
+    }
+    return unresolved.length;
   }
 }

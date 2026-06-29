@@ -1,10 +1,10 @@
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 import { mkdirSync, existsSync } from "fs";
 import { homedir } from "os";
-import { join, basename } from "path";
+import { join } from "path";
 
 import { Low } from "lowdb";
-import { JSONFilePreset } from "lowdb/node";
+import { JSONFilePreset, JSONFileSyncPreset } from "lowdb/node";
 
 import { CommentRecord } from "../comments/comments.table.ts";
 
@@ -25,9 +25,11 @@ function getRepoRoot(): string {
 
 export function getDbPath(): string {
   const repoRoot = getRepoRoot();
-  // Use the repo directory name as the filename (unique enough in practice)
-  const name = basename(repoRoot);
-  const dir = join(homedir(), ".local", "share", "agent-comments");
+  // Use the full path relative to ~, with / replaced by _ for uniqueness
+  const home = homedir();
+  const relative = repoRoot.replace(home, "").replace(/^\//, "");
+  const name = relative.replace(/\//g, "_");
+  const dir = join(home, ".local", "share", "agent-comments");
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
@@ -36,4 +38,4 @@ export function getDbPath(): string {
 
 const defaultData: Data = { comments: [] };
 const dbPath = getDbPath();
-export const db: Low<Data> = await JSONFilePreset<Data>(dbPath, defaultData);
+export const db = JSONFileSyncPreset<Data>(dbPath, defaultData);
