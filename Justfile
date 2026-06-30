@@ -11,7 +11,6 @@ stow-all:
   stow ghostty
   stow btop
   stow karabiner
-  stow yazi
   stow lazygit
   stow local-bin
 

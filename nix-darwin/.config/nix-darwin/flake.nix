@@ -184,6 +184,7 @@
 
           # ── Home Manager (user-level config) ──────────────
           home-manager = {
+            backupFileExtension = "backup";
             useGlobalPkgs = true;
             useUserPackages = true;
             users.ericlang = { pkgs, lib, ... }: {
