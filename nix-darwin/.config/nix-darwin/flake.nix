@@ -16,6 +16,7 @@
         nix-homebrew.darwinModules.nix-homebrew
         ({ pkgs, ... }: {
           nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.allowBroken = true;
 
           # ── Nix settings ──────────────────────────────────
           nix.settings = {
@@ -57,10 +58,8 @@
             signal-desktop
             maccy
             iina
-            ghostty
             brave
-
-            # Note: 1password, raycast, jetbrains-toolbox not in nixpkgs.
+            # Note: ghostty, 1password, raycast, jetbrains-toolbox not in nixpkgs.
             # Managed via brew casks below.
 
             starship
@@ -87,6 +86,7 @@
             };
             brews = [];
             casks = [
+              "ghostty"
               "1password"
               "raycast"
               "jetbrains-toolbox"
