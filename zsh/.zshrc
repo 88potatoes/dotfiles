@@ -48,6 +48,11 @@ fi
 
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 
+# Nix system profile
+if [ -d /run/current-system/sw/bin ]; then
+  export PATH="/run/current-system/sw/bin:$PATH"
+fi
+
 # git
 gcam='git commit -a -m'
 alias gs='git status'

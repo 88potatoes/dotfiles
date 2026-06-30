@@ -7,13 +7,16 @@
     darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, nix-homebrew }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, nix-homebrew, home-manager }@inputs: {
     darwinConfigurations."Mac" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
         nix-homebrew.darwinModules.nix-homebrew
+        home-manager.darwinModules.home-manager
         ({ pkgs, ... }: {
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowBroken = true;
@@ -165,6 +168,26 @@
 
           # ── State version ──────────────────────────────────
           system.stateVersion = 5; # nix-darwin version, not macOS
+
+          # ── Home Manager (user-level config) ──────────────
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.ericlang = { pkgs, ... }: {
+              home.stateVersion = "24.11";
+              home.packages = with pkgs; [
+                # User-level packages go here (not system-wide)
+              ];
+
+              programs.brave = {
+                enable = true;
+                extensions = [
+                  { id = "amddgdnlkmohapieeekfknakgdnpbleb"; }  # xTab
+                  { id = "nngceckbapebfimnlniiiahkandclblb"; }  # Bitwarden
+                ];
+              };
+            };
+          };
         })
       ];
     };
