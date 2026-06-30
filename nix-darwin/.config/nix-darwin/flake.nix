@@ -150,6 +150,9 @@
             };
           };
 
+          # ── Users ─────────────────────────────────────────
+          users.users.ericlang.home = "/Users/ericlang";
+
           # ── Shell ──────────────────────────────────────────
           programs.zsh.enable = true;
           environment.shells = [ pkgs.zsh ];
@@ -175,6 +178,7 @@
             useUserPackages = true;
             users.ericlang = { pkgs, ... }: {
               home.stateVersion = "24.11";
+              home.username = "ericlang";
               home.packages = with pkgs; [
                 # User-level packages go here (not system-wide)
               ];
