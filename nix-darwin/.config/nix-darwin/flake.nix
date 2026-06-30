@@ -70,8 +70,7 @@
             kitty
             rectangle
 
-            # fonts
-            iosevka
+            # fonts (installed via brew)
 
             # Note: bitwarden, ghostty, 1password, raycast, jetbrains-toolbox, whatsapp not in nixpkgs.
             # Managed via brew casks below.
@@ -105,6 +104,7 @@
             brews = [];
             casks = [
               "karabiner-elements"
+              "font-iosevka"
               "bitwarden"
               "ghostty"
               "1password"
@@ -200,6 +200,15 @@
                   { id = "nngceckbapebfimnlniiiahkandclblb"; }  # Bitwarden
                   { id = "nffaoalbilbmmfgbnbgppjihopabppdk"; }  # Video Speed Controller
                 ];
+              };
+
+              programs.mise = {
+                enable = true;
+                globalConfig = {
+                  tools = {
+                    node = "24.16.0";
+                  };
+                };
               };
             };
           };
