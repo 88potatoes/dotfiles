@@ -88,8 +88,13 @@ function y() {
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Zsh plugins (from nixpkgs)
+for f in /nix/store/*-zsh-autosuggestions*/share/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+  [[ -f $f ]] && source $f && break
+done
+for f in /nix/store/*-zsh-syntax-highlighting*/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; do
+  [[ -f $f ]] && source $f && break
+done
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
@@ -135,4 +140,9 @@ if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)
 # Force pi to use homebrew node, regardless of version manager shims
 pi () {
   env PATH="/opt/homebrew/bin/node:$PATH" /opt/homebrew/bin/pi "$@"
+}
+
+# Nix-darwin rebuild
+nix-reload() {
+  darwin-rebuild switch --flake /Users/ericlang/dotfiles/nix-darwin/.config/nix-darwin#Mac
 }

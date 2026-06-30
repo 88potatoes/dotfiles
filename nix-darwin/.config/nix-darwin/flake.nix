@@ -59,6 +59,16 @@
             iina
 
             starship
+            fzf
+            zoxide
+            mise
+            zsh-autosuggestions
+            zsh-syntax-highlighting
+            stow
+
+            # languages
+            nodejs
+            lazygit
           ];
 
           # ── Homebrew integration ────────────────────────────
@@ -72,15 +82,6 @@
 
             # Already installed via your current Brewfile
             brews = [
-              "stow"
-              "neovim"
-              "yazi"
-              "zellij"
-              "zoxide"
-              "zsh-autosuggestions"
-              "zsh-syntax-highlighting"
-              "starship"
-              "fzf"
             ];
 
             casks = [
