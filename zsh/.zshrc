@@ -100,7 +100,10 @@ if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+# Java
+if [ -d /run/current-system/sw/bin/java ]; then
+  export PATH="/run/current-system/sw/bin:$PATH"
+fi
 
 
 # pnpm
@@ -137,9 +140,9 @@ wtfev() {
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
-# Force pi to use homebrew node, regardless of version manager shims
+# Force pi to use nix node
 pi () {
-  env PATH="/opt/homebrew/bin/node:$PATH" /opt/homebrew/bin/pi "$@"
+  env PATH="/run/current-system/sw/bin/node:$PATH" /run/current-system/sw/bin/pi "$@"
 }
 
 # Nix-darwin rebuild

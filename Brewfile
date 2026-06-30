@@ -1,9 +1,3 @@
-brew 'stow'
-brew 'neovim'
-brew 'yazi'
-brew 'zellij'
-brew 'zoxide'
-brew 'zsh-autosuggestions'
-brew 'zsh-syntax-highlighting'
-cask 'brave-browser'
-cask 'ghostty'
+# Brew casks managed by nix-darwin (flake.nix).
+# CLI tools managed by nixpkgs.
+# This file kept for reference only.

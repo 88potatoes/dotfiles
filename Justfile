@@ -12,5 +12,5 @@ stow-all:
   stow nix-darwin
 
 install-all:
-  brew bundle --file ./Brewfile
+  darwin-rebuild switch --flake /Users/ericlang/dotfiles/nix-darwin/.config/nix-darwin#Mac
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:~/.local/bin:$PATH"
+export PATH="/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin:~/.local/bin:$PATH"
 
 CONFIG_FILE="$HOME/.local/bin/zellij-mapping.toml"
 

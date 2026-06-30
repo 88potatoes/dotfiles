@@ -49,7 +49,7 @@
             nix-tree
             comma             # ,  – run any package by name
 
-            # GUI apps
+            # GUI apps (from nixpkgs)
             alacritty
             spotify
             vscode
@@ -57,6 +57,11 @@
             signal-desktop
             maccy
             iina
+            ghostty
+            brave
+
+            # Note: 1password, raycast, jetbrains-toolbox not in nixpkgs.
+            # Managed via brew casks below.
 
             starship
             fzf
@@ -68,28 +73,23 @@
 
             # languages
             nodejs
+            openjdk
             lazygit
           ];
 
-          # ── Homebrew integration ────────────────────────────
+          # ── Homebrew (casks only – GUI apps not in nixpkgs) ──
           homebrew = {
             enable = true;
             onActivation = {
               autoUpdate = true;
               upgrade = true;
-              cleanup = "zap";  # remove casks/brews not listed here
+              cleanup = "zap";
             };
-
-            # Already installed via your current Brewfile
-            brews = [
-            ];
-
+            brews = [];
             casks = [
-              "brave-browser"
-              "ghostty"
               "1password"
-              "jetbrains-toolbox"
               "raycast"
+              "jetbrains-toolbox"
             ];
           };
 
