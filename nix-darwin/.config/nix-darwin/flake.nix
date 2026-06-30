@@ -156,6 +156,15 @@
           # ── Shell ──────────────────────────────────────────
           programs.zsh.enable = true;
           environment.shells = [ pkgs.zsh ];
+
+          # ── Environment ─────────────────────────────────────
+          environment.variables = {
+            NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+          };
+          # Add npm global bin to PATH
+          programs.zsh.interactiveShellInit = ''
+            export PATH="$HOME/.npm-global/bin:$PATH"
+          '';
           # Don't set default shell – macOS manages that.
           # If you want nix-managed zsh: sudo chsh -s /run/current-system/sw/bin/zsh
 

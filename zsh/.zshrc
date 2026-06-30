@@ -145,9 +145,9 @@ wtfev() {
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
-# Force pi to use nix node
+# Force pi to use brew path
 pi () {
-  env PATH="/run/current-system/sw/bin/node:$PATH" /run/current-system/sw/bin/pi "$@"
+  /opt/homebrew/bin/pi "$@"
 }
 
 # Nix-darwin rebuild
