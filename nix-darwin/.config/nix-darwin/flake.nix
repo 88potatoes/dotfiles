@@ -186,7 +186,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.ericlang = { pkgs, ... }: {
+            users.ericlang = { pkgs, lib, ... }: {
               home.stateVersion = "24.11";
               home.username = "ericlang";
               home.packages = with pkgs; [
