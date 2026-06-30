@@ -57,6 +57,8 @@
             signal-desktop
             maccy
             iina
+
+            starship
           ];
 
           # ── Homebrew integration ────────────────────────────
