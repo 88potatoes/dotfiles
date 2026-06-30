@@ -197,6 +197,27 @@
               xdg.configFile = {
                 "yazi/yazi.toml".source = ./home/yazi/yazi.toml;
                 "yazi/theme.toml".source = ./home/yazi/theme.toml;
+
+                "btop/btop.conf".source = ./home/btop/btop.conf;
+
+                "kitty/kitty.conf".source = ./home/kitty/kitty.conf;
+
+                "lazygit/config.yml".source = ./home/lazygit/config.yml;
+
+                "zellij/config.kdl".source = ./home/zellij/config.kdl;
+                "zellij/layouts/blog.kdl".source = ./home/zellij/layouts/blog.kdl;
+                "zellij/open_blog" = {
+                  source = ./home/zellij/open_blog;
+                  executable = true;
+                };
+
+                "ghostty/config".source = ./home/ghostty/config;
+
+                "karabiner/karabiner.json".source = ./home/karabiner/karabiner.json;
+              };
+
+              home.file = {
+                ".zshrc".source = ./home/zsh/.zshrc;
               };
 
               programs.brave = {

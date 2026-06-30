@@ -4,14 +4,6 @@ reload:
   just stow-all
 
 stow-all:
-  stow zsh
-  stow nvim
-  stow zellij
-  stow spotify-player
-  stow ghostty
-  stow btop
-  stow karabiner
-  stow lazygit
   stow local-bin
 
 install-all:
