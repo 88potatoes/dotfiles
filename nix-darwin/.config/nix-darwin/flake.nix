@@ -193,6 +193,11 @@
                 # User-level packages go here (not system-wide)
               ];
 
+              xdg.configFile = {
+                "yazi/yazi.toml".source = ./home/yazi/yazi.toml;
+                "yazi/theme.toml".source = ./home/yazi/theme.toml;
+              };
+
               programs.brave = {
                 enable = true;
                 extensions = [

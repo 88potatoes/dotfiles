@@ -1,0 +1,20 @@
+[opener]
+rules = []
+
+[open]
+rules = []
+
+[reveal]
+rules = []
+
+[font]
+size = 12
+
+[manager]
+show_hidden = true
+ratio = [2, 3, 5]
+sort_by = "natural"
+sort_sensitive = false
+sort_reverse = false
+linemode = "none"
+show_symlink = false
