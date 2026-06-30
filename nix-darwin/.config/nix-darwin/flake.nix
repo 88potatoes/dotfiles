@@ -86,6 +86,7 @@
 
             # languages
             nodejs
+            pnpm
             openjdk
             lazygit
             gitleaks
@@ -197,6 +198,7 @@
                 extensions = [
                   { id = "amddgdnlkmohapieeekfknakgdnpbleb"; }  # xTab
                   { id = "nngceckbapebfimnlniiiahkandclblb"; }  # Bitwarden
+                  { id = "nffaoalbilbmmfgbnbgppjihopabppdk"; }  # Video Speed Controller
                 ];
               };
             };

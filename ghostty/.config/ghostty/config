@@ -3,6 +3,8 @@ keybind = super+a=unbind
 keybind = super+d=unbind
 window-decoration = none
 font-size=9
+font-family=Iosevka
+font-feature=calt
 
 # Load local overrides if they exist
 config-file = ~/.config/ghostty/config.local
