@@ -210,6 +210,11 @@
                   };
                 };
               };
+
+              # Auto-install mise tools after config change
+              home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                run ${pkgs.mise}/bin/mise install
+              '';
             };
           };
         })
