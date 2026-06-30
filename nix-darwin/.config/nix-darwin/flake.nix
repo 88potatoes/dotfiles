@@ -21,7 +21,6 @@
           nix.settings = {
             experimental-features = [ "nix-command" "flakes" ];
             auto-optimise-store = false;
-          nix.optimise.automatic = true;
           };
 
           # ── System packages (CLI + GUI) ─────────────────────
