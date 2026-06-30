@@ -1,3 +1,8 @@
+# Full nix reload + restow
+reload:
+  /run/current-system/sw/bin/darwin-rebuild switch --flake /Users/ericlang/dotfiles/nix-darwin/.config/nix-darwin#Mac
+  just stow-all
+
 stow-all:
   stow zsh
   stow nvim
@@ -9,7 +14,6 @@ stow-all:
   stow yazi
   stow lazygit
   stow local-bin
-  stow nix-darwin
 
 install-all:
   darwin-rebuild switch --flake /Users/ericlang/dotfiles/nix-darwin/.config/nix-darwin#Mac

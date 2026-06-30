@@ -45,6 +45,11 @@
             # editors
             neovim
 
+            # file mgmt / tmux
+            yazi
+            zellij
+            lazygit
+
             # nix utils
             nix-output-monitor  # nom, pretty nix build output
             nix-tree
@@ -59,7 +64,13 @@
             maccy
             iina
             brave
-            # Note: ghostty, 1password, raycast, jetbrains-toolbox not in nixpkgs.
+            kitty
+            rectangle
+
+            # fonts
+            iosevka
+
+            # Note: bitwarden, ghostty, 1password, raycast, jetbrains-toolbox, whatsapp not in nixpkgs.
             # Managed via brew casks below.
 
             starship
@@ -74,6 +85,9 @@
             nodejs
             openjdk
             lazygit
+            gitleaks
+            pre-commit
+            just
           ];
 
           # ── Homebrew (casks only – GUI apps not in nixpkgs) ──
@@ -86,10 +100,13 @@
             };
             brews = [];
             casks = [
+              "karabiner-elements"
+              "bitwarden"
               "ghostty"
               "1password"
               "raycast"
               "jetbrains-toolbox"
+              "whatsapp"
             ];
           };
 
@@ -138,6 +155,13 @@
 
           # ── Services ───────────────────────────────────────
           services.nix-daemon.enable = true;
+          services.karabiner-elements.enable = false;
+
+          # ── Sudo ───────────────────────────────────────────
+          security.sudo.extraConfig = ''
+            # Allow darwin-rebuild without password
+            %admin ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
+          '';
 
           # ── State version ──────────────────────────────────
           system.stateVersion = 5; # nix-darwin version, not macOS
