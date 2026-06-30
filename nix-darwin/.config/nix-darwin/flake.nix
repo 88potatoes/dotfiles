@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    darwin.url = "github:LnL7/nix-darwin";
+    darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
@@ -20,7 +20,8 @@
           # ── Nix settings ──────────────────────────────────
           nix.settings = {
             experimental-features = [ "nix-command" "flakes" ];
-            auto-optimise-store = true;
+            auto-optimise-store = false;
+          nix.optimise.automatic = true;
           };
 
           # ── System packages (CLI + GUI) ─────────────────────
@@ -51,7 +52,6 @@
 
             # GUI apps
             alacritty
-            firefox
             spotify
             vscode
             obsidian
