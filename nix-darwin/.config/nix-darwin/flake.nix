@@ -214,6 +214,8 @@
                 "ghostty/config".source = ./home/ghostty/config;
 
                 "karabiner/karabiner.json".source = ./home/karabiner/karabiner.json;
+
+                "cmux/cmux.json".source = ./home/cmux/cmux.json;
               };
 
               home.file = {
