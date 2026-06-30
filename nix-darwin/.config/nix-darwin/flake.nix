@@ -14,7 +14,7 @@
       system = "aarch64-darwin";
       modules = [
         nix-homebrew.darwinModules.nix-homebrew
-        { pkgs, ... }: {
+        ({ pkgs, ... }: {
           nixpkgs.config.allowUnfree = true;
 
           # ── Nix settings ──────────────────────────────────
@@ -139,7 +139,7 @@
 
           # ── State version ──────────────────────────────────
           system.stateVersion = 5; # nix-darwin version, not macOS
-        }
+        })
       ];
     };
   };
