@@ -9,6 +9,7 @@ stow-all:
   stow yazi
   stow lazygit
   stow local-bin
+  stow nix-darwin
 
 install-all:
   brew bundle --file ./Brewfile
