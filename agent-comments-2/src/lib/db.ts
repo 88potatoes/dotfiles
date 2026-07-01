@@ -47,6 +47,3 @@ db.exec(`
     updatedAt TEXT NOT NULL
   )
 `);
-
-console.log("DB PATH:", dbPath);
-console.log("PID:", process.pid);
