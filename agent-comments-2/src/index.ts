@@ -4,12 +4,7 @@ import { CommentStatus } from "./comments/comments.domain.ts";
 import { CommentRepo } from "./comments/repo.ts";
 import { CommentService } from "./comments/service.ts";
 import { getDbPath } from "./lib/db.ts";
-import {
-  formatDefault,
-  formatJson,
-  formatGraph,
-  wordWrap,
-} from "./lib/format.ts";
+import { formatDefault, formatJson, formatGraph, wordWrap } from "./lib/format.ts";
 import { LineRangeType, parseLineInput } from "./lib/helpers.ts";
 
 export { formatDefault, formatJson, formatGraph, wordWrap };
@@ -53,9 +48,7 @@ program
           endLine: lineRange.line,
           message,
         });
-        console.log(
-          `Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.line}`,
-        );
+        console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.line}`);
       } else {
         const comment = await service.addComment({
           file,
@@ -113,11 +106,7 @@ program
     }),
   );
 
-const clean = program
-  .command("clean")
-  .description(
-    "Delete comments (default: resolved)",
-  );
+const clean = program.command("clean").description("Delete comments (default: resolved)");
 
 clean
   .command("resolved")
@@ -151,10 +140,7 @@ program
   .command("get")
   .description("Get comments")
   .option("-f, --file <file>", "Filter by file path")
-  .option(
-    "-s, --status <status>",
-    "Filter by status: resolved, active, or all (default: active)",
-  )
+  .option("-s, --status <status>", "Filter by status: resolved, active, or all (default: active)")
   .option("--view <view>", "Output format: default, graph, or json", "default")
   .action(
     wrap(async (options) => {
@@ -171,9 +157,7 @@ program
       } else if (options.status === "all") {
         filter.status = undefined;
       } else if (options.status) {
-        throw new Error(
-          `Invalid status: "${options.status}". Use resolved, active, or all.`,
-        );
+        throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
       }
 
       const comments = await service.getAllComments(filter);
@@ -201,4 +185,3 @@ debug
   );
 
 await program.parseAsync();
-

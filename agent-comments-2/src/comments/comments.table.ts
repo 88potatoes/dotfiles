@@ -1,7 +1,8 @@
 import { CommentStatus } from "./comments.domain.ts";
 
 export type CreateInput<T> = Omit<T, "id" | "createdAt" | "updatedAt">;
-export type UpdateInput<T extends { id: string }> = Partial<Omit<T, "createdAt" | "updatedAt">> & Pick<T, "id">;
+export type UpdateInput<T extends { id: string }> = Partial<Omit<T, "createdAt" | "updatedAt">> &
+  Pick<T, "id">;
 
 export type CommentRecord = {
   id: string;
@@ -12,7 +13,7 @@ export type CommentRecord = {
   status: CommentStatus;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export type CreateCommentInput = CreateInput<CommentRecord>;
 export type UpdateCommentInput = UpdateInput<CommentRecord>;

@@ -29,10 +29,7 @@ export function wordWrap(text: string, maxWidth: number): string[] {
 export function formatDefault(comments: CommentEntity[]): string {
   const header = "ID\tFile:Line\tMessage\tStatus";
   const body = comments
-    .map(
-      (c) =>
-        `${c.id}\t${c.file}:${c.startLine}-${c.endLine}\t${c.message}\t${c.status}`,
-    )
+    .map((c) => `${c.id}\t${c.file}:${c.startLine}-${c.endLine}\t${c.message}\t${c.status}`)
     .join("\n");
   return body.length > 0 ? `${header}\n${body}` : "";
 }
@@ -67,16 +64,9 @@ export function formatGraph(
 ): string {
   const blocks: string[] = [];
   for (const c of comments) {
-    const icon = formatIcon(
-      c.status === "active" ? "●" : "✓",
-      c.status,
-      highlight,
-    );
+    const icon = formatIcon(c.status === "active" ? "●" : "✓", c.status, highlight);
     const shortId = formatId(c.id.slice(0, 8), highlight);
-    const linesLabel =
-      c.startLine === c.endLine
-        ? `${c.startLine}`
-        : `${c.startLine}-${c.endLine}`;
+    const linesLabel = c.startLine === c.endLine ? `${c.startLine}` : `${c.startLine}-${c.endLine}`;
     const fileLine = `${c.file}:${linesLabel}`;
     const header = `${icon} ${shortId}  ${fileLine}`;
     const lines: string[] = [header];

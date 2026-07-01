@@ -3,11 +3,13 @@ export enum CommentStatus {
   Resolved = "resolved",
 }
 
-export type OptionalField<T, K extends keyof T> =
-  Omit<T, K> & Partial<Pick<T, K>>;
+export type OptionalField<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type CreateEntityInput<T> = Omit<T, "id" | "createdAt" | "updatedAt">;
-export type UpdateEntityInput<T extends { id: string }> = Partial<Omit<T, "createdAt" | "updatedAt">> & Pick<T, "id">;
+export type UpdateEntityInput<T extends { id: string }> = Partial<
+  Omit<T, "createdAt" | "updatedAt">
+> &
+  Pick<T, "id">;
 
 export type CommentEntity = {
   id: string;
@@ -18,7 +20,7 @@ export type CommentEntity = {
   status: CommentStatus;
   createdAt: string;
   updatedAt: string;
-}
+};
 
 export type CreateCommentEntityInput = CreateEntityInput<CommentEntity>;
 export type UpdateCommentEntityInput = UpdateEntityInput<CommentEntity>;

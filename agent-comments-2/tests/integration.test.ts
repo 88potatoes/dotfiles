@@ -72,9 +72,7 @@ describe("agent-comments integration", () => {
 
     it("adds a range comment", () => {
       const out = cli(["add", "src/main.ts", "10:15", "refactor this"], tmpDir);
-      expect(out).toMatch(
-        /Added [a-f0-9]{8} at src\/main\.ts:10-15$/,
-      );
+      expect(out).toMatch(/Added [a-f0-9]{8} at src\/main\.ts:10-15$/);
     });
   });
 
@@ -147,12 +145,8 @@ describe("agent-comments integration", () => {
     });
 
     it("resolves multiple comments at once", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "bug a"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
-      const a2 = cli(["add", "src/main.ts", "22", "bug b"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
+      const a1 = cli(["add", "src/main.ts", "11", "bug a"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      const a2 = cli(["add", "src/main.ts", "22", "bug b"], tmpDir).match(/[a-f0-9]{8}/)![0];
 
       cli(["resolve", a1, a2], tmpDir);
 
@@ -202,12 +196,8 @@ describe("agent-comments integration", () => {
 
   describe("clean", () => {
     it("deletes all resolved comments by default", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
-      const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
+      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
       const cleanOut = cli(["clean"], tmpDir);
@@ -219,12 +209,8 @@ describe("agent-comments integration", () => {
     });
 
     it("deletes only resolved with clean resolved", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
-      const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
+      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
       const out = cli(["clean", "resolved"], tmpDir);
@@ -236,12 +222,8 @@ describe("agent-comments integration", () => {
     });
 
     it("deletes only unresolved with clean unresolved", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "remove"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
-      const a2 = cli(["add", "src/main.ts", "22", "keep"], tmpDir).match(
-        /[a-f0-9]{8}/,
-      )![0];
+      const a1 = cli(["add", "src/main.ts", "11", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      const a2 = cli(["add", "src/main.ts", "22", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
       const out = cli(["clean", "unresolved"], tmpDir);
@@ -264,22 +246,19 @@ describe("agent-comments integration", () => {
   describe("error cases", () => {
     it("fails with clear message when adding to non-existent file", () => {
       const out = execFileSync(tsxBin, [cliScript, "add", "nope.ts", "11", "whatever"], {
-        cwd: tmpDir, encoding: "utf-8",
+        cwd: tmpDir,
+        encoding: "utf-8",
       });
       // Should still succeed — the CLI doesn't validate file existence
       expect(out).toContain("Added");
     });
 
     it("fails when resolving a non-existent comment", () => {
-      expect(() => cli(["resolve", "deadbeef"], tmpDir)).toThrow(
-        "No comment found",
-      );
+      expect(() => cli(["resolve", "deadbeef"], tmpDir)).toThrow("No comment found");
     });
 
     it("fails when deleting a non-existent comment", () => {
-      expect(() => cli(["delete", "deadbeef"], tmpDir)).toThrow(
-        "No comment found",
-      );
+      expect(() => cli(["delete", "deadbeef"], tmpDir)).toThrow("No comment found");
     });
 
     it("fails when short id is ambiguous", () => {
@@ -288,9 +267,7 @@ describe("agent-comments integration", () => {
       const testDb = new Database(dbPath);
       const now = new Date().toISOString();
       testDb
-        .prepare(
-          "INSERT INTO comments VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        )
+        .prepare("INSERT INTO comments VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .run(
           "aaaaaa00-0000-0000-0000-000000000000",
           "src/main.ts",
@@ -302,9 +279,7 @@ describe("agent-comments integration", () => {
           now,
         );
       testDb
-        .prepare(
-          "INSERT INTO comments VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        )
+        .prepare("INSERT INTO comments VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .run(
           "aaaabb00-0000-0000-0000-000000000000",
           "src/main.ts",

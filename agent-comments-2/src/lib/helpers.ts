@@ -35,7 +35,5 @@ export function parseLineInput(input: string): LineRange {
     };
   }
 
-  throw new Error(
-    `Invalid line format: "${input}". Use "12" or "12:20"`
-  );
+  throw new Error(`Invalid line format: "${input}". Use "12" or "12:20"`);
 }

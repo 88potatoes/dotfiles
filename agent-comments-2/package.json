@@ -1,28 +1,23 @@
 {
   "name": "agent-comments-2",
-  "type": "module",
   "version": "1.0.0",
-  "packageManager": "pnpm@10.28.0",
   "description": "",
-  "author": "",
-  "license": "ISC",
   "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "better-sqlite3"
-    ]
+    "lint:fix": "eslint . --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "dependencies": {
-    "commander": "^15.0.0",
-    "better-sqlite3": "^11.0.0"
+    "better-sqlite3": "^11.0.0",
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -31,8 +26,16 @@
     "eslint": "^10.5.0",
     "eslint-plugin-import-x": "^4.17.0",
     "eslint-plugin-promise": "^7.3.0",
+    "oxfmt": "^0.57.0",
     "tsx": "^4.22.4",
     "typescript-eslint": "^8.62.0",
     "vitest": "^4.1.9"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "better-sqlite3"
+    ]
   }
 }

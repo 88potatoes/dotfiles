@@ -56,7 +56,7 @@ export class CommentService {
     });
     return commentEntity;
   }
-  
+
   async unresolveComment(id: string): Promise<CommentEntity> {
     const fullId = await this.commentsRepo.resolveCommentId(id);
     const commentEntity = await this.commentsRepo.updateComment({

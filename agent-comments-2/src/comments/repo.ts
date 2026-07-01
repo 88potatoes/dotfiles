@@ -1,11 +1,7 @@
 import { db } from "../lib/db.ts";
 
 import { CommentEntity, CommentStatus } from "./comments.domain.ts";
-import {
-  CommentRecord,
-  CreateCommentInput,
-  UpdateCommentInput,
-} from "./comments.table.ts";
+import { CommentRecord, CreateCommentInput, UpdateCommentInput } from "./comments.table.ts";
 
 export class CommentRepo {
   private constructor() {}
@@ -13,9 +9,9 @@ export class CommentRepo {
   public static readonly instance = new CommentRepo();
 
   async getCommentById(id: string): Promise<CommentEntity> {
-    const row = db
-      .prepare("SELECT * FROM comments WHERE id = ?")
-      .get(id) as CommentRecord | undefined;
+    const row = db.prepare("SELECT * FROM comments WHERE id = ?").get(id) as
+      | CommentRecord
+      | undefined;
     if (!row) {
       throw new Error(`Comment with id ${id} not found`);
     }
@@ -27,9 +23,7 @@ export class CommentRepo {
     const pattern = normalized + "%";
 
     const rows = db
-      .prepare(
-        "SELECT id FROM comments WHERE REPLACE(LOWER(id), '-', '') LIKE ?",
-      )
+      .prepare("SELECT id FROM comments WHERE REPLACE(LOWER(id), '-', '') LIKE ?")
       .all(pattern) as Pick<CommentRecord, "id">[];
 
     if (rows.length === 0) {
@@ -37,9 +31,7 @@ export class CommentRepo {
     }
     if (rows.length > 1) {
       const ids = rows.map((r) => r.id).join(", ");
-      throw new Error(
-        `Ambiguous id "${input}" matches multiple comments: ${ids}`,
-      );
+      throw new Error(`Ambiguous id "${input}" matches multiple comments: ${ids}`);
     }
 
     return rows[0].id;
@@ -50,10 +42,7 @@ export class CommentRepo {
     return rows.map((r) => this.toDomain(r));
   }
 
-  async queryComments(filter: {
-    file?: string;
-    status?: CommentStatus;
-  }): Promise<CommentEntity[]> {
+  async queryComments(filter: { file?: string; status?: CommentStatus }): Promise<CommentEntity[]> {
     const conditions: string[] = [];
     const params: unknown[] = [];
 
@@ -79,7 +68,16 @@ export class CommentRepo {
     db.prepare(
       `INSERT INTO comments (id, file, startLine, endLine, message, status, createdAt, updatedAt)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    ).run(id, comment.file, comment.startLine, comment.endLine, comment.message, comment.status, now, now);
+    ).run(
+      id,
+      comment.file,
+      comment.startLine,
+      comment.endLine,
+      comment.message,
+      comment.status,
+      now,
+      now,
+    );
 
     return this.toDomain({
       id,
@@ -93,9 +91,7 @@ export class CommentRepo {
     });
   }
 
-  async updateComment(
-    updateCommentPayload: UpdateCommentInput,
-  ): Promise<CommentEntity> {
+  async updateComment(updateCommentPayload: UpdateCommentInput): Promise<CommentEntity> {
     const existing = await this.getCommentById(updateCommentPayload.id);
     const now = new Date().toISOString();
 
@@ -105,7 +101,15 @@ export class CommentRepo {
     db.prepare(
       `UPDATE comments SET file = ?, startLine = ?, endLine = ?, message = ?, status = ?, updatedAt = ?
        WHERE id = ?`,
-    ).run(merged.file, merged.startLine, merged.endLine, merged.message, merged.status, merged.updatedAt, id);
+    ).run(
+      merged.file,
+      merged.startLine,
+      merged.endLine,
+      merged.message,
+      merged.status,
+      merged.updatedAt,
+      id,
+    );
 
     return this.toDomain(merged);
   }
