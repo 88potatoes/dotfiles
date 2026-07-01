@@ -213,6 +213,7 @@ describe("agent-comments integration", () => {
       const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
+      
       const out = cli(["clean", "resolved"], tmpDir);
       expect(out).toContain("Cleared 1 resolved");
 
