@@ -8,107 +8,111 @@ import {
 } from "./comments.table.ts";
 
 export class CommentRepo {
-  private db: typeof db;
-
-  private constructor() {
-    this.db = db;
-  }
+  private constructor() {}
 
   public static readonly instance = new CommentRepo();
 
   async getCommentById(id: string): Promise<CommentEntity> {
-    const comment = this.db.data.comments.find((comment) => comment.id === id);
-    if (!comment) {
+    const row = db
+      .prepare("SELECT * FROM comments WHERE id = ?")
+      .get(id) as CommentRecord | undefined;
+    if (!row) {
       throw new Error(`Comment with id ${id} not found`);
     }
-    return this.toDomain(comment);
+    return this.toDomain(row);
   }
 
   async resolveCommentId(input: string): Promise<string> {
     const normalized = input.replace(/-/g, "").toLowerCase();
+    const pattern = normalized + "%";
 
-    const matches = this.db.data.comments.filter((c) =>
-      c.id.replace(/-/g, "").toLowerCase().startsWith(normalized),
-    );
+    const rows = db
+      .prepare(
+        "SELECT id FROM comments WHERE REPLACE(LOWER(id), '-', '') LIKE ?",
+      )
+      .all(pattern) as Pick<CommentRecord, "id">[];
 
-    if (matches.length === 0) {
+    if (rows.length === 0) {
       throw new Error(`No comment found matching id "${input}"`);
     }
-    if (matches.length > 1) {
-      const ids = matches.map((m) => m.id).join(", ");
+    if (rows.length > 1) {
+      const ids = rows.map((r) => r.id).join(", ");
       throw new Error(
         `Ambiguous id "${input}" matches multiple comments: ${ids}`,
       );
     }
 
-    return matches[0].id;
+    return rows[0].id;
   }
 
   async getAllComments(): Promise<CommentEntity[]> {
-    return this.db.data.comments.map((comment) => this.toDomain(comment));
+    const rows = db.prepare("SELECT * FROM comments").all() as CommentRecord[];
+    return rows.map((r) => this.toDomain(r));
   }
 
   async queryComments(filter: {
     file?: string;
     status?: CommentStatus;
   }): Promise<CommentEntity[]> {
-    return this.db.data.comments
-      .filter((comment) => {
-        if (filter.file !== undefined && comment.file !== filter.file) {
-          return false;
-        }
-        if (filter.status !== undefined && comment.status !== filter.status) {
-          return false;
-        }
-        return true;
-      })
-      .map((comment) => this.toDomain(comment));
+    const conditions: string[] = [];
+    const params: unknown[] = [];
+
+    if (filter.file !== undefined) {
+      conditions.push("file = ?");
+      params.push(filter.file);
+    }
+    if (filter.status !== undefined) {
+      conditions.push("status = ?");
+      params.push(filter.status);
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+    const sql = `SELECT * FROM comments ${where}`;
+    const rows = db.prepare(sql).all(...params) as CommentRecord[];
+    return rows.map((r) => this.toDomain(r));
   }
 
   async createComment(comment: CreateCommentInput): Promise<CommentEntity> {
     const now = new Date().toISOString();
-    const newComment = {
-      ...comment,
-      id: crypto.randomUUID(),
+    const id = crypto.randomUUID();
+
+    db.prepare(
+      `INSERT INTO comments (id, file, startLine, endLine, message, status, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run(id, comment.file, comment.startLine, comment.endLine, comment.message, comment.status, now, now);
+
+    return this.toDomain({
+      id,
+      file: comment.file,
+      startLine: comment.startLine,
+      endLine: comment.endLine,
+      message: comment.message,
+      status: comment.status,
       createdAt: now,
       updatedAt: now,
-    };
-    this.db.data.comments.push(newComment);
-    await this.db.write();
-    return this.toDomain(newComment);
+    });
   }
 
   async updateComment(
     updateCommentPayload: UpdateCommentInput,
   ): Promise<CommentEntity> {
-    const index = this.db.data.comments.findIndex(
-      (c) => c.id === updateCommentPayload.id,
-    );
-    if (index === -1) {
-      throw new Error(`Comment with id ${updateCommentPayload.id} not found`);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id: _id, ...updates } = updateCommentPayload;
-
+    const existing = await this.getCommentById(updateCommentPayload.id);
     const now = new Date().toISOString();
-    const updatedComment = {
-      ...this.db.data.comments[index],
-      ...updates,
-      updatedAt: now,
-    };
-    this.db.data.comments[index] = updatedComment;
-    await this.db.write();
-    return this.toDomain(updatedComment);
+
+    const { id, ...updates } = updateCommentPayload;
+    const merged = { ...existing, ...updates, updatedAt: now };
+
+    db.prepare(
+      `UPDATE comments SET file = ?, startLine = ?, endLine = ?, message = ?, status = ?, updatedAt = ?
+       WHERE id = ?`,
+    ).run(merged.file, merged.startLine, merged.endLine, merged.message, merged.status, merged.updatedAt, id);
+
+    return this.toDomain(merged);
   }
 
   async deleteComment(id: string): Promise<void> {
-    const index = this.db.data.comments.findIndex((c) => c.id === id);
-    if (index === -1) {
-      throw new Error(`Comment with id ${id} not found`);
-    }
-    this.db.data.comments.splice(index, 1);
-    await this.db.write();
+    await this.getCommentById(id); // throws if not found
+    db.prepare("DELETE FROM comments WHERE id = ?").run(id);
   }
 
   toDomain(comment: CommentRecord): CommentEntity {
