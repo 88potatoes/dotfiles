@@ -24,6 +24,7 @@
     "@types/node": "^26.0.0",
     "oxfmt": "^0.57.0",
     "oxlint": "^1.72.0",
+    "oxlint-tsgolint": "^0.24.0",
     "tsx": "^4.22.4",
     "vitest": "^4.1.9"
   },

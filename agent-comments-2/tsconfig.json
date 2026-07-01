@@ -6,6 +6,7 @@
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
+    "noEmit": true,
     "strict": true,
     "declaration": true,
     "outDir": "./dist",
