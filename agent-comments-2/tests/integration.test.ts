@@ -196,7 +196,7 @@ describe("agent-comments integration", () => {
 
   describe("clean", () => {
     it("deletes all resolved comments by default", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
       const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
@@ -209,7 +209,7 @@ describe("agent-comments integration", () => {
     });
 
     it("deletes only resolved with clean resolved", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      cli(["add", "src/main.ts", "11", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
       const a2 = cli(["add", "src/main.ts", "22", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
@@ -222,7 +222,7 @@ describe("agent-comments integration", () => {
     });
 
     it("deletes only unresolved with clean unresolved", () => {
-      const a1 = cli(["add", "src/main.ts", "11", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
+      cli(["add", "src/main.ts", "11", "remove"], tmpDir).match(/[a-f0-9]{8}/)![0];
       const a2 = cli(["add", "src/main.ts", "22", "keep"], tmpDir).match(/[a-f0-9]{8}/)![0];
       cli(["resolve", a2], tmpDir);
 
