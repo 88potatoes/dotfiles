@@ -1,8 +1,12 @@
 [opener]
-rules = []
+rules = [
+  { name = "nvim", run = "nvim \"$@\"", block = true },
+]
 
 [open]
-rules = []
+rules = [
+  { name = "*", use = "nvim" },
+]
 
 [reveal]
 rules = []
