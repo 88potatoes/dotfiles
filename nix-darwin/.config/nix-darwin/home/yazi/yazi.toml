@@ -1,11 +1,11 @@
 [opener]
-rules = [
-  { name = "nvim", run = "nvim \"$@\"", block = true },
+nvim = [
+  { run = "nvim %s", block = true },
 ]
 
 [open]
 rules = [
-  { name = "*", use = "nvim" },
+  { url = "*", use = "nvim" },
 ]
 
 [reveal]
