@@ -111,6 +111,7 @@
               "raycast"
               "jetbrains-toolbox"
               "whatsapp"
+              "opensuperwhisper"
             ];
           };
 
