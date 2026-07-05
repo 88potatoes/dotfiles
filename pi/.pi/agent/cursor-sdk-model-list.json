@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "fetchedAt": 1782085353181,
+  "fetchedAt": 1783045205691,
   "keyFingerprint": "b4540b3bb29f57f8",
   "models": [
     {
@@ -1146,8 +1146,6 @@
       "id": "gpt-5.5",
       "displayName": "GPT-5.5",
       "aliases": [
-        "gpt-latest",
-        "gpt",
         "gpt-5-5"
       ],
       "parameters": [
@@ -1461,6 +1459,411 @@
             }
           ],
           "displayName": "GPT-5.5"
+        }
+      ]
+    },
+    {
+      "id": "claude-sonnet-5",
+      "displayName": "Sonnet 5",
+      "aliases": [
+        "sonnet-latest",
+        "sonnet-5"
+      ],
+      "parameters": [
+        {
+          "id": "thinking",
+          "displayName": "Thinking",
+          "values": [
+            {
+              "value": "false"
+            },
+            {
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "id": "context",
+          "displayName": "Context",
+          "values": [
+            {
+              "value": "300k",
+              "displayName": "300K"
+            },
+            {
+              "value": "1m",
+              "displayName": "1M"
+            }
+          ]
+        },
+        {
+          "id": "effort",
+          "displayName": "Effort",
+          "values": [
+            {
+              "value": "low",
+              "displayName": "Low"
+            },
+            {
+              "value": "medium",
+              "displayName": "Medium"
+            },
+            {
+              "value": "high",
+              "displayName": "High"
+            },
+            {
+              "value": "xhigh",
+              "displayName": "Extra High"
+            },
+            {
+              "value": "max",
+              "displayName": "Max"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "low"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "medium"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "high"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "xhigh"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "max"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "low"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "medium"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "high"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "xhigh"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "false"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "max"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "low"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "medium"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "high"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "xhigh"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "300k"
+            },
+            {
+              "id": "effort",
+              "value": "max"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "low"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "medium"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "high"
+            }
+          ],
+          "displayName": "Sonnet 5",
+          "isDefault": true
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "xhigh"
+            }
+          ],
+          "displayName": "Sonnet 5"
+        },
+        {
+          "params": [
+            {
+              "id": "thinking",
+              "value": "true"
+            },
+            {
+              "id": "context",
+              "value": "1m"
+            },
+            {
+              "id": "effort",
+              "value": "max"
+            }
+          ],
+          "displayName": "Sonnet 5"
         }
       ]
     },
@@ -3490,19 +3893,6 @@
               "displayName": "Max"
             }
           ]
-        },
-        {
-          "id": "fast",
-          "displayName": "Fast",
-          "values": [
-            {
-              "value": "false"
-            },
-            {
-              "value": "true",
-              "displayName": "Fast"
-            }
-          ]
         }
       ],
       "variants": [
@@ -3519,31 +3909,6 @@
             {
               "id": "effort",
               "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3561,31 +3926,6 @@
             {
               "id": "effort",
               "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3603,31 +3943,6 @@
             {
               "id": "effort",
               "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3645,31 +3960,6 @@
             {
               "id": "effort",
               "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3687,31 +3977,6 @@
             {
               "id": "effort",
               "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3729,31 +3994,6 @@
             {
               "id": "effort",
               "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3771,31 +4011,6 @@
             {
               "id": "effort",
               "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3813,31 +4028,6 @@
             {
               "id": "effort",
               "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "false"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3855,31 +4045,6 @@
             {
               "id": "effort",
               "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3897,31 +4062,6 @@
             {
               "id": "effort",
               "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3939,31 +4079,6 @@
             {
               "id": "effort",
               "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -3981,31 +4096,6 @@
             {
               "id": "effort",
               "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "200k"
-            },
-            {
-              "id": "effort",
-              "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -4023,31 +4113,6 @@
             {
               "id": "effort",
               "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "low"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -4065,31 +4130,6 @@
             {
               "id": "effort",
               "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "medium"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -4107,10 +4147,6 @@
             {
               "id": "effort",
               "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "false"
             }
           ],
           "displayName": "Opus 4.6",
@@ -4128,53 +4164,7 @@
             },
             {
               "id": "effort",
-              "value": "high"
-            },
-            {
-              "id": "fast",
-              "value": "true"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
               "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "false"
-            }
-          ],
-          "displayName": "Opus 4.6"
-        },
-        {
-          "params": [
-            {
-              "id": "thinking",
-              "value": "true"
-            },
-            {
-              "id": "context",
-              "value": "1m"
-            },
-            {
-              "id": "effort",
-              "value": "max"
-            },
-            {
-              "id": "fast",
-              "value": "true"
             }
           ],
           "displayName": "Opus 4.6"
@@ -5248,6 +5238,21 @@
       ]
     },
     {
+      "id": "kimi-k2.7-code",
+      "displayName": "Kimi K2.7 Code",
+      "aliases": [
+        "kimi-latest",
+        "kimi"
+      ],
+      "variants": [
+        {
+          "params": [],
+          "displayName": "Kimi K2.7 Code",
+          "isDefault": true
+        }
+      ]
+    },
+    {
       "id": "kimi-k2.5",
       "displayName": "Kimi K2.5",
       "aliases": [
@@ -5259,6 +5264,47 @@
           "params": [],
           "displayName": "Kimi K2.5",
           "isDefault": true
+        }
+      ]
+    },
+    {
+      "id": "glm-5.2",
+      "displayName": "GLM 5.2",
+      "parameters": [
+        {
+          "id": "reasoning",
+          "displayName": "Reasoning",
+          "values": [
+            {
+              "value": "high",
+              "displayName": "High"
+            },
+            {
+              "value": "max",
+              "displayName": "Max"
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "params": [
+            {
+              "id": "reasoning",
+              "value": "high"
+            }
+          ],
+          "displayName": "GLM 5.2",
+          "isDefault": true
+        },
+        {
+          "params": [
+            {
+              "id": "reasoning",
+              "value": "max"
+            }
+          ],
+          "displayName": "GLM 5.2"
         }
       ]
     },

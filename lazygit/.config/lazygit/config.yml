@@ -32,6 +32,8 @@ keybinding:
     viewWorktreeOptions: <disabled>
   localBranches:
     viewGitFlowOptions: <disabled>
+git:
+  ignoreWhitespaceInDiffView: true
 customCommands:
   - key: w
     context: worktrees

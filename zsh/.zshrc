@@ -130,4 +130,18 @@ wtfev() {
     cd ~/Code/scribe-fe-v2 && git checkout main && git pull && wt switch -c "$1"
 }
 
+fenv() {
+  local base_dir="$HOME/Code/scribe-fe-v2"
+  if [ -f .env ]; then
+    echo "✅ .env already exists in $(pwd)"
+    return 0
+  fi
+  if [ ! -f "$base_dir/.env" ]; then
+    echo "❌ No .env found in $base_dir to copy from"
+    return 1
+  fi
+  cp "$base_dir/.env" .env
+  echo "📋 Copied .env from $base_dir"
+}
+
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

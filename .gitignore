@@ -31,3 +31,4 @@ pi/.pi/agent/sessions
 /pi/.pi/agent/auth**json
 agent-comments-2/node_modules
 **/tokens.json
+/pi-session-**

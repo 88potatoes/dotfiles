@@ -135,7 +135,14 @@ gh pr review <number> --request-changes --body "<review body>"
 gh pr review <number> --comment --body "<review body>"
 ```
 
-For inline comments:
+For local inline comments, prefer `agent-comments` for every finding:
+```bash
+agent-comments add <file> <lines> "<message>"
+```
+
+When reviewing local branches or when the user asks to use agent comments, add one `agent-comments` comment for each finding before reporting results.
+
+For GitHub inline comments:
 ```bash
 gh api repos/{owner}/{repo}/pulls/<number>/comments \
   -f body="<comment>" \

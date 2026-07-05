@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.79.1",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "medium",
   "packages": [
     "npm:pi-mcp-adapter",
@@ -11,5 +11,9 @@
   "defaultProjectTrust": "always",
   "steeringMode": "one-at-a-time",
   "editorPaddingX": 0,
-  "hideThinkingBlock": false
+  "hideThinkingBlock": false,
+  "terminal": {
+    "showImages": false
+  },
+  "collapseChangelog": true
 }
