@@ -33,32 +33,7 @@
 ## Agent Comments
 
 `agent-comments` is a per-repo inline comment system stored in `.idea/agent-comments.json`. Use it to leave review notes, TODOs, or feedback on specific lines of code.
-
-### CLI Usage
-
-```bash
-agent-comments add <file> <lines> <message>   # lines: 10 or 10:20
-agent-comments get [resolved|unresolved]       # list comments (JSON when piped)
-agent-comments get <file>                      # comments for a specific file
-agent-comments resolve <comment_id>            # mark as resolved
-agent-comments unresolve <comment_id>          # reopen
-agent-comments delete <comment_id>             # remove
-```
-
-Short 8-char ID prefixes work for `comment_id`.
-
-### When to use
-
-- **Reviewing code:** leave comments on specific lines with `agent-comments add` instead of just describing issues in chat. When running the `code-review` skill, always use `agent-comments add` for each finding.
-- **Addressing comments:** when Eric says "address comments" or "fix comments", run `agent-comments get unresolved` to see open comments. Comments may be questions or discussion prompts, not necessarily requests for code edits; answer those in chat instead of changing code. For actual requested changes, fix the code, then `agent-comments resolve <id>` each one.
-- **Checking for comments:** before finishing a task, run `agent-comments get unresolved` to see if there are outstanding comments to address.
-
-### Workflow for addressing comments
-
-1. `agent-comments get unresolved` — read all open comments
-2. For each comment: fix the code at the referenced file/lines
-3. `agent-comments resolve <id>` — mark resolved after fixing
-4. Repeat until `agent-comments get unresolved` returns empty
+Run `agent-comments help` at session start to learn the CLI interface. All communication goes through the CLI.
 
 ## TypeScript / JavaScript
 

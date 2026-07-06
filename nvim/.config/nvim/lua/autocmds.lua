@@ -227,4 +227,20 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-print('loaded context commentstring')
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'DiffviewFiles,DiffviewFileHistory',
+  callback = function()
+    vim.schedule(function()
+      vim.cmd('LspStop') -- Stops active LSPs for the diffview session
+    end)
+  end,
+})
+
+-- Disable Treesitter on Diffview buffers to prevent stuttering
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'Diffview*',
+  callback = function()
+    vim.cmd('TSDisable autotag')
+    vim.cmd('TSDisable highlight')
+  end,
+})

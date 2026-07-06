@@ -103,169 +103,26 @@ require("lazy").setup({
   },
   {
     "sindrets/diffview.nvim",
-    opts = function()
-      local actions = require("diffview.actions")
-
-      local function diff_windows()
-        local wins = vim.api.nvim_tabpage_list_wins(0)
-        local diff_wins = vim.tbl_filter(function(win)
-          local bufnr = vim.api.nvim_win_get_buf(win)
-          local ft = vim.bo[bufnr].filetype
-          return ft ~= "DiffviewFiles" and ft ~= "DiffviewFileHistory"
-        end, wins)
-
-        table.sort(diff_wins, function(a, b)
-          local a_pos = vim.api.nvim_win_get_position(a)
-          local b_pos = vim.api.nvim_win_get_position(b)
-          if a_pos[1] == b_pos[1] then
-            return a_pos[2] < b_pos[2]
-          end
-          return a_pos[1] < b_pos[1]
-        end)
-
-        return diff_wins
-      end
-
-      local function focus_first_diff_window()
-        local wins = diff_windows()
-        if wins[1] then
-          vim.api.nvim_set_current_win(wins[1])
-        end
-      end
-
-      local function focus_next_diff_window()
-        local wins = diff_windows()
-        if #wins == 0 then
-          return
-        end
-
-        local current_win = vim.api.nvim_get_current_win()
-        for i, win in ipairs(wins) do
-          if win == current_win then
-            vim.api.nvim_set_current_win(wins[(i % #wins) + 1])
-            return
-          end
-        end
-
-        vim.api.nvim_set_current_win(wins[1])
-      end
-
-      local function select_entry_and_focus_first_diff_window()
-        actions.select_entry()
-        vim.defer_fn(focus_first_diff_window, 20)
-      end
-
-      local function goto_file_and_close_diffview()
-        actions.goto_file_edit()
-        vim.defer_fn(function()
-          pcall(vim.cmd, "DiffviewClose")
-        end, 20)
-      end
-
-      local function yank_file_panel_path()
-        local view = require("diffview.lib").get_current_view()
-        local item = view and view.panel and view.panel:get_item_at_cursor()
-
-        if not (item and item.path) then
-          vim.notify("No file path under cursor", vim.log.levels.WARN)
-          return
-        end
-
-        vim.fn.setreg('"', item.path)
-        vim.fn.setreg("+", item.path)
-        vim.notify("Yanked " .. item.path)
-      end
-
-      local function resize_diffview_tabs()
-        local ok, lib = pcall(require, "diffview.lib")
-        if not ok then
-          return
-        end
-
-        local current_tab = vim.api.nvim_get_current_tabpage()
-
-        for _, view in ipairs(lib.views or {}) do
-          if view.tabpage and vim.api.nvim_tabpage_is_valid(view.tabpage) then
-            vim.api.nvim_set_current_tabpage(view.tabpage)
-            vim.cmd("wincmd =")
-
-            if view.panel and view.panel.is_open and view.panel:is_open() then
-              view.panel:resize()
-            end
-          end
-        end
-
-        if vim.api.nvim_tabpage_is_valid(current_tab) then
-          vim.api.nvim_set_current_tabpage(current_tab)
-        end
-      end
-
-      vim.api.nvim_create_autocmd("VimResized", {
-        group = vim.api.nvim_create_augroup("diffview_auto_resize", { clear = true }),
-        desc = "Resize Diffview layouts when Neovim size changes",
-        callback = function()
-          vim.schedule(resize_diffview_tabs)
+    opts = {
+      enhanced_diff_hl = false,
+      view = {
+        merge_tool = {
+          layout = "diff3_horizontal",
+          disable_diagnostics = true,
+        },
+      },
+      file_panel = {
+        win_config = {
+          position = "left",
+          width = 35,
+        },
+      },
+      hooks = {
+        diff_buf_read = function(bufnr)
+          vim.opt_local.foldlevel = 99
         end,
-      })
-
-      local function jump_prev_hunk()
-        if vim.bo.filetype == "DiffviewFiles" then
-          actions.focus_entry()
-          vim.defer_fn(jump_prev_hunk, 20)
-          return
-        end
-
-        pcall(vim.cmd, "normal! [c")
-      end
-
-      local function jump_next_hunk()
-        if vim.bo.filetype == "DiffviewFiles" then
-          actions.focus_entry()
-          vim.defer_fn(jump_next_hunk, 20)
-          return
-        end
-
-        pcall(vim.cmd, "normal! ]c")
-      end
-
-      return {
-        enhanced_diff_hl = true, -- Highly recommended for that GitHub look
-        view = {
-          merge_tool = {
-            layout = "diff3_horizontal",
-            disable_diagnostics = true,
-          },
-        },
-        file_panel = {
-          win_config = {
-            position = "left",
-            width = 35,
-          },
-        },
-        keymaps = {
-          view = {
-            { "n", "<S-CR>",   focus_next_diff_window,       { desc = "Cycle old/new diff panes" } },
-            { "n", "<S-Down>", jump_next_hunk,               { desc = "Jump to next hunk" } },
-            { "n", "<S-Up>",   jump_prev_hunk,               { desc = "Jump to previous hunk" } },
-            { "n", "gf",       goto_file_and_close_diffview, { desc = "Open file and close diffview" } },
-          },
-          file_panel = {
-            { "n", "<S-CR>",   select_entry_and_focus_first_diff_window, { desc = "Open selected diff and focus old pane" } },
-            { "n", "<S-Down>", jump_next_hunk,                           { desc = "Open selected diff and jump to next hunk" } },
-            { "n", "<S-Up>",   jump_prev_hunk,                           { desc = "Open selected diff and jump to previous hunk" } },
-            { "n", "gf",       goto_file_and_close_diffview,             { desc = "Open file and close diffview" } },
-            { "n", "y",        yank_file_panel_path,                     { desc = "Yank path relative to repo root" } },
-          },
-        },
-        hooks = {
-          diff_buf_read = function(bufnr)
-            vim.opt_local.foldlevel = 99
-            vim.keymap.set('n', ']]', ']c', { buffer = bufnr, desc = "Next Hunk" })
-            vim.keymap.set('n', '[[', '[c', { buffer = bufnr, desc = "Prev Hunk" })
-          end,
-        },
-      }
-    end,
+      },
+    },
   },
   -- LazyGit
   {

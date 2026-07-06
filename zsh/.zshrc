@@ -145,3 +145,8 @@ fenv() {
 }
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# Force pi to use homebrew node, regardless of version manager shims
+pi () {
+  env PATH="/opt/homebrew/bin/node:$PATH" /opt/homebrew/bin/pi "$@"
+}

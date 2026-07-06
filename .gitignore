@@ -32,3 +32,4 @@ pi/.pi/agent/sessions
 agent-comments-2/node_modules
 **/tokens.json
 /pi-session-**
+agent-comments-2/tests/tmp

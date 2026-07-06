@@ -4,8 +4,7 @@
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "medium",
   "packages": [
-    "npm:pi-mcp-adapter",
-    "npm:pi-cursor-sdk"
+    "npm:pi-mcp-adapter"
   ],
   "enableInstallTelemetry": false,
   "defaultProjectTrust": "always",
