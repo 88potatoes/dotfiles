@@ -64,4 +64,5 @@ Short 8-char ID prefixes work for `comment_id`.
 
 - Do not run prettier/eslint after every small edit. Batch validation when useful, before handoff, or when explicitly requested.
 - **Never use barrel files** (`index.ts` that only re-exports from other files). Import directly from the source module instead.
+- If a function is used only once, do not extract it. Inline the logic instead.
 - Prefer object parameters for functions when it improves readability or future extensibility, including callbacks that may gain more fields later. Example: use `onSubmit({ optionId })` instead of `onSubmit(optionId)`.
