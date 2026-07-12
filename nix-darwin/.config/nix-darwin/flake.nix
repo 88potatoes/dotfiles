@@ -110,7 +110,6 @@
             stow
 
             # languages
-            pnpm
             openjdk
             lazygit
             gitleaks
@@ -138,6 +137,8 @@
               "raycast"
               "jetbrains-toolbox"
               "whatsapp"
+              "google-gemini"
+              "meetingbar"
               "opensuperwhisper"
             ];
           };
