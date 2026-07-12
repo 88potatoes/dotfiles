@@ -23,6 +23,7 @@
           nixpkgs.config.allowBroken = true;
 
           # ── Nix settings ──────────────────────────────────
+          nix.enable = false;
           nix.settings = {
             experimental-features = [ "nix-command" "flakes" ];
             auto-optimise-store = false;
@@ -85,7 +86,6 @@
             stow
 
             # languages
-            nodejs
             pnpm
             openjdk
             lazygit
@@ -154,7 +154,7 @@
           };
 
           # ── Users ─────────────────────────────────────────
-          users.users.ericlang.home = "/Users/ericlang";
+          users.users.eric.home = "/Users/eric";
 
           # ── Shell ──────────────────────────────────────────
           programs.zsh.enable = true;
@@ -172,7 +172,7 @@
           # If you want nix-managed zsh: sudo chsh -s /run/current-system/sw/bin/zsh
 
           # ── Services ───────────────────────────────────────
-          services.nix-daemon.enable = true;
+          # services.nix-daemon.enable = true;
           services.karabiner-elements.enable = false;
 
           # ── Sudo ───────────────────────────────────────────
@@ -189,9 +189,9 @@
             backupFileExtension = "backup";
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.ericlang = { pkgs, lib, ... }: {
+            users.eric = { pkgs, lib, ... }: {
               home.stateVersion = "24.11";
-              home.username = "ericlang";
+              home.username = "eric";
               home.packages = with pkgs; [
                 # User-level packages go here (not system-wide)
               ];
