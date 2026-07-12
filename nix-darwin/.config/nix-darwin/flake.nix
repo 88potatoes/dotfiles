@@ -247,10 +247,10 @@
                 run ${pkgs.mise}/bin/mise install
               '';
 
-              # Auto-install neovim 0.11.3 via bob
+              # Auto-install neovim via bob (version from ~/.config/bob/bob.yaml)
               home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                run ${pkgs.bob}/bin/bob install 0.11.3
-                run ${pkgs.bob}/bin/bob use 0.11.3
+                run ${pkgs.bob}/bin/bob install
+                run ${pkgs.bob}/bin/bob use
               '';
             };
           };
