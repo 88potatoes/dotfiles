@@ -15,12 +15,34 @@
     darwinConfigurations."Mac" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       specialArgs = { inherit inputs; };
+
       modules = [
         nix-homebrew.darwinModules.nix-homebrew
         home-manager.darwinModules.home-manager
-        ({ pkgs, inputs, ... }: {
+        ({ pkgs, inputs, ... }: let
+          # Build bob-nvim (neovim version manager) using unstable rust toolchain
+          # nixpkgs 24.11 has rustc 1.82, but bob-nvim needs >= 1.85
+          pkgs-unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.system; };
+          bob-nvim = pkgs-unstable.rustPlatform.buildRustPackage rec {
+            pname = "bob-nvim";
+            version = "4.1.7";
+            src = pkgs-unstable.fetchFromGitHub {
+              owner = "MordechaiHadad";
+              repo = "bob";
+              rev = "v${version}";
+              hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            };
+            cargoHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            meta.mainProgram = "bob";
+          };
+        in {
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowBroken = true;
+
+          # Add bob-nvim to pkgs via overlay so it's accessible everywhere
+          nixpkgs.overlays = [
+            (final: prev: { inherit bob-nvim; })
+          ];
 
           # ── Nix settings ──────────────────────────────────
           nix.settings = {
@@ -47,7 +69,7 @@
             btop
 
             # editors
-            bob
+            bob-nvim
 
             # file mgmt / tmux
             yazi
@@ -247,10 +269,10 @@
                 run ${pkgs.mise}/bin/mise install
               '';
 
-              # Auto-install neovim via bob (version from ~/.config/bob/bob.yaml)
+              # Auto-install neovim 0.11.3 via bob-nvim
               home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                run ${pkgs.bob}/bin/bob install
-                run ${pkgs.bob}/bin/bob use
+                run ${pkgs.bob-nvim}/bin/bob install 0.11.3
+                run ${pkgs.bob-nvim}/bin/bob use 0.11.3
               '';
             };
           };
