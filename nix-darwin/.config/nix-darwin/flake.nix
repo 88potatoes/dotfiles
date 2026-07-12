@@ -14,10 +14,11 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, darwin, nix-homebrew, home-manager }@inputs: {
     darwinConfigurations."Mac" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
+      specialArgs = { inherit inputs; };
       modules = [
         nix-homebrew.darwinModules.nix-homebrew
         home-manager.darwinModules.home-manager
-        ({ pkgs, ... }: {
+        ({ pkgs, inputs, ... }: {
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowBroken = true;
 
@@ -46,7 +47,7 @@
             btop
 
             # editors
-            neovim
+            bob
 
             # file mgmt / tmux
             yazi
@@ -244,6 +245,12 @@
               # Auto-install mise tools after config change
               home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
                 run ${pkgs.mise}/bin/mise install
+              '';
+
+              # Auto-install neovim 0.11.3 via bob
+              home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+                run ${pkgs.bob}/bin/bob install 0.11.3
+                run ${pkgs.bob}/bin/bob use 0.11.3
               '';
             };
           };
