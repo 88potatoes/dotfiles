@@ -112,7 +112,7 @@ fi
 
 
 # pnpm
-export PNPM_HOME="/Users/eric/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -121,7 +121,7 @@ esac
 
 
 # bun completions
-[ -s "/Users/eric/.bun/_bun" ] && source "/Users/eric/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -152,5 +152,5 @@ pi () {
 
 # Nix-darwin rebuild
 nix-reload() {
-  darwin-rebuild switch --flake /Users/ericlang/dotfiles/nix-darwin/.config/nix-darwin#Mac
+  darwin-rebuild switch --flake "$HOME/dotfiles/nix-darwin/.config/nix-darwin#Mac"
 }

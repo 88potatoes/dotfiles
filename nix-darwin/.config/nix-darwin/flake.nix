@@ -22,6 +22,13 @@
           nixpkgs.config.allowUnfree = true;
           nixpkgs.config.allowBroken = true;
 
+          # Expose nixpkgs-unstable as pkgs.unstable
+          nixpkgs.overlays = [
+            (final: prev: {
+              unstable = nixpkgs-unstable.legacyPackages.${prev.system};
+            })
+          ];
+
           # ── Nix settings ──────────────────────────────────
           nix.enable = false;
           nix.settings = {
@@ -48,7 +55,7 @@
             btop
 
             # editors
-            bob
+            pkgs.unstable.bob-nvim
 
             # file mgmt / tmux
             yazi
@@ -102,7 +109,9 @@
               upgrade = true;
               cleanup = "zap";
             };
-            brews = [];
+            brews = [
+              "worktrunk"
+            ];
             casks = [
               "karabiner-elements"
               "font-iosevka"
@@ -249,8 +258,8 @@
 
               # Auto-install neovim 0.11.3 via bob
               home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                run ${pkgs.bob}/bin/bob install 0.11.3
-                run ${pkgs.bob}/bin/bob use 0.11.3
+                run ${pkgs.unstable.bob-nvim}/bin/bob install 0.11.3
+                run ${pkgs.unstable.bob-nvim}/bin/bob use 0.11.3
               '';
             };
           };

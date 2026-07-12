@@ -1,0 +1,40 @@
+{
+  "providers": {
+    "baseten": {
+      "baseUrl": "https://inference.baseten.co/v1",
+      "api": "openai-completions",
+      "apiKey": "$BASETEN_API_KEY",
+      "compat": {
+        "supportsStore": false,
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": true,
+        "maxTokensField": "max_tokens",
+        "supportsStrictMode": false
+      },
+      "models": [
+        {
+          "id": "zai-org/GLM-5.2",
+          "name": "GLM 5.2 (Baseten)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": "high",
+            "minimal": "high",
+            "low": "high",
+            "medium": "high",
+            "high": "high",
+            "xhigh": "high"
+          },
+          "input": ["text"],
+          "contextWindow": 200000,
+          "maxTokens": 131072,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}
