@@ -4,7 +4,7 @@ import { execSync } from "node:child_process";
 export default function (pi: ExtensionAPI) {
   pi.registerCommand("address", {
     description: "Fetch unresolved agent-comments and ask the agent to address them",
-    handler: async (_args, ctx) => {
+    handler: async (args, ctx) => {
       let output: string;
       try {
         output = execSync("agent-comments get", {
@@ -24,7 +24,12 @@ export default function (pi: ExtensionAPI) {
 
       ctx.ui.notify(`Found comments, sending to agent`, "info");
 
-      pi.sendUserMessage(`please address these comments\n\n${output}`, {
+      const instruction = args.trim();
+      const prefix = instruction
+        ? `${instruction}\n\n`
+        : `please address these comments\n\n`;
+
+      pi.sendUserMessage(`${prefix}${output}`, {
         deliverAs: "followUp",
       });
     },

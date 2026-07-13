@@ -1,245 +1,10 @@
 -- agent-comments.nvim
 -- Shows inline agent comments from db.json as virtual text boxes
 
+local data = require("agent-comments.data")
+local render = require("agent-comments.render")
+
 local M = {}
-
-local ns = vim.api.nvim_create_namespace("agent_comments")
-
--- State
-M.enabled = true
-M.show_resolved = false -- false = unresolved only, true = all
-
--- ── Helpers ────────────────────────────────────────────────────────────
-
-local function get_repo_root()
-  local root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
-  if vim.v.shell_error ~= 0 or not root then
-    return vim.fn.getcwd()
-  end
-  return root
-end
-
-local function load_comments(show_all)
-  local cmd = "agent-comments get --view json"
-  if show_all then
-    cmd = cmd .. " -s all"
-  end
-  local result = vim.fn.system(cmd)
-  if vim.v.shell_error ~= 0 then
-    vim.notify("agent-comments: " .. vim.trim(result), vim.log.levels.WARN)
-    return {}
-  end
-  local ok, data = pcall(vim.json.decode, result)
-  if not ok or not data or not data.comments then
-    return {}
-  end
-  return data.comments
-end
-
-local function get_file_comments(bufnr)
-  local root = get_repo_root()
-  local buf_path = vim.api.nvim_buf_get_name(bufnr)
-  if buf_path == "" then
-    return {}
-  end
-
-  -- Make relative to repo root
-  local rel_path = vim.fn.fnamemodify(buf_path, ":.")
-  -- Also try relative from repo root
-  if buf_path:sub(1, #root) == root then
-    rel_path = buf_path:sub(#root + 2)
-  end
-
-  local all = load_comments(M.show_resolved)
-  local result = {}
-  for _, c in ipairs(all) do
-    if c.file == rel_path then
-      if M.show_resolved or c.status == "active" then
-        table.insert(result, c)
-      end
-    end
-  end
-  return result
-end
-
--- ── Highlight Groups ───────────────────────────────────────────────────
-
-local function setup_highlights()
-  -- Active comment box
-  vim.api.nvim_set_hl(0, "AgentCommentBox", { bg = "#1a2332", fg = "#8db4e6" })
-  vim.api.nvim_set_hl(0, "AgentCommentBorder", { fg = "#3d5a80" })
-  vim.api.nvim_set_hl(0, "AgentCommentIcon", { fg = "#58a6ff" })
-  vim.api.nvim_set_hl(0, "AgentCommentText", { bg = "#1a2332", fg = "#c0cfe0" })
-  -- Resolved comment box
-  vim.api.nvim_set_hl(0, "AgentCommentResolved", { bg = "#1a2a1a", fg = "#6dba6d" })
-  vim.api.nvim_set_hl(0, "AgentCommentResolvedText", { bg = "#1a2a1a", fg = "#9abd9a" })
-  -- Line highlight for commented lines
-  vim.api.nvim_set_hl(0, "AgentCommentLine", { bg = "#141d2b" })
-  vim.api.nvim_set_hl(0, "AgentCommentLineResolved", { bg = "#142014" })
-end
-
-local function word_wrap(text, max_width)
-  local lines = {}
-  for _, paragraph in ipairs(vim.split(text, "\n")) do
-    if #paragraph == 0 then
-      table.insert(lines, "")
-    else
-      while #paragraph > max_width do
-        -- Find a space to break at within max_width
-        local segment = paragraph:sub(1, max_width)
-        local space_idx = segment:match("^.+"):find(" +$")
-        -- Actually just find last space in the segment
-        local last_space = nil
-        for i = #segment, 1, -1 do
-          if segment:sub(i, i) == " " then
-            last_space = i
-            break
-          end
-        end
-        if last_space then
-          table.insert(lines, segment:sub(1, last_space - 1))
-          paragraph = paragraph:sub(last_space + 1):match("^%s*(.*)") or ""
-        else
-          -- No space found, hard break at max_width
-          table.insert(lines, segment)
-          paragraph = paragraph:sub(max_width + 1)
-        end
-      end
-      if #paragraph > 0 then
-        local trimmed = paragraph:match("^%s*(.*)") or paragraph
-        if #trimmed > 0 then
-          table.insert(lines, trimmed)
-        end
-      end
-    end
-  end
-  return lines
-end
-
--- ── Rendering ──────────────────────────────────────────────────────────
-
-local function render_comment(bufnr, comment)
-  local line = comment.endLine - 1 -- 0-indexed, show below endLine
-  local line_count = vim.api.nvim_buf_line_count(bufnr)
-  if line >= line_count then
-    line = line_count - 1
-  end
-  if line < 0 then
-    line = 0
-  end
-
-  local is_resolved = comment.status == "resolved"
-  local icon = is_resolved and " ✓" or " ●"
-  local border_hl = "AgentCommentBorder"
-  local icon_hl = is_resolved and "AgentCommentResolved" or "AgentCommentIcon"
-  local text_hl = is_resolved and "AgentCommentResolvedText" or "AgentCommentText"
-  local line_hl = is_resolved and "AgentCommentLineResolved" or "AgentCommentLine"
-
-  -- Highlight the commented lines
-  for l = (comment.startLine - 1), math.min(comment.endLine - 1, line_count - 1) do
-    vim.api.nvim_buf_set_extmark(bufnr, ns, l, 0, {
-      line_hl_group = line_hl,
-      priority = 10,
-    })
-  end
-
-  -- Build box lines
-  local raw_msg_lines = vim.split(comment.message, "\n")
-  local short_id = comment.id:sub(1, 8)
-  local max_width = 60 -- cap box width for wrapping
-  for _, ml in ipairs(raw_msg_lines) do
-    if #ml > max_width then
-      max_width = 60
-      break
-    end
-  end
-  local header = icon .. " " .. short_id
-  if #header > max_width then
-    max_width = #header
-  end
-  max_width = math.max(max_width, 30)
-
-  -- Wrap long messages
-  local msg_lines = {}
-  for _, ml in ipairs(raw_msg_lines) do
-    local wrapped = word_wrap(ml, max_width)
-    for _, wl in ipairs(wrapped) do
-      table.insert(msg_lines, wl)
-    end
-  end
-
-  local pad = "  " -- left padding to indent the box
-
-  -- Top border
-  local virt_lines = {}
-  table.insert(virt_lines, {
-    { pad, "Normal" },
-    { "╭" .. string.rep("─", max_width + 2) .. "╮", border_hl },
-  })
-
-  -- Header line
-  local header_pad = string.rep(" ", max_width - #header + 2)
-  table.insert(virt_lines, {
-    { pad, "Normal" },
-    { "│", border_hl },
-    { icon, icon_hl },
-    { " " .. short_id .. header_pad, text_hl },
-    { "│", border_hl },
-  })
-
-  -- Separator
-  table.insert(virt_lines, {
-    { pad, "Normal" },
-    { "├" .. string.rep("─", max_width + 2) .. "┤", border_hl },
-  })
-
-  -- Message lines
-  for _, ml in ipairs(msg_lines) do
-    local msg_pad = string.rep(" ", max_width - #ml + 1)
-    table.insert(virt_lines, {
-      { pad, "Normal" },
-      { "│", border_hl },
-      { " " .. ml .. msg_pad, text_hl },
-      { "│", border_hl },
-    })
-  end
-
-  -- Bottom border
-  table.insert(virt_lines, {
-    { pad, "Normal" },
-    { "╰" .. string.rep("─", max_width + 2) .. "╯", border_hl },
-  })
-
-  vim.api.nvim_buf_set_extmark(bufnr, ns, line, 0, {
-    virt_lines = virt_lines,
-    virt_lines_above = false,
-    priority = 100,
-  })
-end
-
-function M.render(bufnr)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
-  vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-
-  if not M.enabled then
-    return
-  end
-
-  local comments = get_file_comments(bufnr)
-  for _, c in ipairs(comments) do
-    render_comment(bufnr, c)
-  end
-end
-
--- Render all visible buffers
-function M.render_all()
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].buflisted then
-      M.render(bufnr)
-    end
-  end
-end
 
 -- ── Actions ────────────────────────────────────────────────────────────
 
@@ -300,7 +65,7 @@ function M.add()
     local cmd = string.format("agent-comments add %s %s %s", vim.fn.shellescape(file), lines_arg, vim.fn.shellescape(message))
     local result = vim.fn.system(cmd)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
-    M.render()
+    render.render()
   end
 
   local function cancel()
@@ -336,7 +101,7 @@ end
 -- Pick a comment on the current file to resolve
 function M.resolve_pick()
   local bufnr = vim.api.nvim_get_current_buf()
-  local comments = get_file_comments(bufnr)
+  local comments = data.get_file_comments(bufnr, render.show_resolved)
   local active = vim.tbl_filter(function(c) return c.status == "active" end, comments)
 
   if #active == 0 then
@@ -355,7 +120,7 @@ function M.resolve_pick()
     local cid = c.id:sub(1, 8)
     local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
-    M.render()
+    render.render()
     return
   end
 
@@ -378,14 +143,14 @@ function M.resolve_pick()
     local cid = choice.id:sub(1, 8)
     local result = vim.fn.system("agent-comments resolve " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
-    M.render()
+    render.render()
   end)
 end
 
 -- Delete a comment — pick from current file
 function M.delete_pick()
   local bufnr = vim.api.nvim_get_current_buf()
-  local comments = get_file_comments(bufnr)
+  local comments = data.get_file_comments(bufnr, render.show_resolved)
 
   if #comments == 0 then
     vim.notify("No comments in this file", vim.log.levels.INFO)
@@ -410,20 +175,20 @@ function M.delete_pick()
     local cid = choice.id:sub(1, 8)
     local result = vim.fn.system("agent-comments delete " .. cid)
     vim.notify(vim.trim(result), vim.log.levels.INFO)
-    M.render()
+    render.render()
   end)
 end
 
 -- ── Quickfix ───────────────────────────────────────────────────────────
 
 function M.quickfix()
-  local comments = load_comments(M.show_resolved)
+  local comments = data.load_comments(render.show_resolved)
   if #comments == 0 then
     vim.notify("No agent comments", vim.log.levels.INFO)
     return
   end
 
-  local root = get_repo_root()
+  local root = data.get_repo_root()
   local items = {}
   for _, c in ipairs(comments) do
     local filepath = root .. "/" .. c.file
@@ -445,27 +210,27 @@ end
 -- ── Commands ───────────────────────────────────────────────────────────
 
 function M.toggle()
-  M.enabled = not M.enabled
-  M.render_all()
-  local state = M.enabled and "ON" or "OFF"
+  render.enabled = not render.enabled
+  render.render_all()
+  local state = render.enabled and "ON" or "OFF"
   vim.notify("Agent comments: " .. state, vim.log.levels.INFO)
 end
 
 function M.toggle_resolved()
-  M.show_resolved = not M.show_resolved
-  M.render_all()
-  local state = M.show_resolved and "all" or "unresolved only"
+  render.show_resolved = not render.show_resolved
+  render.render_all()
+  local state = render.show_resolved and "all" or "unresolved only"
   vim.notify("Agent comments: showing " .. state, vim.log.levels.INFO)
 end
 
 function M.refresh()
-  M.render_all()
+  render.render_all()
 end
 
 -- ── Setup ──────────────────────────────────────────────────────────────
 
 function M.setup()
-  setup_highlights()
+  render.setup_highlights()
 
   -- Auto-render on buffer enter/read
   local group = vim.api.nvim_create_augroup("AgentComments", { clear = true })
@@ -475,7 +240,7 @@ function M.setup()
       -- Small delay so buffer content is ready
       vim.defer_fn(function()
         if vim.api.nvim_buf_is_valid(ev.buf) then
-          M.render(ev.buf)
+          render.render(ev.buf)
         end
       end, 50)
     end,
@@ -485,7 +250,7 @@ function M.setup()
   vim.api.nvim_create_autocmd("FocusGained", {
     group = group,
     callback = function()
-      M.render_all()
+      render.render_all()
     end,
   })
 

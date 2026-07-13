@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.79.1",
-  "defaultProvider": "openai",
-  "defaultModel": "gpt-5.5",
+  "defaultProvider": "baseten",
+  "defaultModel": "zai-org/GLM-5.2",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:pi-mcp-adapter"
