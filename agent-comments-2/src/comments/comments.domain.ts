@@ -1,6 +1,7 @@
 export enum CommentStatus {
   Active = "active",
   Resolved = "resolved",
+  Draft = "draft",
 }
 
 export type OptionalField<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;

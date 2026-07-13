@@ -3,6 +3,8 @@
 
 local data = require("agent-comments.data")
 local render = require("agent-comments.render")
+local service = require("agent-comments.service")
+local ui = require("agent-comments.ui")
 
 local M = {}
 
@@ -26,76 +28,19 @@ function M.add()
   local lines_arg = start_line == end_line and tostring(start_line) or (start_line .. ":" .. end_line)
   local lines_label = start_line == end_line and ("L" .. start_line) or ("L" .. start_line .. "-" .. end_line)
 
-  -- Create floating buffer at bottom of screen
-  local width = vim.o.columns - 4
-  local height = 5
-  local buf = vim.api.nvim_create_buf(false, true)
-  local win = vim.api.nvim_open_win(buf, true, {
-    relative = "editor",
-    row = vim.o.lines - height - 3,
-    col = 2,
-    width = width,
-    height = height,
-    style = "minimal",
-    border = "rounded",
-    title = " 💬 Comment on " .. vim.fn.fnamemodify(file, ":t") .. ":" .. lines_label .. " ",
-    title_pos = "left",
+  ui.open_comment_editor({
+    file = file,
+    lines_label = lines_label,
+    on_submit = function(message)
+      local result = service.add(file, lines_arg, message)
+      vim.notify(result, vim.log.levels.INFO)
+      render.render()
+    end,
+    on_cancel_draft = function(message)
+      local result = service.add(file, lines_arg, message, { draft = true })
+      vim.notify("Comment cancelled — draft saved: " .. result, vim.log.levels.WARN)
+    end,
   })
-
-  vim.bo[buf].buftype = "nofile"
-  vim.bo[buf].filetype = "markdown"
-  vim.wo[win].wrap = true
-  vim.wo[win].winhl = "Normal:AgentCommentText,FloatBorder:AgentCommentBorder,FloatTitle:AgentCommentIcon"
-
-  -- Start in insert mode
-  vim.cmd("startinsert")
-
-  -- Submit with <CR> in normal mode, <C-CR> or <C-s> in insert mode
-  local function submit()
-    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-    local message = vim.trim(table.concat(lines, "\n"))
-    vim.api.nvim_win_close(win, true)
-    vim.api.nvim_buf_delete(buf, { force = true })
-
-    if message == "" then
-      vim.notify("Comment cancelled (empty)", vim.log.levels.WARN)
-      return
-    end
-
-    local cmd = string.format("agent-comments add %s %s %s", vim.fn.shellescape(file), lines_arg, vim.fn.shellescape(message))
-    local result = vim.fn.system(cmd)
-    vim.notify(vim.trim(result), vim.log.levels.INFO)
-    render.render()
-  end
-
-  local function cancel()
-    vim.api.nvim_win_close(win, true)
-    vim.api.nvim_buf_delete(buf, { force = true })
-    vim.notify("Comment cancelled", vim.log.levels.INFO)
-  end
-
-  local opts = { buffer = buf, silent = true }
-  -- Submit
-  vim.keymap.set("n", "<CR>", submit, opts)
-  vim.keymap.set("i", "<C-s>", submit, opts)
-  vim.keymap.set("n", "<C-s>", submit, opts)
-  -- Cancel with draft save: removes q and <Esc> (too easy to fat-finger),
-  -- uses <C-c> and :cq instead. <Esc> just exits to normal mode.
-  local function cancel_with_draft()
-    local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-    local text = table.concat(lines, "\n")
-    local trimmed = vim.trim(text)
-    if trimmed ~= "" then
-      local draft_dir = vim.fn.expand("~/.local/share/agent-comments/drafts")
-      vim.fn.mkdir(draft_dir, "p")
-      local draft_file = draft_dir .. "/" .. os.date("%Y%m%d-%H%M%S") .. "-" .. file:gsub("/", "_")
-      vim.fn.writefile(vim.split(text, "\n"), draft_file)
-      vim.notify("Comment cancelled — draft saved to " .. draft_file, vim.log.levels.WARN)
-    end
-    vim.api.nvim_win_close(win, true)
-    vim.api.nvim_buf_delete(buf, { force = true })
-  end
-  vim.keymap.set({ "n", "i" }, "<C-q>", cancel_with_draft, opts)
 end
 
 -- Pick a comment on the current file to resolve
@@ -118,8 +63,8 @@ function M.resolve_pick()
   if #under_cursor == 1 then
     local c = under_cursor[1]
     local cid = c.id:sub(1, 8)
-    local result = vim.fn.system("agent-comments resolve " .. cid)
-    vim.notify(vim.trim(result), vim.log.levels.INFO)
+    local result = service.resolve(cid)
+    vim.notify(result, vim.log.levels.INFO)
     render.render()
     return
   end
@@ -141,8 +86,8 @@ function M.resolve_pick()
   }, function(choice)
     if not choice then return end
     local cid = choice.id:sub(1, 8)
-    local result = vim.fn.system("agent-comments resolve " .. cid)
-    vim.notify(vim.trim(result), vim.log.levels.INFO)
+    local result = service.resolve(cid)
+    vim.notify(result, vim.log.levels.INFO)
     render.render()
   end)
 end
@@ -173,8 +118,8 @@ function M.delete_pick()
   }, function(choice)
     if not choice then return end
     local cid = choice.id:sub(1, 8)
-    local result = vim.fn.system("agent-comments delete " .. cid)
-    vim.notify(vim.trim(result), vim.log.levels.INFO)
+    local result = service.delete(cid)
+    vim.notify(result, vim.log.levels.INFO)
     render.render()
   end)
 end

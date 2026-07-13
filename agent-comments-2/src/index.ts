@@ -36,30 +36,26 @@ program
 program
   .command("add <file> <lines> <message>")
   .description("Add a comment")
+  .option("-d, --draft", "Save as a draft instead of an active comment")
   .action(
-    wrap(async (file: string, lines: string, message: string) => {
-      console.log("FILE:", file);
+    wrap(async (file: string, lines: string, message: string, options: { draft?: boolean }) => {
       const lineRange = parseLineInput(lines);
+      const startLine =
+        lineRange.type === LineRangeType.Single ? lineRange.line : lineRange.startLine;
+      const endLine =
+        lineRange.type === LineRangeType.Single ? lineRange.line : lineRange.endLine;
+      const label = startLine === endLine ? `${startLine}` : `${startLine}-${endLine}`;
 
-      if (lineRange.type === LineRangeType.Single) {
-        const comment = await service.addComment({
-          file,
-          startLine: lineRange.line,
-          endLine: lineRange.line,
-          message,
-        });
-        console.log(`Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.line}`);
-      } else {
-        const comment = await service.addComment({
-          file,
-          startLine: lineRange.startLine,
-          endLine: lineRange.endLine,
-          message,
-        });
-        console.log(
-          `Added ${comment.id.slice(0, 8)} at ${file}:${lineRange.startLine}-${lineRange.endLine}`,
-        );
-      }
+      const comment = await service.addComment({
+        file,
+        startLine,
+        endLine,
+        message,
+        status: options.draft ? CommentStatus.Draft : CommentStatus.Active,
+      });
+
+      const verb = options.draft ? "Draft" : "Added";
+      console.log(`${verb} ${comment.id.slice(0, 8)} at ${file}:${label}`);
     }),
   );
 
@@ -140,7 +136,7 @@ program
   .command("get")
   .description("Get comments")
   .option("-f, --file <file>", "Filter by file path")
-  .option("-s, --status <status>", "Filter by status: resolved, active, or all (default: active)")
+  .option("-s, --status <status>", "Filter by status: resolved, active, draft, or all (default: active)")
   .option("--view <view>", "Output format: default, graph, or json", "default")
   .action(
     wrap(async (options) => {
@@ -156,8 +152,10 @@ program
         filter.status = CommentStatus.Active;
       } else if (options.status === "all") {
         filter.status = undefined;
+      } else if (options.status === "draft") {
+        filter.status = CommentStatus.Draft;
       } else if (options.status) {
-        throw new Error(`Invalid status: "${options.status}". Use resolved, active, or all.`);
+        throw new Error(`Invalid status: "${options.status}". Use resolved, active, draft, or all.`);
       }
 
       const comments = await service.getAllComments(filter);
