@@ -142,6 +142,7 @@
               "whatsapp"
               "google-gemini"
               "meetingbar"
+              "surfshark"
               "opensuperwhisper"
             ];
           };
