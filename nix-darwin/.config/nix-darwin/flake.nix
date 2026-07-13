@@ -109,6 +109,9 @@
             zsh-syntax-highlighting
             stow
 
+            # editor tooling
+            nodePackages.eslint_d
+
             # languages
             openjdk
             lazygit
@@ -272,6 +275,16 @@
               # Auto-install mise tools after config change
               home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
                 run ${pkgs.mise}/bin/mise install
+              '';
+
+              # Keep corepack pnpm/pnpx shims available for every mise-installed Node.
+              home.activation.enableCorepackPnpmForMiseNodes = lib.hm.dag.entryAfter [ "installMiseTools" ] ''
+                for node_dir in "$HOME/.local/share/mise/installs/node"/*; do
+                  if [ -d "$node_dir" ] && [ ! -L "$node_dir" ] && [ -f "$node_dir/lib/node_modules/corepack/dist/pnpm.js" ]; then
+                    run ln -sf ../lib/node_modules/corepack/dist/pnpm.js "$node_dir/bin/pnpm"
+                    run ln -sf ../lib/node_modules/corepack/dist/pnpx.js "$node_dir/bin/pnpx"
+                  fi
+                done
               '';
 
               # Auto-install neovim 0.11.3 via bob-nvim
