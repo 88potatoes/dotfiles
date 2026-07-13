@@ -60,6 +60,7 @@
             curl
             wget
             git
+            gh
             gnugrep
             gnused
             jq
