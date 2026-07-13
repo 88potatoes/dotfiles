@@ -127,8 +127,13 @@ esac
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-eval "$(mise activate zsh)"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
+eval "$(mise activate zsh)"
+# Apply mise env immediately. Otherwise fresh shells can show a prompt before the
+# first precmd/chpwd hook adds repo-local tools like node from .nvmrc.
+if typeset -f _mise_hook >/dev/null; then
+  _mise_hook
+fi
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export DOCKER_HOST=unix://${HOME}/.colima/default/docker.sock

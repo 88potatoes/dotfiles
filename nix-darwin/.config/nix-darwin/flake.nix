@@ -285,6 +285,7 @@
                     run ln -sf ../lib/node_modules/corepack/dist/pnpx.js "$node_dir/bin/pnpx"
                   fi
                 done
+                run ${pkgs.mise}/bin/mise reshim node
               '';
 
               # Auto-install neovim 0.11.3 via bob-nvim
