@@ -53,6 +53,9 @@ if [ -d /run/current-system/sw/bin ]; then
   export PATH="/run/current-system/sw/bin:$PATH"
 fi
 
+# editor
+alias v='nvim'
+
 # git
 gcam='git commit -a -m'
 alias gs='git status'
@@ -94,10 +97,10 @@ function y() {
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 # Zsh plugins (from nixpkgs)
-for f in /nix/store/*-zsh-autosuggestions*/share/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+for f in /nix/store/*-zsh-autosuggestions*/share/zsh-autosuggestions/zsh-autosuggestions.zsh(N); do
   [[ -f $f ]] && source $f && break
 done
-for f in /nix/store/*-zsh-syntax-highlighting*/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh; do
+for f in /nix/store/*-zsh-syntax-highlighting*/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh(N); do
   [[ -f $f ]] && source $f && break
 done
 
