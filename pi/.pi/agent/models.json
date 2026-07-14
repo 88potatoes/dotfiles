@@ -1,5 +1,33 @@
 {
   "providers": {
+    "fireworks": {
+      "baseUrl": "https://api.fireworks.ai/inference/v1",
+      "api": "openai-completions",
+      "apiKey": "$FIREWORKS_API_KEY",
+      "compat": {
+        "supportsStore": false,
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "maxTokensField": "max_tokens",
+        "supportsStrictMode": false
+      },
+      "models": [
+        {
+          "id": "accounts/fireworks/models/minimax-m3",
+          "name": "MiniMax M3 (Fireworks)",
+          "reasoning": false,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0.3,
+            "output": 1.2,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
     "baseten": {
       "baseUrl": "https://inference.baseten.co/v1",
       "api": "openai-completions",
