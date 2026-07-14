@@ -94,7 +94,7 @@
             zsh-syntax-highlighting
             stow
             go-task
-            awscli
+            awscli2
 
             # editor tooling
             nodePackages.eslint_d
