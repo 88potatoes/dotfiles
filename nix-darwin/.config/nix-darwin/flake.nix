@@ -93,6 +93,8 @@
             zsh-autosuggestions
             zsh-syntax-highlighting
             stow
+            go-task
+            awscli
 
             # editor tooling
             nodePackages.eslint_d
