@@ -7,6 +7,10 @@
   "author": "",
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "agent-comments": "dist/agent-comments",
+    "aco": "dist/agent-comments"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
