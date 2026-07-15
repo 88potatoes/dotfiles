@@ -35,6 +35,13 @@
 
 Run `agent-comments help` at session start to learn the CLI interface. All communication goes through the CLI.
 
+## Bash Tool (timeouts)
+
+- Every `bash` call gets a timeout. The `bash-timeout` extension sets a default of 5 min, bumps anything `<= 1s` up to that default, and hard-caps at 30 min.
+- For known-slow ops (`pnpm install`, full `pnpm test`, `cargo build/test`, `pnpm e2e`, etc.), pass an explicit `timeout` (seconds) sized for the job. Don't rely on the default for those.
+- If a command times out, narrow it (smaller surface, more flags) or raise the timeout explicitly — don't loop re-running it.
+- Read, write, edit, and other non-bash tools have their own internal limits; no extension hook required.
+
 ## TypeScript / JavaScript
 
 - Do not run prettier/eslint after every small edit. Batch validation when useful, before handoff, or when explicitly requested.
