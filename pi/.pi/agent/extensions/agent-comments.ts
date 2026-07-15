@@ -29,7 +29,11 @@ export default function (pi: ExtensionAPI) {
         ? `${instruction}\n\n`
         : `please address these comments\n\n`;
 
-      pi.sendUserMessage(`${prefix}${output}`, {
+      // Remind the agent to resolve each comment it addressed via the CLI,
+      // so /address closes the loop instead of leaving stale active threads.
+      const suffix = `\n\nafter addressing each comment (and once any smoke checks pass), resolve it by running \`agent-comments resolve <comment_id>\` — multiple IDs are accepted in one call, or pass \`--all\` to resolve every active comment.`;
+
+      pi.sendUserMessage(`${prefix}${output}${suffix}`, {
         deliverAs: "followUp",
       });
     },
