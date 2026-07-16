@@ -105,6 +105,7 @@
             gitleaks
             pre-commit
             just
+            postgresql   # psql client
           ];
 
           # ── Homebrew (casks only – GUI apps not in nixpkgs) ──
