@@ -131,6 +131,7 @@
               "google-gemini"
               "meetingbar"
               "surfshark"
+              "notion"
               "opensuperwhisper"
             ];
           };
