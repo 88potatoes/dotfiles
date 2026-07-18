@@ -110,6 +110,14 @@ require("lazy").setup({
           width = 35,
         },
       },
+      hooks = {
+        diff_buf_win_enter = function(_, winid, _)
+          -- Turn off cursor line for diffview windows because of bg conflict
+          -- https://github.com/neovim/neovim/issues/9800
+          vim.wo[winid].culopt = 'number'
+        end,
+      },
+      enhanced_diff_hl = true,
     },
   },
   -- LazyGit
@@ -170,11 +178,11 @@ require("lazy").setup({
     config = function()
       vim.cmd.colorscheme 'tokyonight-night'
 
-      -- Softer diff backgrounds for diffview
-      vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#1a2f1a" })
-      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2f1a1a" })
-      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1a1a2f" })
-      vim.api.nvim_set_hl(0, "DiffText", { bg = "#2a2a4f" })
+      -- -- Softer diff backgrounds for diffview
+      -- vim.api.nvim_set_hl(0, "DiffAdd", { bg = "#1a2f1a" })
+      -- vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#2f1a1a" })
+      -- vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1a1a2f" })
+      -- vim.api.nvim_set_hl(0, "DiffText", { bg = "#2a2a4f" })
     end
   },
   {
