@@ -24,23 +24,16 @@ function M.get_file_comments(bufnr, show_resolved)
     return {}
   end
 
-  -- Make relative to repo root
-  local rel_path = vim.fn.fnamemodify(buf_path, ":.")
-  -- Also try relative from repo root
+  -- CLI stores paths relative to repo root
+  local rel_path = buf_path
   if buf_path:sub(1, #root) == root then
     rel_path = buf_path:sub(#root + 2)
   end
 
-  local all = M.load_comments(show_resolved)
-  local result = {}
-  for _, c in ipairs(all) do
-    if c.file == rel_path then
-      if show_resolved or c.status == "active" then
-        table.insert(result, c)
-      end
-    end
-  end
-  return result
+  return service.get({
+    status = show_resolved and "all" or nil,
+    file = rel_path,
+  })
 end
 
 return M
