@@ -110,11 +110,6 @@ require("lazy").setup({
           width = 35,
         },
       },
-      hooks = {
-        diff_buf_read = function(bufnr)
-          vim.opt_local.foldlevel = 99
-        end,
-      },
     },
   },
   -- LazyGit
@@ -245,7 +240,6 @@ require("lazy").setup({
       },
     },
   },
-  { "chrisgrieser/nvim-spider", lazy = true },
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
