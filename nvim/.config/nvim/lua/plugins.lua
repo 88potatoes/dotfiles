@@ -11,13 +11,6 @@ require("lazy").setup({
     "88potatoes/agent-comments.nvim",
     dir = vim.fn.expand("~/Code/agent-comments.nvim"),
     config = function()
-      if vim.fn.executable("agent-comments") == 0 then
-        vim.notify(
-          "agent-comments.nvim: CLI not found. Install with: npm install -g agent-comments",
-          vim.log.levels.WARN
-        )
-        return
-      end
       require("agent-comments").setup()
     end,
   },
