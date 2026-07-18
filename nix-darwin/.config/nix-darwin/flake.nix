@@ -1,5 +1,5 @@
 {
-  description = "Eric's Darwin system";
+  description = "Eric's Darwin system (multi-machine)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
@@ -11,282 +11,288 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, nix-homebrew, home-manager }@inputs: {
-    darwinConfigurations."Mac" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      specialArgs = { inherit inputs; };
+  outputs = { self, nixpkgs, nixpkgs-unstable, darwin, nix-homebrew, home-manager }@inputs:
+  let
+    # ── Shared system module (parameterized by username) ──────
+    sharedSystemModule = username: { pkgs, inputs, ... }: {
+      nixpkgs.config.allowUnfree = true;
+      nixpkgs.config.allowBroken = true;
 
-      modules = [
-        nix-homebrew.darwinModules.nix-homebrew
-        home-manager.darwinModules.home-manager
-        ({ pkgs, inputs, ... }: {
-          nixpkgs.config.allowUnfree = true;
-          nixpkgs.config.allowBroken = true;
-
-          # Expose nixpkgs-unstable as pkgs.unstable
-          nixpkgs.overlays = [
-            (final: prev: {
-              unstable = nixpkgs-unstable.legacyPackages.${prev.system};
-            })
-          ];
-
-          # ── Nix settings ──────────────────────────────────
-          nix.enable = false;
-          nix.settings = {
-            experimental-features = [ "nix-command" "flakes" ];
-            auto-optimise-store = false;
-          };
-
-          # ── System packages (CLI + GUI) ─────────────────────
-          environment.systemPackages = with pkgs; [
-            # shell / core
-            coreutils
-            curl
-            wget
-            git
-            gh
-            gnugrep
-            gnused
-            jq
-            yq
-            ripgrep
-            fd
-
-            # monitoring
-            htop
-            btop
-
-            # editors
-            pkgs.unstable.bob-nvim
-
-            # file mgmt / tmux
-            yazi
-            zellij
-            lazygit
-
-            # nix utils
-            nix-output-monitor  # nom, pretty nix build output
-            nix-tree
-            comma             # ,  – run any package by name
-
-            # GUI apps (from nixpkgs)
-            alacritty
-            spotify
-            vscode
-            obsidian
-            signal-desktop
-            maccy
-            iina
-            brave
-            kitty
-            rectangle
-
-            # fonts (installed via brew)
-
-            # Note: bitwarden, ghostty, 1password, raycast, jetbrains-toolbox, whatsapp not in nixpkgs.
-            # Managed via brew casks below.
-
-            starship
-            fzf
-            zoxide
-            mise
-            zsh-autosuggestions
-            zsh-syntax-highlighting
-            stow
-            go-task
-            awscli2
-
-            # editor tooling
-            nodePackages.eslint_d
-
-            # languages
-            openjdk
-            lazygit
-            gitleaks
-            pre-commit
-            just
-            postgresql   # psql client
-          ];
-
-          # ── Homebrew (casks only – GUI apps not in nixpkgs) ──
-          homebrew = {
-            enable = true;
-            onActivation = {
-              autoUpdate = true;
-              upgrade = true;
-              cleanup = "zap";
-            };
-            brews = [
-              "worktrunk"
-            ];
-            casks = [
-              "karabiner-elements"
-              "font-iosevka"
-              "bitwarden"
-              "ghostty"
-              "1password"
-              "raycast"
-              "jetbrains-toolbox"
-              "whatsapp"
-              "google-gemini"
-              "meetingbar"
-              "surfshark"
-              "notion"
-              "opensuperwhisper"
-            ];
-          };
-
-          # ── macOS system defaults ─────────────────────────
-          system.defaults = {
-            dock = {
-              autohide = true;
-              autohide-delay = 0.0;
-              autohide-time-modifier = 0.3;
-              minimize-to-application = true;
-              show-recents = false;
-              static-only = true;
-            };
-
-            finder = {
-              AppleShowAllExtensions = true;
-              AppleShowAllFiles = false;
-              ShowPathbar = true;
-              ShowStatusBar = true;
-              FXPreferredViewStyle = "Nlsv"; # list view
-            };
-
-            NSGlobalDomain = {
-              AppleShowAllExtensions = true;
-              AppleShowScrollBars = "Always";
-              NSAutomaticCapitalizationEnabled = false;
-              NSAutomaticDashSubstitutionEnabled = false;
-              NSAutomaticPeriodSubstitutionEnabled = false;
-              NSAutomaticQuoteSubstitutionEnabled = false;
-              NSAutomaticSpellingCorrectionEnabled = false;
-              NSNavPanelExpandedStateForSaveMode = true;
-              NSNavPanelExpandedStateForSaveMode2 = true;
-            };
-
-            trackpad = {
-              Clicking = true;
-              TrackpadThreeFingerDrag = true;
-            };
-          };
-
-          # ── Users ─────────────────────────────────────────
-          users.users.eric.home = "/Users/eric";
-
-          # ── Shell ──────────────────────────────────────────
-          programs.zsh.enable = true;
-          environment.shells = [ pkgs.zsh ];
-
-          # ── Environment ─────────────────────────────────────
-          environment.variables = {
-            NPM_CONFIG_PREFIX = "$HOME/.npm-global";
-          };
-          # Add npm global bin to PATH
-          programs.zsh.interactiveShellInit = ''
-            export PATH="$HOME/.npm-global/bin:$PATH"
-          '';
-          # Don't set default shell – macOS manages that.
-          # If you want nix-managed zsh: sudo chsh -s /run/current-system/sw/bin/zsh
-
-          # ── Services ───────────────────────────────────────
-          # services.nix-daemon.enable = true;
-          services.karabiner-elements.enable = false;
-
-          # ── Sudo ───────────────────────────────────────────
-          security.sudo.extraConfig = ''
-            # Allow darwin-rebuild without password
-            %admin ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
-          '';
-
-          # ── State version ──────────────────────────────────
-          system.stateVersion = 5; # nix-darwin version, not macOS
-
-          # ── Home Manager (user-level config) ──────────────
-          home-manager = {
-            backupFileExtension = "backup";
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.eric = { pkgs, lib, ... }: {
-              home.stateVersion = "24.11";
-              home.username = "eric";
-              home.packages = with pkgs; [
-                # User-level packages go here (not system-wide)
-              ];
-
-              xdg.configFile = {
-                "yazi/yazi.toml".source = ./home/yazi/yazi.toml;
-                "yazi/theme.toml".source = ./home/yazi/theme.toml;
-
-                "btop/btop.conf".source = ./home/btop/btop.conf;
-
-                "kitty/kitty.conf".source = ./home/kitty/kitty.conf;
-
-                "lazygit/config.yml".source = ./home/lazygit/config.yml;
-
-                "zellij/config.kdl".source = ./home/zellij/config.kdl;
-                "zellij/layouts/blog.kdl".source = ./home/zellij/layouts/blog.kdl;
-                "zellij/open_blog" = {
-                  source = ./home/zellij/open_blog;
-                  executable = true;
-                };
-
-                "ghostty/config".source = ./home/ghostty/config;
-
-                "karabiner/karabiner.json".source = ./home/karabiner/karabiner.json;
-
-                "cmux/cmux.json".source = ./home/cmux/cmux.json;
-              };
-
-              home.file = {
-                ".zshrc".source = ./home/zsh/.zshrc;
-              };
-
-              programs.brave = {
-                enable = true;
-                extensions = [
-                  { id = "amddgdnlkmohapieeekfknakgdnpbleb"; }  # xTab
-                  { id = "nngceckbapebfimnlniiiahkandclblb"; }  # Bitwarden
-                  { id = "nffaoalbilbmmfgbnbgppjihopabppdk"; }  # Video Speed Controller
-                ];
-              };
-
-              programs.mise = {
-                enable = true;
-                globalConfig = {
-                  tools = {
-                    node = "24.16.0";
-                  };
-                };
-              };
-
-              # Auto-install mise tools after config change
-              home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                run ${pkgs.mise}/bin/mise install
-              '';
-
-              # Keep corepack pnpm/pnpx shims available for every mise-installed Node.
-              home.activation.enableCorepackPnpmForMiseNodes = lib.hm.dag.entryAfter [ "installMiseTools" ] ''
-                for node_dir in "$HOME/.local/share/mise/installs/node"/*; do
-                  if [ -d "$node_dir" ] && [ ! -L "$node_dir" ] && [ -f "$node_dir/lib/node_modules/corepack/dist/pnpm.js" ]; then
-                    run ln -sf ../lib/node_modules/corepack/dist/pnpm.js "$node_dir/bin/pnpm"
-                    run ln -sf ../lib/node_modules/corepack/dist/pnpx.js "$node_dir/bin/pnpx"
-                  fi
-                done
-                run ${pkgs.mise}/bin/mise reshim node
-              '';
-
-              # Auto-install neovim 0.11.3 via bob-nvim
-              home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-                run ${pkgs.unstable.bob-nvim}/bin/bob install 0.11.3
-                run ${pkgs.unstable.bob-nvim}/bin/bob use 0.11.3
-              '';
-            };
-          };
+      # Expose nixpkgs-unstable as pkgs.unstable
+      nixpkgs.overlays = [
+        (final: prev: {
+          unstable = nixpkgs-unstable.legacyPackages.${prev.system};
         })
       ];
+
+      # ── Nix settings ──────────────────────────────────
+      nix.enable = false;
+      nix.settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        auto-optimise-store = false;
+      };
+
+      # ── System packages (CLI + GUI) ─────────────────────
+      environment.systemPackages = with pkgs; [
+        # shell / core
+        coreutils
+        curl
+        wget
+        git
+        gh
+        gnugrep
+        gnused
+        jq
+        yq
+        ripgrep
+        fd
+
+        # monitoring
+        htop
+        btop
+
+        # editors
+        pkgs.unstable.bob-nvim
+
+        # file mgmt / tmux
+        yazi
+        zellij
+        lazygit
+
+        # nix utils
+        nix-output-monitor  # nom, pretty nix build output
+        nix-tree
+        comma             # ,  – run any package by name
+
+        # GUI apps (from nixpkgs)
+        alacritty
+        spotify
+        vscode
+        obsidian
+        signal-desktop
+        maccy
+        iina
+        brave
+        kitty
+        rectangle
+
+        starship
+        fzf
+        zoxide
+        mise
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+        stow
+        go-task
+        awscli2
+
+        # editor tooling
+        nodePackages.eslint_d
+
+        # languages
+        openjdk
+        lazygit
+        gitleaks
+        pre-commit
+        just
+        postgresql   # psql client
+      ];
+
+      # ── Homebrew (casks only – GUI apps not in nixpkgs) ──
+      homebrew = {
+        enable = true;
+        onActivation = {
+          autoUpdate = true;
+          upgrade = true;
+          cleanup = "zap";
+        };
+        brews = [
+          "worktrunk"
+        ];
+        casks = [
+          "karabiner-elements"
+          "font-iosevka"
+          "bitwarden"
+          "ghostty"
+          "1password"
+          "raycast"
+          "jetbrains-toolbox"
+          "whatsapp"
+          "google-gemini"
+          "meetingbar"
+          "surfshark"
+          "notion"
+          "opensuperwhisper"
+        ];
+      };
+
+      # ── macOS system defaults ─────────────────────────
+      system.defaults = {
+        dock = {
+          autohide = true;
+          autohide-delay = 0.0;
+          autohide-time-modifier = 0.3;
+          minimize-to-application = true;
+          show-recents = false;
+          static-only = true;
+        };
+
+        finder = {
+          AppleShowAllExtensions = true;
+          AppleShowAllFiles = false;
+          ShowPathbar = true;
+          ShowStatusBar = true;
+          FXPreferredViewStyle = "Nlsv"; # list view
+        };
+
+        NSGlobalDomain = {
+          AppleShowAllExtensions = true;
+          AppleShowScrollBars = "Always";
+          NSAutomaticCapitalizationEnabled = false;
+          NSAutomaticDashSubstitutionEnabled = false;
+          NSAutomaticPeriodSubstitutionEnabled = false;
+          NSAutomaticQuoteSubstitutionEnabled = false;
+          NSAutomaticSpellingCorrectionEnabled = false;
+          NSNavPanelExpandedStateForSaveMode = true;
+          NSNavPanelExpandedStateForSaveMode2 = true;
+        };
+
+        trackpad = {
+          Clicking = true;
+          TrackpadThreeFingerDrag = true;
+        };
+      };
+
+      # ── Users ─────────────────────────────────────────
+      users.users.${username}.home = "/Users/${username}";
+
+      # ── Shell ──────────────────────────────────────────
+      programs.zsh.enable = true;
+      environment.shells = [ pkgs.zsh ];
+
+      # ── Environment ─────────────────────────────────────
+      environment.variables = {
+        NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+      };
+      programs.zsh.interactiveShellInit = ''
+        export PATH="$HOME/.npm-global/bin:$PATH"
+      '';
+
+      # ── Services ───────────────────────────────────────
+      services.karabiner-elements.enable = false;
+
+      # ── Sudo ───────────────────────────────────────────
+      security.sudo.extraConfig = ''
+        # Allow darwin-rebuild without password
+        %admin ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
+      '';
+
+      # ── State version ──────────────────────────────────
+      system.stateVersion = 5;
+
+      # ── Home Manager (user-level config) ──────────────
+      home-manager = {
+        backupFileExtension = "backup";
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        users.${username} = sharedHomeManagerConfig username;
+      };
+    };
+
+    # ── Shared home-manager config (parameterized by username) ──
+    sharedHomeManagerConfig = username: { pkgs, lib, ... }: {
+      home.stateVersion = "24.11";
+      home.username = username;
+      home.packages = with pkgs; [
+        # User-level packages go here (not system-wide)
+      ];
+
+      xdg.configFile = {
+        "yazi/yazi.toml".source = ./home/yazi/yazi.toml;
+        "yazi/theme.toml".source = ./home/yazi/theme.toml;
+
+        "btop/btop.conf".source = ./home/btop/btop.conf;
+
+        "kitty/kitty.conf".source = ./home/kitty/kitty.conf;
+
+        "lazygit/config.yml".source = ./home/lazygit/config.yml;
+
+        "zellij/config.kdl".source = ./home/zellij/config.kdl;
+        "zellij/layouts/blog.kdl".source = ./home/zellij/layouts/blog.kdl;
+        "zellij/open_blog" = {
+          source = ./home/zellij/open_blog;
+          executable = true;
+        };
+
+        "ghostty/config".source = ./home/ghostty/config;
+
+        "karabiner/karabiner.json".source = ./home/karabiner/karabiner.json;
+
+        "cmux/cmux.json".source = ./home/cmux/cmux.json;
+      };
+
+      home.file = {
+        ".zshrc".source = ./home/zsh/.zshrc;
+      };
+
+      programs.brave = {
+        enable = true;
+        extensions = [
+          { id = "amddgdnlkmohapieeekfknakgdnpbleb"; }  # xTab
+          { id = "nngceckbapebfimnlniiiahkandclblb"; }  # Bitwarden
+          { id = "nffaoalbilbmmfgbnbgppjihopabppdk"; }  # Video Speed Controller
+        ];
+      };
+
+      programs.mise = {
+        enable = true;
+        globalConfig = {
+          tools = {
+            node = "24.16.0";
+          };
+        };
+      };
+
+      # Auto-install mise tools after config change
+      home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run ${pkgs.mise}/bin/mise install
+      '';
+
+      # Keep corepack pnpm/pnpx shims available for every mise-installed Node.
+      home.activation.enableCorepackPnpmForMiseNodes = lib.hm.dag.entryAfter [ "installMiseTools" ] ''
+        for node_dir in "$HOME/.local/share/mise/installs/node"/*; do
+          if [ -d "$node_dir" ] && [ ! -L "$node_dir" ] && [ -f "$node_dir/lib/node_modules/corepack/dist/pnpm.js" ]; then
+            run ln -sf ../lib/node_modules/corepack/dist/pnpm.js "$node_dir/bin/pnpm"
+            run ln -sf ../lib/node_modules/corepack/dist/pnpx.js "$node_dir/bin/pnpx"
+          fi
+        done
+        run ${pkgs.mise}/bin/mise reshim node
+      '';
+
+      # Auto-install neovim 0.11.3 via bob-nvim
+      home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run ${pkgs.unstable.bob-nvim}/bin/bob install 0.11.3
+        run ${pkgs.unstable.bob-nvim}/bin/bob use 0.11.3
+      '';
+    };
+
+    # ── Helper: build a darwinConfiguration for a given username ──
+    mkDarwinConfig = username:
+      darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
+        modules = [
+          nix-homebrew.darwinModules.nix-homebrew
+          home-manager.darwinModules.home-manager
+          (sharedSystemModule username)
+        ];
+      };
+
+  in {
+    # ── Machine-specific configurations ───────────────────────
+    darwinConfigurations = {
+      "Mac"     = mkDarwinConfig "eric";       # personal laptop
+      "WorkMac" = mkDarwinConfig "changeme";   # work laptop — update to your work username
     };
   };
 }
