@@ -9,6 +9,7 @@
     };
     brews = [
       "worktrunk"
+      "uv"
     ];
     casks = [
       "karabiner-elements"

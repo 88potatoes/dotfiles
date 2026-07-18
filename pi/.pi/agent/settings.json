@@ -4,7 +4,8 @@
   "defaultModel": "accounts/fireworks/models/minimax-m3",
   "defaultThinkingLevel": "high",
   "packages": [
-    "npm:pi-mcp-adapter"
+    "npm:pi-mcp-adapter",
+    "~/Code/@88potatoes/agent-comments-pi"
   ],
   "enableInstallTelemetry": false,
   "defaultProjectTrust": "always",
