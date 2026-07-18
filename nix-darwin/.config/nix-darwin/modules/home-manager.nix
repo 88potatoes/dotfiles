@@ -69,9 +69,10 @@ username: { pkgs, lib, ... }: {
     run ${pkgs.mise}/bin/mise reshim node
   '';
 
-  # Auto-install neovim 0.11.3 via bob-nvim
+  # Auto-install neovim 0.11.3 via bob-nvim.
+  # Skip `bob use` — it just copies a convenience proxy (fails during activation).
+  # nvim is already on PATH via ~/.local/share/bob/nvim-bin/.
   home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     run ${pkgs.unstable.bob-nvim}/bin/bob install 0.11.3
-    run ${pkgs.unstable.bob-nvim}/bin/bob use 0.11.3
   '';
 }
