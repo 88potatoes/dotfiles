@@ -4,8 +4,6 @@ require('plugins')  -- Plugin setup with lazy.nvim
 require('options')  -- Vim options and settings
 require('keymaps')  -- All keybindings
 -- require('autocmds')  -- Auto commands
-require('agent-comments').setup()  -- Inline agent comments
-
 
 -- Set GIT_EDITOR to use nvr if Neovim and nvr are available
 if vim.fn.has('nvim') == 1 and vim.fn.executable('nvr') == 1 then
