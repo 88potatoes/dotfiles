@@ -42,6 +42,7 @@
     btop
 
     # editors
+    # note we use bob to install nvim
     pkgs.unstable.bob-nvim
 
     # file mgmt / tmux
