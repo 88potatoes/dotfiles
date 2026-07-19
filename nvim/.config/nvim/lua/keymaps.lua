@@ -116,10 +116,39 @@ vim.keymap.set('n', '<A-Down>', ':resize -2<CR>')
 vim.keymap.set('n', '<A-Left>', ':vertical resize -2<CR>')
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>')
 
+local function diffview_hunk_keymap(target)
+  return function()
+    local ok, lib = pcall(require, 'diffview.lib')
+    if ok and lib.get_current_view() then
+      return target
+    end
+
+    return target == '[c' and '<Up>' or '<Down>'
+  end
+end
+
+vim.keymap.set('n', '<S-Up>', diffview_hunk_keymap('[c'), {
+  silent = true,
+  expr = true,
+  desc = 'Prev hunk in Diffview, otherwise Up',
+})
+vim.keymap.set('n', '<S-Down>', diffview_hunk_keymap(']c'), {
+  silent = true,
+  expr = true,
+  desc = 'Next hunk in Diffview, otherwise Down',
+})
+
+local diffview_brain = require('diffview_brain')
+
 vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "[D]iff [F]ile History (Current File)" })
-vim.keymap.set("n", "<leader>dc", "<cmd>tabprevious<cr>", { desc = "[D]iff [C]ollapse (prev tab)" })
+vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "[D]iff [C]lose" })
 vim.keymap.set("n", "<leader>dx", "<cmd>DiffviewClose<cr>", { desc = "[D]iff Close" })
-vim.keymap.set("n", "<leader>dm", "<cmd>DiffviewOpen main...HEAD --imply-local<cr>", { desc = "[D]iff against merge-base of [M]ain" })
+vim.keymap.set("n", "<leader>dm", function() diffview_brain.open_pr_diff() end, { desc = "[D]iff against [M]ain (hide seen)" })
+vim.keymap.set("n", "<leader>dM", function() diffview_brain.open_pr_diff({ include_seen = true }) end, { desc = "[D]iff against [M]ain (show all)" })
+vim.keymap.set("n", "<leader>ds", function() diffview_brain.mark_current_seen({ prune = true }) end, { desc = "[D]iff mark current [S]een" })
+vim.keymap.set("n", "<leader>dS", function() diffview_brain.mark_visible_seen({ refresh = true }) end, { desc = "[D]iff mark visible [S]een" })
+vim.keymap.set("n", "<leader>du", function() diffview_brain.unmark_current_seen() end, { desc = "[D]iff [U]nmark current seen" })
+vim.keymap.set("n", "<leader>dC", function() diffview_brain.clear_repo() end, { desc = "[D]iff [C]lear seen for repo" })
 vim.keymap.set("n", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git [Y]ank/Browse Link" })
 vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "Git Browse (Selection)" })
 

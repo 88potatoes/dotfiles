@@ -20,6 +20,7 @@ export default function (pi: ExtensionAPI) {
 	const whitelist = [
 		join(homedir(), "dotfiles/pi/.pi"),
 		join(homedir(), ".work-contexts"),
+		"/tmp",
 	];
 
 	// Capture the starting directory when session starts
@@ -27,7 +28,7 @@ export default function (pi: ExtensionAPI) {
 		allowedDirectory = ctx.cwd;
 		
 		if (ctx.hasUI && sandboxEnabled) {
-			ctx.ui.notify(`Sandbox active: ${allowedDirectory} (+ dotfiles/pi/.pi and .work-contexts whitelist)`, "info");
+			ctx.ui.notify(`Sandbox active: ${allowedDirectory} (+ dotfiles/pi/.pi, .work-contexts, /tmp whitelist)`, "info");
 			updateStatus(ctx);
 		}
 	});
@@ -37,7 +38,7 @@ export default function (pi: ExtensionAPI) {
 		if (!ctx.hasUI) return;
 		
 		if (sandboxEnabled && allowedDirectory) {
-			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory} + dotfiles + work-contexts`);
+			ctx.ui.setStatus("sandbox", `🔒 Sandbox: ${allowedDirectory} + dotfiles + work-contexts + /tmp`);
 		} else if (!sandboxEnabled) {
 			ctx.ui.setStatus("sandbox", `🔓 Sandbox: disabled`);
 		} else {
