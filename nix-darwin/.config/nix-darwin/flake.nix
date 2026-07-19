@@ -35,7 +35,7 @@
     # ── Machine-specific configurations ───────────────────────
     darwinConfigurations = {
       "Mac"     = mkDarwinConfig "ericlang";   # personal laptop
-      "WorkMac" = mkDarwinConfig "changeme";   # work laptop — update to your work username
+      "Work" = mkDarwinConfig "eric";   # work laptop — update to your work username
     };
   };
 }
