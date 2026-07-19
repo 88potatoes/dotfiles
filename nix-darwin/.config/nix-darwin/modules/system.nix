@@ -45,6 +45,10 @@ in {
   environment.variables = {
     NPM_CONFIG_PREFIX = "$HOME/.npm-global";
   };
+
+  # Add Homebrew to system path (nix-darwin overrides default path_helper)
+  environment.systemPath = [ "/opt/homebrew/bin" "/opt/homebrew/sbin" ];
+
   programs.zsh.interactiveShellInit = ''
     export PATH="$HOME/.npm-global/bin:$PATH"
   '';
