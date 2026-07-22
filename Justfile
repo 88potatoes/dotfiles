@@ -7,6 +7,7 @@ reload target="Mac":
 
 stow-all:
   stow local-bin
+  stow pi
 
 install-all target="Mac":
   darwin-rebuild switch --flake ~/dotfiles/nix-darwin/.config/nix-darwin#{{target}}
