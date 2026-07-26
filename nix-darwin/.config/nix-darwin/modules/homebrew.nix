@@ -25,6 +25,7 @@
       "surfshark"
       "notion"
       "opensuperwhisper"
+      "linear"
     ];
   };
 }

@@ -1,7 +1,7 @@
 {
-  "defaultModel": "accounts/fireworks/models/deepseek-v4-pro",
+  "defaultModel": "deepseek/deepseek-v4-pro",
   "defaultProjectTrust": "always",
-  "defaultProvider": "fireworks",
+  "defaultProvider": "openrouter",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "enableInstallTelemetry": false,
@@ -12,7 +12,8 @@
   "lastChangelogVersion": "0.79.1",
   "packages": [
     "npm:pi-mcp-adapter",
-    "~/Code/@88potatoes/agent-comments/packages/pi"
+    "~/Code/@88potatoes/agent-comments/packages/pi",
+    "npm:pi-subagents"
   ],
   "steeringMode": "one-at-a-time"
 }
