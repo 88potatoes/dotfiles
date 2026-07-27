@@ -10,6 +10,7 @@
     brews = [
       "worktrunk"
       "uv"
+      "colima"
     ];
     casks = [
       "karabiner-elements"
@@ -25,6 +26,7 @@
       "surfshark"
       "notion"
       "opensuperwhisper"
+      "bruno"
     ];
   };
 }

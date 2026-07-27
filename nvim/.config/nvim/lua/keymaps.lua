@@ -154,11 +154,6 @@ vim.keymap.set("v", "<leader>gy", function() Snacks.gitbrowse() end, { desc = "G
 
 vim.keymap.set('n', '<leader>u', function() Snacks.picker.undo() end, { desc = "Undotree Toggle" })
 
-vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>")
-vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>")
-vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
-vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>")
-
 -- Find and open .env file by searching up directory tree
 vim.keymap.set('n', '<leader>le', function()
   local current = vim.fn.expand('%:p:h')

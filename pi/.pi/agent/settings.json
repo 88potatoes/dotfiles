@@ -1,15 +1,17 @@
 {
-  "lastChangelogVersion": "0.79.1",
+  "lastChangelogVersion": "0.81.1",
   "defaultProvider": "fireworks",
   "defaultModel": "accounts/fireworks/models/minimax-m3",
   "defaultThinkingLevel": "high",
   "packages": [
     "npm:pi-mcp-adapter",
-    "~/Code/@88potatoes/agent-comments-pi"
+    "~/Code/@88potatoes/agent-comments-pi",
+    "npm:pi-subagents"
   ],
   "enableInstallTelemetry": false,
   "defaultProjectTrust": "always",
   "steeringMode": "one-at-a-time",
   "editorPaddingX": 0,
-  "hideThinkingBlock": false
+  "hideThinkingBlock": false,
+  "theme": "dark"
 }
