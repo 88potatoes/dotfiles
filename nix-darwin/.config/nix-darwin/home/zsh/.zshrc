@@ -113,15 +113,13 @@ if [ -d /run/current-system/sw/bin/java ]; then
   export PATH="/run/current-system/sw/bin:$PATH"
 fi
 
-
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
