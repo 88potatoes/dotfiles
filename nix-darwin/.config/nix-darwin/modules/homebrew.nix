@@ -11,6 +11,15 @@
       "worktrunk"
       "uv"
       "colima"
+      "docker"
+      "docker-compose"
+      "docker-buildx"
+      "gettext"
+      "openssl@3"
+      "glib"
+      "pango"
+      "libmagic"
+      "ffmpeg"
     ];
     casks = [
       "karabiner-elements"
