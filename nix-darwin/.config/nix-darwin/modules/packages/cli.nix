@@ -5,7 +5,7 @@ pkgs: with pkgs; [
   curl
   wget
   git
-  gh
+  pkgs.unstable.gh
   gnugrep
   gnused
   jq

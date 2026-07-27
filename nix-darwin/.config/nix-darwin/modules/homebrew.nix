@@ -36,6 +36,7 @@
       "notion"
       "opensuperwhisper"
       "bruno"
+      "linear"
     ];
   };
 }

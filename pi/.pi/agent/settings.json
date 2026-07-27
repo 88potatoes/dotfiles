@@ -3,15 +3,20 @@
   "defaultProvider": "fireworks",
   "defaultModel": "accounts/fireworks/models/minimax-m3",
   "defaultThinkingLevel": "high",
+  "editorPaddingX": 0,
+  "enableInstallTelemetry": false,
+  "extensions": [
+    "/Users/ericlang/.pi/agent/extensions/muxy-notify.ts"
+  ],
+  "hideThinkingBlock": false,
+  "lastChangelogVersion": "0.79.1",
   "packages": [
     "npm:pi-mcp-adapter",
-    "~/Code/@88potatoes/agent-comments-pi",
+    "~/Code/@88potatoes/agent-comments/packages/pi",
     "npm:pi-subagents"
   ],
   "enableInstallTelemetry": false,
   "defaultProjectTrust": "always",
   "steeringMode": "one-at-a-time",
   "editorPaddingX": 0,
-  "hideThinkingBlock": false,
-  "theme": "dark"
-}
+  "hideThinkingBlock": false
