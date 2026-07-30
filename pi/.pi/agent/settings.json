@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.81.1",
+  "lastChangelogVersion": "0.83.0",
   "defaultProvider": "fireworks",
   "defaultModel": "accounts/fireworks/models/minimax-m3",
   "defaultThinkingLevel": "high",
@@ -12,5 +12,6 @@
     "npm:pi-subagents"
   ],
   "defaultProjectTrust": "always",
-  "steeringMode": "one-at-a-time"
+  "steeringMode": "one-at-a-time",
+  "theme": "dark"
 }
