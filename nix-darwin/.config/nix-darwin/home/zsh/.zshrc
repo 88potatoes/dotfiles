@@ -165,6 +165,8 @@ nix-reload() {
     echo 'Error: ~/.config/nix-profile not found. Create it with your profile name (e.g. Mac or WorkMac), or pass one explicitly.' >&2
     return 1
   fi
+  echo "Rebuilding nix profile: $profile"
+  sudo -v # cache credentials once for darwin-rebuild
   mkdir -p ~/.config
   echo "$profile" > ~/.config/nix-profile
   darwin-rebuild switch --flake "$HOME/dotfiles/nix-darwin/.config/nix-darwin#$profile"
