@@ -34,5 +34,11 @@
       Clicking = true;
       TrackpadThreeFingerDrag = true;
     };
+
+    CustomUserPreferences = {
+      "leits.MeetingBar" = {
+        automaticEventJoin = 1;
+      };
+    };
   };
 }
