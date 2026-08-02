@@ -156,7 +156,17 @@ pi () {
   /opt/homebrew/bin/pi "$@"
 }
 
-# Nix-darwin rebuild
+# Nix rebuild + restow
+# Usage: nix-reload           → reads profile from ~/.config/nix-profile
+#        nix-reload WorkMac   → override with #WorkMac
 nix-reload() {
-  darwin-rebuild switch --flake "$HOME/dotfiles/nix-darwin/.config/nix-darwin#Mac"
+  local profile="${1:-$(cat ~/.config/nix-profile 2>/dev/null)}"
+  if [[ -z "$profile" ]]; then
+    echo 'Error: ~/.config/nix-profile not found. Create it with your profile name (e.g. Mac or WorkMac), or pass one explicitly.' >&2
+    return 1
+  fi
+  mkdir -p ~/.config
+  echo "$profile" > ~/.config/nix-profile
+  darwin-rebuild switch --flake "$HOME/dotfiles/nix-darwin/.config/nix-darwin#$profile"
+  stow -d "$HOME/dotfiles" local-bin pi
 }
