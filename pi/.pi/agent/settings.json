@@ -1,14 +1,14 @@
 {
   "lastChangelogVersion": "0.83.0",
-  "defaultProvider": "fireworks",
-  "defaultModel": "accounts/fireworks/models/minimax-m3",
+  "defaultProvider": "openrouter",
+  "defaultModel": "z-ai/glm-5.1",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "enableInstallTelemetry": false,
   "hideThinkingBlock": false,
   "packages": [
     "npm:pi-mcp-adapter",
-    "~/Code/@88potatoes/agent-comments/packages/pi",
+    "npm:@88potatoes/agent-comments-pi",
     "npm:pi-subagents"
   ],
   "defaultProjectTrust": "always",

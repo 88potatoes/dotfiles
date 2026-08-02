@@ -1,24 +1,11 @@
-[opener]
-nvim = [
-  { run = "nvim %s", block = true },
-]
-
-[open]
-rules = [
-  { url = "*", use = "nvim" },
-]
-
-[reveal]
-rules = []
-
 [font]
 size = 12
 
 [manager]
 show_hidden = true
 ratio = [2, 3, 5]
-sort_by = "natural"
-sort_sensitive = false
+sort_by = "alphabetical"
+sort_sensitive = true
+sort_dir_first = true
 sort_reverse = false
 linemode = "none"
-show_symlink = false
