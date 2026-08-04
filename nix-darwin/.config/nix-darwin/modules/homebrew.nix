@@ -9,6 +9,7 @@
     };
     brews = [
       "worktrunk"
+      "railway"
       "uv"
       "colima"
       "docker"

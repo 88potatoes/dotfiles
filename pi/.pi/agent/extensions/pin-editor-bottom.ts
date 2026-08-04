@@ -20,7 +20,14 @@ class BottomPinSpacer implements Component {
       return [];
     }
 
-    const linesWithoutSpacer = this.countLines(this.tui, width);
+    // We only need to know whether the existing UI already fills the
+    // viewport. Rendering the whole tree here is extremely expensive because
+    // the chat container contains the entire conversation — and Pi renders
+    // the tree normally immediately after this widget returns.
+    //
+    // Stop as soon as the viewport is full. This keeps the extra measurement
+    // bounded by the terminal height instead of the conversation length.
+    const linesWithoutSpacer = this.countLinesUpTo(this.tui, width, terminalRows);
     const blankLines = Math.max(0, terminalRows - linesWithoutSpacer);
 
     return Array.from({ length: blankLines }, () => "");
@@ -28,18 +35,27 @@ class BottomPinSpacer implements Component {
 
   invalidate(): void {}
 
-  private countLines(component: ComponentWithChildren, width: number): number {
-    if (component === this) {
+  private countLinesUpTo(
+    component: ComponentWithChildren,
+    width: number,
+    limit: number,
+  ): number {
+    if (component === this || limit <= 0) {
       return 0;
     }
 
     if (Array.isArray(component.children)) {
-      return component.children.reduce((count, child) => {
-        return count + this.countLines(child as ComponentWithChildren, width);
-      }, 0);
+      let count = 0;
+      for (const child of component.children) {
+        count += this.countLinesUpTo(child as ComponentWithChildren, width, limit - count);
+        if (count >= limit) {
+          return limit;
+        }
+      }
+      return count;
     }
 
-    return component.render(width).length;
+    return Math.min(component.render(width).length, limit);
   }
 }
 
