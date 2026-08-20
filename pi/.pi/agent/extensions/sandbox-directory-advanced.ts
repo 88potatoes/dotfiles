@@ -8,6 +8,7 @@
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { spawn } from "node:child_process";
 import { resolve, relative, join } from "node:path";
 import { realpath } from "node:fs/promises";
 import { homedir } from "node:os";
@@ -32,6 +33,12 @@ export default function (pi: ExtensionAPI) {
 			updateStatus(ctx);
 		}
 	});
+
+	function notifyCmux() {
+		try {
+			spawn("cmux", ["notify"], { detached: true, stdio: "ignore" }).unref();
+		} catch {}
+	}
 
 	// Helper to update status indicator
 	function updateStatus(ctx: any) {
@@ -143,6 +150,7 @@ export default function (pi: ExtensionAPI) {
 					`Allow this operation?`,
 				].join("\n");
 
+				notifyCmux();
 				const choice = await ctx.ui.select(message, ["No (block)", "Yes (allow once)", "Yes and disable sandbox"]);
 
 				if (choice === "No (block)") {

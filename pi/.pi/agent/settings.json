@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.83.0",
   "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.1",
+  "defaultModel": "google/gemini-3.7-flash",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "enableInstallTelemetry": false,
@@ -9,7 +9,8 @@
   "packages": [
     "npm:pi-mcp-adapter",
     "npm:@88potatoes/agent-comments-pi",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:@hypabolic/pi-hypa"
   ],
   "defaultProjectTrust": "always",
   "steeringMode": "one-at-a-time",

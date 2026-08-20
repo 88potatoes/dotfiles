@@ -22,6 +22,7 @@
 - When asked to "commit", interpret it as "stage all current repo changes, then commit" unless explicitly told otherwise.
 - Before pushing code changes, run the relevant smoke test or validation command unless explicitly told to skip it.
 - Never rebase. Always merge when bringing in changes from another branch.
+- **Parallel work / concurrent changes**: If files or git state change unexpectedly (modified, staged, committed, or deleted), assume it may be the user or another agent working in parallel; do not revert or clobber external changes.
 - **Skip pre-commit hooks (`--no-verify`) on `scribe-fe-v2` frontend commits when local smoke has already passed** (formatting + lint + types + unit tests via `~/.work-contexts/skills/local-ci-smoke/scripts/`). Pre-commit is multi-minute on this repo; running it after a green smoke is wasted wall-clock. Outside the frontend, `--no-verify` still requires an explicit ask.
 
 

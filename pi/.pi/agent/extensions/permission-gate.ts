@@ -1,12 +1,128 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { resolve } from "node:path";
+import { resolve, relative, normalize } from "node:path";
 import { realpathSync } from "node:fs";
+import { homedir } from "node:os";
 
 export default function (pi: ExtensionAPI) {
-	const dangerousPatterns = [/\brm\s+(-rf?|--recursive)/i, /\bsudo\b/i, /\b(chmod|chown)\b.*777/i];
+	const userHome = homedir();
 	const protectedFiles = [
-		resolve(process.env.HOME || "", ".pi/agent/auth.json"),
+		resolve(userHome, ".pi/agent/auth.json"),
 	];
+
+	function isProtectedLocation(absPath: string): boolean {
+		const norm = normalize(absPath);
+		if (norm === userHome || norm === "/" || norm === "") {
+			return true;
+		}
+		const sensitivePrefixes = [
+			resolve(userHome, "dotfiles"),
+			resolve(userHome, ".pi"),
+			resolve(userHome, ".work-contexts"),
+			resolve(userHome, ".ssh"),
+			resolve(userHome, ".aws"),
+			resolve(userHome, ".gnupg"),
+			resolve(userHome, ".config"),
+			"/etc",
+			"/usr",
+			"/bin",
+			"/sbin",
+			"/var",
+			"/System",
+			"/Library",
+		];
+		return sensitivePrefixes.some((p) => norm === p || norm.startsWith(p + "/"));
+	}
+
+	function resolvePath(p: string, cwd: string): string {
+		if (p === "~") return userHome;
+		if (p.startsWith("~/") || p.startsWith("~\\")) {
+			return resolve(userHome, p.slice(2));
+		}
+		return resolve(cwd, p);
+	}
+
+	function isRmSafe(command: string, cwd: string): boolean {
+		// If cwd itself is in a protected location (dotfiles, work-contexts, home, etc.),
+		// always require confirmation.
+		if (isProtectedLocation(cwd)) {
+			return false;
+		}
+
+		const segments = command.split(/[\n;&|]+/);
+		let foundRm = false;
+
+		for (const rawSegment of segments) {
+			const segment = rawSegment.trim();
+			if (!segment) continue;
+
+			const rmMatch = segment.match(/(?:^|\s)(?:(?:\/[\w.-]+)*\/)?rm(?:\.exe)?(?:\s+|$)/i);
+			if (!rmMatch) {
+				continue;
+			}
+
+			foundRm = true;
+			const rmIndex = segment.indexOf(rmMatch[0]) + rmMatch[0].length;
+			const argsStr = segment.slice(rmIndex).trim();
+
+			if (!argsStr) {
+				return false;
+			}
+
+			const tokens: string[] = [];
+			const tokenRegex = /[^\s"']+|"([^"]*)"|'([^']*)'/g;
+			let match: RegExpExecArray | null;
+			while ((match = tokenRegex.exec(argsStr)) !== null) {
+				const val = match[1] ?? match[2] ?? match[0];
+				tokens.push(val);
+			}
+
+			if (tokens.length === 0) {
+				return false;
+			}
+
+			const targetPaths: string[] = [];
+			for (const token of tokens) {
+				if (token.startsWith("-")) {
+					continue;
+				}
+				// Subshells, variables, or wildcards need user review
+				if (/[\$`\(\)\*\?]/.test(token)) {
+					return false;
+				}
+				targetPaths.push(token);
+			}
+
+			if (targetPaths.length === 0) {
+				return false;
+			}
+
+			for (const target of targetPaths) {
+				if (!target || target === "." || target === "./" || target === ".." || target === "../") {
+					return false;
+				}
+
+				const resolved = resolvePath(target, cwd);
+				if (resolved === cwd) {
+					return false;
+				}
+
+				const rel = relative(cwd, resolved);
+				if (rel.startsWith("..") || rel === "" || resolve(cwd, rel) !== resolved) {
+					return false;
+				}
+
+				if (rel === ".git" || rel.startsWith(".git/") || rel.startsWith(".git\\")) {
+					return false;
+				}
+
+				if (isProtectedLocation(resolved)) {
+					return false;
+				}
+			}
+		}
+
+		return foundRm;
+	}
 
 	pi.on("tool_call", async (event, ctx) => {
 		// Block reading protected files
@@ -30,11 +146,18 @@ export default function (pi: ExtensionAPI) {
 		if (event.toolName !== "bash") return undefined;
 
 		const command = event.input.command as string;
-		const isDangerous = dangerousPatterns.some((p) => p.test(command));
+		const alwaysDangerous = [/\bsudo\b/i, /\b(chmod|chown)\b.*777/i];
+		let isDangerous = alwaysDangerous.some((p) => p.test(command));
+
+		// If rm is used with recursive/force options, check if target files are within cwd sandbox
+		if (!isDangerous && /\brm\s+(-rf?|--recursive|-r|-R)\b/i.test(command)) {
+			if (!isRmSafe(command, ctx.cwd)) {
+				isDangerous = true;
+			}
+		}
 
 		if (isDangerous) {
 			if (!ctx.hasUI) {
-				// In non-interactive mode, block by default
 				return { block: true, reason: "Dangerous command blocked (no UI for confirmation)" };
 			}
 

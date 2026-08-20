@@ -30,3 +30,6 @@ pi/.pi/agent/sessions
 agent-comments-2/node_modules
 **/tokens.json
 agent-comments-2/tests/tmp
+pi/.pi-subagents/artifacts
+.pi-subagents/artifacts
+pi/.pi/agent/run-history.jsonl
