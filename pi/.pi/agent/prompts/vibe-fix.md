@@ -65,11 +65,11 @@ Do not blindly trust `isOutdated`: read the current code. Do not implement specu
 
 ## Reply and resolve
 
-For each handled original thread, reply using the REST PR comments endpoint with `in_reply_to` set to the original comment ID. Include direct GitHub commit links, for example:
+For each handled original thread, reply using the REST PR comments endpoint with `in_reply_to` set to the original comment ID. Always prefix every reply body with `Vibe-fixed: ` to make it clear the fix and reply were AI-assisted. Include direct GitHub commit links, for example:
 
-`Fixed in commit https://github.com/<owner>/<repo>/commit/<sha>.`
+`Vibe-fixed: Fixed in commit https://github.com/<owner>/<repo>/commit/<sha>.`
 
-For an already-fixed/outdated comment, say what existing commit fixed it and that the current code was verified. For a new fix, link the commit just created. If multiple commits are relevant, link each one briefly.
+For an already-fixed/outdated comment, say what existing commit fixed it and that the current code was verified (prefixed with `Vibe-fixed: `). For a new fix, link the commit just created. If multiple commits are relevant, link each one briefly.
 
 Only after the reply succeeds, resolve the thread using GraphQL `resolveReviewThread` and verify that it is resolved. If a reply or resolution fails, stop and report the exact thread and error rather than claiming completion.
 
