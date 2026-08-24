@@ -26,6 +26,7 @@ Do not leave a thread unresolved merely because it is outdated. Do not resolve a
 - The base repository is the API target, including for fork PRs.
 - Resolve the PR unambiguously. If no current-branch PR exists, or an explicit target does not match the current checkout, stop and explain.
 - Require the PR to be open and require the checked-out `HEAD` to equal the PR head SHA. Never comment on or resolve a different revision.
+- If the checked-out `HEAD` is behind the open PR head and the worktree is clean, fast-forward the current branch to the PR head with `git pull --ff-only origin <branch>` before inspecting or changing anything. Re-check that `HEAD` equals the PR head SHA afterward. Never overwrite local commits or use force-push; if a fast-forward is not possible, stop and explain.
 - Inspect the actual current code and the full thread history before deciding. A comment may have replies or may be superseded by a later commit.
 - Do not touch unrelated worktree changes. If the worktree is dirty, inspect and preserve unrelated changes; stop if it is unsafe to distinguish them from this task.
 - Never rewrite history, rebase, force-push, or use broad destructive git commands.
