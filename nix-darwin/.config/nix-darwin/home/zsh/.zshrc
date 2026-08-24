@@ -83,6 +83,9 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Alacritty.app/Contents/MacOS:$PATH"
 export PATH="$HOME/dotfiles/scripts:$PATH"
 
+# Tab completion (required before fzf/bun completions register via compdef)
+autoload -Uz compinit && compinit
+
 source <(fzf --zsh)
 
 function y() {

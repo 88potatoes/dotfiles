@@ -1,11 +1,11 @@
 import type { Api, Model } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
-import { decodePrintableKey, getKeybindings } from "@earendil-works/pi-tui";
+import { decodeKittyPrintable, fuzzyFilter, getKeybindings } from "@earendil-works/pi-tui";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
-type AliasName = "strong" | "fine";
+type AliasName = "strong" | "weak";
 
 type AliasTarget = {
 	provider: string;
@@ -15,7 +15,7 @@ type AliasTarget = {
 type AliasConfig = Partial<Record<AliasName, AliasTarget>>;
 
 const CONFIG_PATH = join(homedir(), ".local", "state", "pi", "model-aliases.json");
-const ALIASES: AliasName[] = ["strong", "fine"];
+const ALIASES: AliasName[] = ["strong", "weak"];
 
 function loadConfig(): AliasConfig {
 	if (!existsSync(CONFIG_PATH)) return {};
@@ -63,19 +63,6 @@ type ModelChoice = {
 	details: string;
 };
 
-function fuzzyMatch(text: string, query: string): boolean {
-	const needle = query.trim().toLowerCase();
-	if (!needle) return true;
-	let index = 0;
-	const haystack = text.toLowerCase();
-	for (const char of needle) {
-		index = haystack.indexOf(char, index);
-		if (index < 0) return false;
-		index += 1;
-	}
-	return true;
-}
-
 function fit(text: string, width: number): string {
 	if (width <= 0) return "";
 	if (text.length <= width) return text;
@@ -110,7 +97,7 @@ async function chooseModel(ctx: ExtensionCommandContext, alias: AliasName): Prom
 		let selectedIndex = 0;
 		const maxVisible = Math.min(choices.length, 12);
 
-		const filtered = () => choices.filter((choice) => fuzzyMatch(choice.search, filter));
+		const filtered = () => fuzzyFilter(choices, filter, (choice) => choice.search);
 
 		const clampSelection = (items: ModelChoice[]) => {
 			selectedIndex = Math.max(0, Math.min(selectedIndex, Math.max(0, items.length - 1)));
@@ -168,7 +155,7 @@ async function chooseModel(ctx: ExtensionCommandContext, alias: AliasName): Prom
 				filter = "";
 				selectedIndex = 0;
 			} else {
-				const printable = decodePrintableKey(data) ?? (data.length === 1 && data >= " " ? data : undefined);
+				const printable = decodeKittyPrintable(data) ?? (data.length === 1 && data >= " " ? data : undefined);
 				if (printable) {
 					filter += printable;
 					selectedIndex = 0;
@@ -247,12 +234,12 @@ export default function modelAliases(pi: ExtensionAPI) {
 	}
 
 	pi.registerCommand("model-configure", {
-		description: "Configure /strong or /fine model alias",
+		description: "Configure /strong or /weak model alias",
 		handler: async (args, ctx) => {
 			const parts = args.trim().split(/\s+/).filter(Boolean);
 			let alias = parts[0] ? parseAlias(parts[0]) : undefined;
 			if (parts[0] && !alias) {
-				ctx.ui.notify("Usage: /model-configure [strong|fine] [provider/model-id]", "error");
+				ctx.ui.notify("Usage: /model-configure [strong|weak] [provider/model-id]", "error");
 				return;
 			}
 
