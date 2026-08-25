@@ -62,7 +62,7 @@ alias gs='git status'
 alias gp='git push'
 alias gl='git loga'
 alias gd='git diff'
-alias gvr="gh repo view --web"
+alias gvr="gh pr view -w"
 alias gdc="git diff --cached"
 alias vim="nvim"
 # end git
