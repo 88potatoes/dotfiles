@@ -88,6 +88,11 @@ autoload -Uz compinit && compinit
 
 source <(fzf --zsh)
 
+# Copy a file to the clipboard (as a file, for pasting into Finder/apps)
+fcopy() {
+  osascript -e "set the clipboard to (POSIX file \"$(realpath \"$1\")\")"
+}
+
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"

@@ -630,8 +630,8 @@
         }
       }
     ],
-    "checkedAt": 1787613771410,
-    "lastModified": 1787571254000
+    "checkedAt": 1787728719390,
+    "lastModified": 1787659146000
   },
   "anthropic": {
     "models": [
@@ -1006,8 +1006,8 @@
         }
       }
     ],
-    "checkedAt": 1787613770388,
-    "lastModified": 1787571244000
+    "checkedAt": 1787728719382,
+    "lastModified": 1787659138000
   },
   "google-vertex": {
     "models": [
@@ -1310,8 +1310,8 @@
         }
       }
     ],
-    "checkedAt": 1787613771558,
-    "lastModified": 1787571258000
+    "checkedAt": 1787728719382,
+    "lastModified": 1787659149000
   },
   "openai": {
     "models": [
@@ -2228,17 +2228,17 @@
           "image"
         ],
         "cost": {
-          "input": 5,
-          "output": 30,
-          "cacheRead": 0.5,
-          "cacheWrite": 6.25,
+          "input": 4,
+          "output": 20,
+          "cacheRead": 0.4,
+          "cacheWrite": 5,
           "tiers": [
             {
               "inputTokensAbove": 272000,
-              "input": 10,
-              "output": 45,
-              "cacheRead": 1,
-              "cacheWrite": 12.5
+              "input": 8,
+              "output": 30,
+              "cacheRead": 0.8,
+              "cacheWrite": 10
             }
           ]
         },
@@ -2530,8 +2530,8 @@
         }
       }
     ],
-    "checkedAt": 1787613770218,
-    "lastModified": 1787571271000
+    "checkedAt": 1787728719386,
+    "lastModified": 1787659161000
   },
   "openai-codex": {
     "models": [
@@ -2781,8 +2781,8 @@
         }
       }
     ],
-    "checkedAt": 1787613771437,
-    "lastModified": 1787571273000
+    "checkedAt": 1787728719373,
+    "lastModified": 1787659162000
   },
   "openrouter": {
     "models": [
@@ -2793,6 +2793,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -2816,6 +2819,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -2839,6 +2845,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -3005,6 +3014,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3020,11 +3038,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "off": null,
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3034,6 +3047,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3049,11 +3071,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "off": null,
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3231,6 +3248,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3246,9 +3272,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "max": "max"
         }
       },
       {
@@ -3258,6 +3281,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3273,9 +3305,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "max": "max"
         }
       },
       {
@@ -3285,6 +3314,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3300,10 +3338,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3313,6 +3347,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3328,10 +3371,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3341,6 +3380,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3356,10 +3404,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3369,6 +3413,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3384,10 +3437,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3397,6 +3446,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3412,10 +3470,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3425,6 +3479,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3440,10 +3503,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3453,6 +3512,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3468,10 +3536,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3481,6 +3545,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3496,10 +3569,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3509,6 +3578,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3524,10 +3602,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3609,6 +3683,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3624,9 +3707,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "max": "max"
         }
       },
       {
@@ -3636,6 +3716,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3651,9 +3740,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "max": "max"
         }
       },
       {
@@ -3663,6 +3749,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3678,10 +3773,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3691,6 +3782,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -3706,10 +3806,6 @@
         "compat": {
           "thinkingFormat": "openrouter",
           "cacheControlFormat": "anthropic"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -3719,6 +3815,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -3861,6 +3960,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -3885,6 +3993,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -3909,6 +4026,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4071,6 +4197,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -4094,6 +4223,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -4186,13 +4318,22 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
         "cost": {
-          "input": 0.0574,
-          "output": 0.1148,
-          "cacheRead": 0.01148,
+          "input": 0.0854,
+          "output": 0.1708,
+          "cacheRead": 0.01708,
           "cacheWrite": 0
         },
         "contextWindow": 1024000,
@@ -4201,14 +4342,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -4218,6 +4351,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -4233,14 +4375,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -4250,6 +4384,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4266,14 +4409,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -4283,13 +4418,22 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
         "cost": {
-          "input": 0.526176,
-          "output": 1.052352,
-          "cacheRead": 0.043848,
+          "input": 0.579072,
+          "output": 1.158144,
+          "cacheRead": 0.048256,
           "cacheWrite": 0
         },
         "contextWindow": 1024000,
@@ -4298,14 +4442,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -4315,6 +4451,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -4330,14 +4475,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -4467,6 +4604,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -4491,6 +4631,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -4515,6 +4658,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -4539,6 +4685,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -4563,6 +4712,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4587,6 +4745,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4611,6 +4778,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -4635,6 +4805,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4659,6 +4838,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4683,6 +4871,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4707,6 +4904,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4731,6 +4937,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4755,6 +4970,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4779,6 +5003,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4803,6 +5036,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4827,6 +5069,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4851,6 +5102,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4875,6 +5135,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4899,6 +5168,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4923,6 +5201,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -4947,6 +5234,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5138,6 +5434,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -5152,9 +5457,6 @@
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "off": null
         }
       },
       {
@@ -5256,6 +5558,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -5419,6 +5724,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5443,6 +5757,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5467,6 +5790,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5491,6 +5823,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5538,6 +5879,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -5561,6 +5905,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -5584,6 +5931,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -5607,13 +5957,42 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
         "cost": {
-          "input": 0.24,
-          "output": 0.96,
-          "cacheRead": 0.048,
+          "input": 0.3,
+          "output": 1.2,
+          "cacheRead": 0.06,
+          "cacheWrite": 0
+        },
+        "contextWindow": 196608,
+        "maxTokens": 4096,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter"
+        }
+      },
+      {
+        "id": "minimax/minimax-m2.7:free",
+        "name": "MiniMax: MiniMax M2.7 (free)",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
           "cacheWrite": 0
         },
         "contextWindow": 196608,
@@ -5672,6 +6051,30 @@
         }
       },
       {
+        "id": "minimax/minimax-m3:free",
+        "name": "MiniMax: MiniMax M3 (free)",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048576,
+        "maxTokens": 4096,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter"
+        }
+      },
+      {
         "id": "mistralai/codestral-2508",
         "name": "Mistral: Codestral 2508",
         "api": "openai-completions",
@@ -5688,6 +6091,29 @@
           "cacheWrite": 0
         },
         "contextWindow": 256000,
+        "maxTokens": 4096,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter"
+        }
+      },
+      {
+        "id": "mistralai/devstral-2512",
+        "name": "Mistral: Devstral 2 2512",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": false,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.44,
+          "output": 2.2,
+          "cacheRead": 0.044,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144,
         "maxTokens": 4096,
         "compat": {
           "supportsDeveloperRole": false,
@@ -5867,6 +6293,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -5961,6 +6396,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -6101,6 +6545,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -6173,6 +6620,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -6197,6 +6647,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -6221,6 +6674,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -6310,29 +6772,6 @@
         }
       },
       {
-        "id": "nvidia/nemotron-3-nano-30b-a3b:free",
-        "name": "NVIDIA: Nemotron 3 Nano 30B A3B (free)",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": true,
-        "input": [
-          "text"
-        ],
-        "cost": {
-          "input": 0,
-          "output": 0,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 256000,
-        "maxTokens": 4096,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter"
-        }
-      },
-      {
         "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
         "name": "NVIDIA: Nemotron 3 Nano Omni (free)",
         "api": "openai-completions",
@@ -6363,6 +6802,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": null,
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -6386,6 +6834,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": null,
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -6409,6 +6866,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -6432,6 +6898,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -6455,6 +6930,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -6512,53 +6996,6 @@
         },
         "contextWindow": 1000000,
         "maxTokens": 65536,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter"
-        }
-      },
-      {
-        "id": "nvidia/nemotron-nano-12b-v2-vl:free",
-        "name": "NVIDIA: Nemotron Nano 12B 2 VL (free)",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": true,
-        "input": [
-          "text",
-          "image"
-        ],
-        "cost": {
-          "input": 0,
-          "output": 0,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 128000,
-        "maxTokens": 128000,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter"
-        }
-      },
-      {
-        "id": "nvidia/nemotron-nano-9b-v2:free",
-        "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": true,
-        "input": [
-          "text"
-        ],
-        "cost": {
-          "input": 0,
-          "output": 0,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 128000,
-        "maxTokens": 4096,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter"
@@ -7071,6 +7508,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7094,6 +7540,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -7117,6 +7566,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7140,6 +7598,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7163,6 +7630,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7186,6 +7662,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7209,6 +7694,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7232,6 +7726,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7255,6 +7758,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7278,6 +7790,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7301,6 +7822,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7324,6 +7854,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7347,6 +7886,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7370,6 +7918,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7384,9 +7941,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7422,6 +7976,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7436,9 +7999,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7448,6 +8008,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7462,9 +8031,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7474,6 +8040,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7488,9 +8063,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7500,6 +8072,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7514,9 +8095,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7526,6 +8104,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7540,9 +8127,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7552,6 +8136,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7566,9 +8159,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7578,6 +8168,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7592,9 +8191,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7604,6 +8200,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7618,9 +8223,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7630,6 +8232,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7644,9 +8255,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7656,6 +8264,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7670,9 +8287,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7682,6 +8296,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7696,9 +8319,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7708,6 +8328,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7722,9 +8351,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7734,6 +8360,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7748,9 +8383,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7760,6 +8392,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7774,9 +8415,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7786,6 +8424,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7800,12 +8447,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "off": null,
-          "minimal": null,
-          "low": null
         }
       },
       {
@@ -7815,6 +8456,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7829,9 +8479,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7841,6 +8488,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -7855,9 +8511,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -7867,6 +8520,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -7881,10 +8543,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -7894,6 +8552,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -7908,10 +8575,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -7921,6 +8584,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -7935,10 +8607,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -7948,6 +8616,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -7962,10 +8639,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -7975,6 +8648,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -7989,10 +8671,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8002,6 +8680,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8016,10 +8703,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8029,6 +8712,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8043,10 +8735,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8056,6 +8744,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8070,10 +8767,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8083,6 +8776,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8097,10 +8799,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8110,6 +8808,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8124,10 +8831,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8137,6 +8840,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8151,10 +8863,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8164,6 +8872,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -8178,10 +8895,6 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
         }
       },
       {
@@ -8191,6 +8904,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -8281,6 +9003,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -8303,6 +9034,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -8325,6 +9065,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -8438,6 +9181,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -8460,6 +9212,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -8596,6 +9357,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -8619,6 +9389,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -9036,6 +9815,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -9105,6 +9887,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -9358,6 +10143,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -9405,6 +10193,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -9453,6 +10244,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -9525,6 +10319,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -9931,6 +10728,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": null,
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -9954,17 +10760,26 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": null,
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
         ],
         "cost": {
-          "input": 0.4,
-          "output": 3,
-          "cacheRead": 0.05,
-          "cacheWrite": 0
+          "input": 0.425,
+          "output": 2.55,
+          "cacheRead": 0.085,
+          "cacheWrite": 0.53125
         },
-        "contextWindow": 262144,
+        "contextWindow": 1000000,
         "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
@@ -9978,6 +10793,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10009,7 +10833,7 @@
         "cost": {
           "input": 0.1,
           "output": 0.1,
-          "cacheRead": 0,
+          "cacheRead": 0.1,
           "cacheWrite": 0
         },
         "contextWindow": 16384,
@@ -10049,6 +10873,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10073,6 +10906,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10120,6 +10962,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10144,6 +10995,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text"
         ],
@@ -10167,6 +11021,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10191,6 +11054,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -10214,6 +11086,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -10260,18 +11141,27 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
         ],
         "cost": {
-          "input": 1,
+          "input": 0.95,
           "output": 4.05,
-          "cacheRead": 0.17,
+          "cacheRead": 0.16,
           "cacheWrite": 0
         },
         "contextWindow": 524288,
-        "maxTokens": 4096,
+        "maxTokens": 262144,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter"
@@ -10284,6 +11174,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10308,6 +11207,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10318,7 +11226,7 @@
           "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 262144,
+        "contextWindow": 1048576,
         "maxTokens": 262144,
         "compat": {
           "supportsDeveloperRole": false,
@@ -10332,6 +11240,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10356,6 +11273,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10366,7 +11292,7 @@
           "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 262144,
+        "contextWindow": 1048576,
         "maxTokens": 262144,
         "compat": {
           "supportsDeveloperRole": false,
@@ -10450,6 +11376,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10474,6 +11409,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10498,6 +11442,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -10522,6 +11475,9 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null
+        },
         "input": [
           "text",
           "image"
@@ -10806,13 +11762,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.966,
-          "output": 3.036,
-          "cacheRead": 0.1794,
+          "input": 1.26,
+          "output": 3.96,
+          "cacheRead": 0.234,
           "cacheWrite": 0
         },
-        "contextWindow": 200000,
-        "maxTokens": 128000,
+        "contextWindow": 202752,
+        "maxTokens": 202752,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter"
@@ -10825,23 +11781,29 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
         "cost": {
-          "input": 0.966,
-          "output": 3.036,
-          "cacheRead": 0.1932,
+          "input": 1.19,
+          "output": 3.74,
+          "cacheRead": 0.221,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 131072,
+        "maxTokens": 262144,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter"
-        },
-        "thinkingLevelMap": {
-          "xhigh": "xhigh"
         }
       },
       {
@@ -10851,6 +11813,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -10874,6 +11845,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
@@ -10897,6 +11877,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text"
         ],
@@ -10944,6 +11933,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -10994,6 +11992,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -11019,6 +12026,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -11044,12 +12060,21 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text"
         ],
         "cost": {
-          "input": 0.04,
-          "output": 0.08,
+          "input": 0.035,
+          "output": 0.1,
           "cacheRead": 0.008,
           "cacheWrite": 0
         },
@@ -11059,14 +12084,6 @@
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
           "requiresReasoningContentOnAssistantMessages": true
-        },
-        "thinkingLevelMap": {
-          "minimal": null,
-          "low": null,
-          "medium": null,
-          "high": "high",
-          "max": null,
-          "xhigh": "xhigh"
         }
       },
       {
@@ -11076,6 +12093,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -11100,6 +12126,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -11124,17 +12159,26 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
         ],
         "cost": {
-          "input": 2.6,
-          "output": 13,
+          "input": 2.8,
+          "output": 14,
           "cacheRead": 0.29,
           "cacheWrite": 0
         },
-        "contextWindow": 974842,
+        "contextWindow": 1048576,
         "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
@@ -11148,6 +12192,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": "max"
+        },
         "input": [
           "text",
           "image"
@@ -11172,6 +12225,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -11196,6 +12258,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": "xhigh",
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -11220,6 +12291,15 @@
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
         "input": [
           "text"
         ],
@@ -11237,8 +12317,8 @@
         }
       }
     ],
-    "checkedAt": 1787613770801,
-    "lastModified": 1787571277000
+    "checkedAt": 1787728719475,
+    "lastModified": 1787659166000
   },
   "amazon-bedrock": {
     "models": [
