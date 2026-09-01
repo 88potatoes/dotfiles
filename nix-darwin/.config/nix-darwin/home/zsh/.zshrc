@@ -104,13 +104,23 @@ function y() {
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-# Zsh plugins (from nixpkgs)
-for f in /nix/store/*-zsh-autosuggestions*/share/zsh-autosuggestions/zsh-autosuggestions.zsh(N); do
-  [[ -f $f ]] && source $f && break
-done
-for f in /nix/store/*-zsh-syntax-highlighting*/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh(N); do
-  [[ -f $f ]] && source $f && break
-done
+# Zsh plugins (from nixpkgs).
+# Home Manager exposes programs' share/ dirs under the profile; prefer that
+# stable path over globbing the nix store directly.
+if [[ -f ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+else
+  for f in /nix/store/*-zsh-autosuggestions*/share/zsh-autosuggestions/zsh-autosuggestions.zsh(N); do
+    [[ -f $f ]] && source $f && break
+  done
+fi
+if [[ -f ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+  for f in /nix/store/*-zsh-syntax-highlighting*/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh(N); do
+    [[ -f $f ]] && source $f && break
+  done
+fi
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local

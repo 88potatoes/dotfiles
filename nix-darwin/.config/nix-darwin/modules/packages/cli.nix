@@ -40,6 +40,7 @@ pkgs: with pkgs; [
   stow
   go-task
   awscli2
+  deno
 
   # editor tooling
   nodePackages.eslint_d

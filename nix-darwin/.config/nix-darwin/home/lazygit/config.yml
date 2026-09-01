@@ -33,13 +33,8 @@ keybinding:
   localBranches:
     viewGitFlowOptions: <disabled>
 customCommands:
-  - key: w
-    context: worktrees
-    description: Open worktree via wtz
-    command: 'wtz s "{{.SelectedWorktree.Branch}}"'
-    output: terminal
-  - key: i
+  - key: o
     context: localBranches
-    description: Open branch/worktree via wtz
-    command: 'wtz s "{{.SelectedLocalBranch.Name}}"'
+    description: Open PR (or create page) in browser
+    command: 'gh pr view -w "{{.SelectedLocalBranch.Name}}" 2>/dev/null || gh pr create -w -H "{{.SelectedLocalBranch.Name}}"'
     output: terminal
