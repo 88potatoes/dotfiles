@@ -29,6 +29,10 @@ username: { pkgs, lib, ... }: {
     "karabiner/karabiner.json".source = ../home/karabiner/karabiner.json;
 
     "cmux/cmux.json".source = ../home/cmux/cmux.json;
+
+    "git/ignore".text = ''
+      .pi-subagents/*
+    '';
   };
 
   home.file = {
