@@ -17,15 +17,24 @@ in {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;
 
-  # Expose nixpkgs-unstable as pkgs.unstable
+  # Expose nixpkgs-unstable as pkgs.unstable and provide lixPackageSets
   nixpkgs.overlays = [
     (final: prev: {
       unstable = nixpkgs-unstable.legacyPackages.${prev.system};
+      lixPackageSets = prev.lixPackageSets or nixpkgs-unstable.legacyPackages.${prev.system}.lixPackageSets;
+    })
+    (final: prev: {
+      inherit (prev.lixPackageSets.stable)
+        nixpkgs-review
+        nix-eval-jobs
+        nix-fast-build
+        colmena;
     })
   ];
 
   # ── Nix settings ──────────────────────────────────
-  nix.enable = false;
+  nix.enable = true;
+  nix.package = pkgs.lixPackageSets.stable.lix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = false;
