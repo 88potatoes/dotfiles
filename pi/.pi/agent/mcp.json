@@ -18,6 +18,15 @@
       },
       "lifecycle": "lazy",
       "idleTimeout": 10
+    },
+    "datadog": {
+      "command": "/Users/eric/.local/bin/datadog_mcp_cli",
+      "args": [],
+      "lifecycle": "lazy"
+    },
+    "formwork": {
+      "type": "http",
+      "url": "https://app.openregulatory.com/mcp"
     }
   }
 }

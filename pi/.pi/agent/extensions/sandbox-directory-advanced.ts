@@ -11,7 +11,7 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { spawn } from "node:child_process";
 import { resolve, relative, join } from "node:path";
 import { realpath } from "node:fs/promises";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 
 export default function (pi: ExtensionAPI) {
 	let allowedDirectory: string | null = null;
@@ -20,8 +20,11 @@ export default function (pi: ExtensionAPI) {
 	// Whitelist: paths that are always allowed even outside sandbox
 	const whitelist = [
 		join(homedir(), "dotfiles/pi/.pi"),
+		join(homedir(), ".pi"),
 		join(homedir(), ".work-contexts"),
 		"/tmp",
+		"/private/tmp",
+		tmpdir(),
 	];
 
 	// Capture the starting directory when session starts
@@ -120,8 +123,10 @@ export default function (pi: ExtensionAPI) {
 				realPath = absolutePath;
 			}
 
-			// Check whitelist
-			const isWhitelisted = whitelist.some((allowed) => realPath.startsWith(allowed));
+			// Check whitelist against both absolute path and resolved real path (e.g. /tmp vs /private/tmp symlink on macOS)
+			const isWhitelisted = whitelist.some(
+				(allowed) => absolutePath.startsWith(allowed) || realPath.startsWith(allowed)
+			);
 			if (isWhitelisted) {
 				return undefined; // Allow whitelisted paths
 			}

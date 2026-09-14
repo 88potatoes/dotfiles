@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.85.1",
   "defaultProvider": "openrouter",
-  "defaultModel": "openai/gpt-5.6-luna",
+  "defaultModel": "google/gemini-3.8-flash",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "enableInstallTelemetry": false,
