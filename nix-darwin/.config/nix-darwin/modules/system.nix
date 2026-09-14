@@ -65,7 +65,8 @@ in {
   # ── Services ───────────────────────────────────────
   services.karabiner-elements.enable = false;
 
-  # ── Sudo ───────────────────────────────────────────
+  # ── Sudo & PAM ─────────────────────────────────────
+  security.pam.enableSudoTouchIdAuth = true;
   security.sudo.extraConfig = ''
     # Allow darwin-rebuild without password
     %admin ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
