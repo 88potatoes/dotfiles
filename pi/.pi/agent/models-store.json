@@ -790,7 +790,7 @@
         }
       }
     ],
-    "checkedAt": 1789359617277,
+    "checkedAt": 1789443679447,
     "lastModified": 1789122474000,
     "etag": "W/\"cd4b823ebd19d2740b416036f9e3f6fb\""
   },
@@ -1187,7 +1187,7 @@
         }
       }
     ],
-    "checkedAt": 1789359617120,
+    "checkedAt": 1789443679442,
     "lastModified": 1788867853000,
     "etag": "W/\"5fdc170fdb3eb24c0e164a059918e474\""
   },
@@ -1515,7 +1515,7 @@
         }
       }
     ],
-    "checkedAt": 1789359617514,
+    "checkedAt": 1789443679838,
     "lastModified": 1788867866000,
     "etag": "W/\"5e36b80636d012bb7a720bf98ead0ccd\""
   },
@@ -2781,7 +2781,7 @@
         }
       }
     ],
-    "checkedAt": 1789359617125,
+    "checkedAt": 1789443679443,
     "lastModified": 1788867877000,
     "etag": "W/\"1cca1d47130c92b44203cbe8314876b0\""
   },
@@ -3011,7 +3011,7 @@
         }
       }
     ],
-    "checkedAt": 1789359617141,
+    "checkedAt": 1789443679546,
     "lastModified": 1789043608000,
     "etag": "W/\"70d0125796d9c9e1f7b38bbf967d0bc7\""
   },
@@ -13796,7 +13796,7 @@
         }
       }
     ],
-    "checkedAt": 1789390613472,
+    "checkedAt": 1789443679442,
     "lastModified": 1789389625000,
     "etag": "W/\"9d83519e3f50016b02598749e92615d2\""
   },
@@ -16639,6 +16639,45 @@
         "maxTokens": 262144
       },
       {
+        "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "name": "DeepSeek V4.1 Flash",
+        "api": "openai-completions",
+        "provider": "baseten",
+        "baseUrl": "https://inference.baseten.co/v1",
+        "reasoning": true,
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        },
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.3,
+          "output": 1.2,
+          "cacheRead": 0.03,
+          "cacheWrite": 0
+        },
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "supportsReasoningEffort": true,
+          "supportsUsageInStreaming": true,
+          "maxTokensField": "max_tokens",
+          "supportsStrictMode": true,
+          "supportsLongCacheRetention": false,
+          "thinkingFormat": "openai"
+        },
+        "contextWindow": 1048576,
+        "maxTokens": 32768
+      },
+      {
         "id": "moonshotai/Kimi-K2.5",
         "name": "Kimi K2.5",
         "api": "openai-completions",
@@ -17344,8 +17383,8 @@
         "maxTokens": 131072
       }
     ],
-    "checkedAt": 1789359617115,
-    "lastModified": 1789122468000,
-    "etag": "W/\"5491e9b6ab3882a17de48fb89c278c71\""
+    "checkedAt": 1789443679535,
+    "lastModified": 1789389586000,
+    "etag": "W/\"13081538c051953158b815df4e18fcee\""
   }
 }
