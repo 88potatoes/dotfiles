@@ -43,6 +43,10 @@ Run `agent-comments help` at session start to learn the CLI interface. All commu
 - If a command times out, narrow it (smaller surface, more flags) or raise the timeout explicitly — don't loop re-running it.
 - Read, write, edit, and other non-bash tools have their own internal limits; no extension hook required.
 
+## Subagents
+
+- Default to using subagents for tasks. Delegate execution, investigation, and multi-step work to appropriate subagents rather than doing everything in the primary session.
+
 ## Testing
 
 - For table-driven tests with multiple related fields, prefer a frozen dataclass scenario object with named fields and readable scenario constructors over positional pytest parameter tuples. Use the dataclass field names to make each case self-documenting.
