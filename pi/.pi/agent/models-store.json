@@ -20,7 +20,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -58,7 +57,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -70,6 +68,42 @@
           "off": "none",
           "minimal": null,
           "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/deepseek-v4-pro",
+        "name": "DeepSeek V4 Pro",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 1.2,
+          "output": 1.2,
+          "cacheRead": 0.6,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1000000,
+        "maxTokens": 384000,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
           "medium": null,
           "high": "high",
           "xhigh": null,
@@ -95,7 +129,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -133,7 +166,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -273,7 +305,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -311,7 +342,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -339,7 +369,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -367,7 +396,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -401,7 +429,8 @@
           "supportsLongCacheRetention": false,
           "requiresReasoningContentOnAssistantMessages": true,
           "thinkingFormat": "openai",
-          "deferredToolsMode": "kimi"
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolAdditions": true
         },
         "thinkingLevelMap": {
           "off": null,
@@ -411,6 +440,42 @@
           "high": "high",
           "xhigh": null,
           "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/minimax-m2p7",
+        "name": "MiniMax-M2.7",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 1.2,
+          "output": 1.2,
+          "cacheRead": 0.6,
+          "cacheWrite": 0
+        },
+        "contextWindow": 196608,
+        "maxTokens": 131072,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
         }
       },
       {
@@ -432,7 +497,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -448,34 +512,6 @@
           "high": "high",
           "xhigh": null,
           "max": null
-        }
-      },
-      {
-        "id": "accounts/fireworks/models/mistral-large-3-fp8",
-        "name": "Mistral Large 3 675B Instruct 2512",
-        "provider": "fireworks",
-        "reasoning": false,
-        "input": [
-          "text",
-          "image"
-        ],
-        "cost": {
-          "input": 0,
-          "output": 0,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 262144,
-        "maxTokens": 262144,
-        "api": "anthropic-messages",
-        "baseUrl": "https://api.fireworks.ai/inference",
-        "compat": {
-          "supportsToolReferences": true,
-          "allowEmptySignature": true,
-          "sendSessionAffinityHeaders": true,
-          "supportsEagerToolInputStreaming": false,
-          "supportsCacheControlOnTools": false,
-          "supportsLongCacheRetention": false
         }
       },
       {
@@ -498,7 +534,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -535,7 +570,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -562,7 +596,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -590,7 +623,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -627,7 +659,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -665,7 +696,6 @@
         "api": "anthropic-messages",
         "baseUrl": "https://api.fireworks.ai/inference",
         "compat": {
-          "supportsToolReferences": true,
           "allowEmptySignature": true,
           "sendSessionAffinityHeaders": true,
           "supportsEagerToolInputStreaming": false,
@@ -681,6 +711,79 @@
           "high": null,
           "xhigh": "xhigh",
           "max": null
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/deepseek-flash-latest",
+        "name": "DeepSeek Flash Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.22,
+          "output": 0.66,
+          "cacheRead": 0.007,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1000000,
+        "maxTokens": 384000,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/deepseek-pro-latest",
+        "name": "DeepSeek Pro Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 1.32,
+          "output": 3.96,
+          "cacheRead": 0.044,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1000000,
+        "maxTokens": 384000,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": null,
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
         }
       },
       {
@@ -752,6 +855,146 @@
         }
       },
       {
+        "id": "accounts/fireworks/routers/glm-fast-latest",
+        "name": "GLM 5.3 Fast (Latest)",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 2.1,
+          "output": 6.6,
+          "cacheRead": 0.39,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048572,
+        "maxTokens": 262144,
+        "api": "openai-completions",
+        "baseUrl": "https://api.fireworks.ai/inference/v1",
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "sendSessionAffinityHeaders": true,
+          "supportsLongCacheRetention": false
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/glm-flash-latest",
+        "name": "GLM Flash Latest (GLM 5.3 Flash)",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0.15,
+          "output": 0.5,
+          "cacheRead": 0.03,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048573,
+        "maxTokens": 131072,
+        "api": "openai-completions",
+        "baseUrl": "https://api.fireworks.ai/inference/v1",
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "sendSessionAffinityHeaders": true,
+          "supportsLongCacheRetention": false
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/glm-latest",
+        "name": "GLM Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 1.4,
+          "output": 4.4,
+          "cacheRead": 0.26,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048573,
+        "maxTokens": 262144,
+        "api": "openai-completions",
+        "baseUrl": "https://api.fireworks.ai/inference/v1",
+        "compat": {
+          "supportsStore": false,
+          "supportsDeveloperRole": false,
+          "sendSessionAffinityHeaders": true,
+          "supportsLongCacheRetention": false
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": null,
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/kimi-fast-latest",
+        "name": "Kimi Fast Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 4.5,
+          "output": 22.5,
+          "cacheRead": 0.45,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048576,
+        "maxTokens": 131072,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
         "id": "accounts/fireworks/routers/kimi-k3-fast",
         "name": "Kimi K3 Fast",
         "provider": "fireworks",
@@ -777,7 +1020,8 @@
           "supportsLongCacheRetention": false,
           "requiresReasoningContentOnAssistantMessages": true,
           "thinkingFormat": "openai",
-          "deferredToolsMode": "kimi"
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolAdditions": true
         },
         "thinkingLevelMap": {
           "off": null,
@@ -788,11 +1032,111 @@
           "xhigh": null,
           "max": "max"
         }
+      },
+      {
+        "id": "accounts/fireworks/routers/kimi-latest",
+        "name": "Kimi Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 3,
+          "output": 15,
+          "cacheRead": 0.3,
+          "cacheWrite": 0
+        },
+        "contextWindow": 1048576,
+        "maxTokens": 131072,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": "none",
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": "max"
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/minimax-latest",
+        "name": "MiniMax Latest",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text"
+        ],
+        "cost": {
+          "input": 0.3,
+          "output": 1.2,
+          "cacheRead": 0.06,
+          "cacheWrite": 0
+        },
+        "contextWindow": 512000,
+        "maxTokens": 512000,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false,
+          "forceAdaptiveThinking": true
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        }
+      },
+      {
+        "id": "accounts/fireworks/routers/qwen-max-latest",
+        "name": "Qwen Max Latest (Qwen3.8 Max)",
+        "provider": "fireworks",
+        "reasoning": true,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 2,
+          "output": 6,
+          "cacheRead": 0.25,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144,
+        "maxTokens": 131072,
+        "api": "anthropic-messages",
+        "baseUrl": "https://api.fireworks.ai/inference",
+        "compat": {
+          "allowEmptySignature": true,
+          "sendSessionAffinityHeaders": true,
+          "supportsEagerToolInputStreaming": false,
+          "supportsCacheControlOnTools": false,
+          "supportsLongCacheRetention": false
+        }
       }
     ],
-    "checkedAt": 1789532891890,
-    "lastModified": 1789468153000,
-    "etag": "W/\"292490b93389b6058b7b86fa5b861645\""
+    "checkedAt": 1789715169678,
+    "lastModified": 1789648039000,
+    "etag": "W/\"5a6e1c91c1ba6743d46b72ff85ce25bd\""
   },
   "anthropic": {
     "models": [
@@ -815,12 +1159,9 @@
         },
         "contextWindow": 1000000,
         "maxTokens": 128000,
-        "thinkingLevelMap": {
-          "off": null,
-          "xhigh": "xhigh",
-          "max": "max"
-        },
         "compat": {
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolChanges": true,
           "forceAdaptiveThinking": true,
           "supportsStrictTools": true,
           "allowedFallbackModels": [
@@ -845,6 +1186,11 @@
               }
             }
           ]
+        },
+        "thinkingLevelMap": {
+          "off": null,
+          "xhigh": "xhigh",
+          "max": "max"
         }
       },
       {
@@ -868,6 +1214,8 @@
         "maxTokens": 128000,
         "compat": {
           "supportsMidConvoEffort": true,
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolChanges": true,
           "forceAdaptiveThinking": true,
           "supportsStrictTools": true
         },
@@ -1044,14 +1392,16 @@
         },
         "contextWindow": 1000000,
         "maxTokens": 128000,
-        "thinkingLevelMap": {
-          "xhigh": "xhigh",
-          "max": "max"
-        },
         "compat": {
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolChanges": true,
           "forceAdaptiveThinking": true,
           "supportsTemperature": false,
           "supportsStrictTools": true
+        },
+        "thinkingLevelMap": {
+          "xhigh": "xhigh",
+          "max": "max"
         }
       },
       {
@@ -1075,6 +1425,8 @@
         "maxTokens": 128000,
         "compat": {
           "supportsMidConvoEffort": true,
+          "supportsMidConvoSystemMessages": true,
+          "supportsMidConvoToolChanges": true,
           "forceAdaptiveThinking": true,
           "supportsTemperature": false,
           "supportsStrictTools": true
@@ -1187,9 +1539,9 @@
         }
       }
     ],
-    "checkedAt": 1789532891959,
-    "lastModified": 1788867853000,
-    "etag": "W/\"5fdc170fdb3eb24c0e164a059918e474\""
+    "checkedAt": 1789715169574,
+    "lastModified": 1789648031000,
+    "etag": "W/\"55c75c28bdf0cb4bb15080d80f87acb3\""
   },
   "google-vertex": {
     "models": [
@@ -1260,6 +1612,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1271,10 +1632,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.1-flash-lite",
@@ -1283,6 +1641,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1294,10 +1661,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.1-pro-preview",
@@ -1306,6 +1670,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1317,14 +1690,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null,
-          "minimal": null,
-          "low": "LOW",
-          "medium": null,
-          "high": "HIGH"
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.1-pro-preview-customtools",
@@ -1333,6 +1699,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1344,14 +1719,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null,
-          "minimal": null,
-          "low": "LOW",
-          "medium": null,
-          "high": "HIGH"
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.5-flash",
@@ -1360,6 +1728,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1371,10 +1748,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.5-flash-lite",
@@ -1383,6 +1757,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1394,10 +1777,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.6-flash",
@@ -1406,6 +1786,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1417,10 +1806,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.7-flash",
@@ -1429,6 +1815,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1440,10 +1835,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-3.8-flash",
@@ -1452,6 +1844,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": null,
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1463,10 +1864,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-flash-latest",
@@ -1475,6 +1873,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1486,10 +1893,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       },
       {
         "id": "gemini-flash-lite-latest",
@@ -1498,6 +1902,15 @@
         "provider": "google-vertex",
         "baseUrl": "https://{location}-aiplatform.googleapis.com",
         "reasoning": true,
+        "thinkingLevelMap": {
+          "off": null,
+          "minimal": "minimal",
+          "low": "low",
+          "medium": "medium",
+          "high": "high",
+          "xhigh": null,
+          "max": null
+        },
         "input": [
           "text",
           "image"
@@ -1509,15 +1922,12 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 65536,
-        "thinkingLevelMap": {
-          "off": null
-        }
+        "maxTokens": 65536
       }
     ],
-    "checkedAt": 1789532892452,
-    "lastModified": 1788867866000,
-    "etag": "W/\"5e36b80636d012bb7a720bf98ead0ccd\""
+    "checkedAt": 1789715169663,
+    "lastModified": 1789648043000,
+    "etag": "W/\"6a602a719fdc631555aa44cb26858c73\""
   },
   "openai": {
     "models": [
@@ -2176,7 +2586,8 @@
           "supportsStrictMode": true,
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2211,7 +2622,8 @@
           "supportsStrictMode": true,
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2288,7 +2700,8 @@
           "supportsStrictMode": true,
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2332,7 +2745,8 @@
           "supportsStrictMode": true,
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2419,6 +2833,7 @@
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
           "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true,
           "supportsExplicitPromptCacheMode": true
         }
       },
@@ -2464,6 +2879,7 @@
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
           "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true,
           "supportsExplicitPromptCacheMode": true
         }
       },
@@ -2509,6 +2925,7 @@
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
           "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true,
           "supportsExplicitPromptCacheMode": true
         }
       },
@@ -2554,6 +2971,7 @@
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
           "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true,
           "supportsExplicitPromptCacheMode": true
         }
       },
@@ -2781,9 +3199,9 @@
         }
       }
     ],
-    "checkedAt": 1789532891976,
-    "lastModified": 1788867877000,
-    "etag": "W/\"1cca1d47130c92b44203cbe8314876b0\""
+    "checkedAt": 1789715169656,
+    "lastModified": 1789648055000,
+    "etag": "W/\"366f64bf5a0393415638d6a50d4cead4\""
   },
   "openai-codex": {
     "models": [
@@ -2847,7 +3265,8 @@
         },
         "compat": {
           "supportsOpenAIGrammarTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2886,7 +3305,8 @@
         "compat": {
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2925,7 +3345,8 @@
         "compat": {
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -2964,7 +3385,8 @@
         "compat": {
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -3007,13 +3429,14 @@
         "compat": {
           "supportsOpenAIGrammarTools": true,
           "supportsAdditionalTools": true,
-          "supportsToolSearch": true
+          "supportsToolSearch": true,
+          "supportsMidConvoSystemMessages": true
         }
       }
     ],
-    "checkedAt": 1789532891872,
-    "lastModified": 1789043608000,
-    "etag": "W/\"70d0125796d9c9e1f7b38bbf967d0bc7\""
+    "checkedAt": 1789715169572,
+    "lastModified": 1789648056000,
+    "etag": "W/\"611b646eb8fe726a315a1544235fa980\""
   },
   "openrouter": {
     "models": [
@@ -3732,13 +4155,13 @@
       },
       {
         "id": "anthropic/claude-opus-5",
-        "name": "Claude Opus 5",
+        "name": "Anthropic: Claude Opus 5",
         "api": "anthropic-messages",
         "baseUrl": "https://openrouter.ai/api",
         "provider": "openrouter",
         "reasoning": true,
         "thinkingLevelMap": {
-          "off": null,
+          "off": "none",
           "minimal": null,
           "low": "low",
           "medium": "medium",
@@ -3759,14 +4182,13 @@
         "contextWindow": 1000000,
         "maxTokens": 128000,
         "compat": {
-          "supportsMidConvoEffort": true,
           "forceAdaptiveThinking": true,
           "supportsTemperature": false
         }
       },
       {
         "id": "anthropic/claude-opus-5:batch",
-        "name": "Claude Opus 5 (batch)",
+        "name": "Anthropic: Claude Opus 5 (batch)",
         "api": "openai-completions",
         "baseUrl": "https://openrouter.ai/api/v1",
         "provider": "openrouter",
@@ -4720,12 +5142,12 @@
           "text"
         ],
         "cost": {
-          "input": 0.9834,
-          "output": 2.9502,
-          "cacheRead": 0.03278,
+          "input": 0.66,
+          "output": 1.98,
+          "cacheRead": 0.022,
           "cacheWrite": 0
         },
-        "contextWindow": 1024000,
+        "contextWindow": 1048576,
         "maxTokens": 384000,
         "compat": {
           "supportsDeveloperRole": false,
@@ -5778,31 +6200,6 @@
         }
       },
       {
-        "id": "google/gemma-4-31b-it:batch",
-        "name": "Google: Gemma 4 31B (batch)",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": true,
-        "input": [
-          "text",
-          "image"
-        ],
-        "cost": {
-          "input": 0.39,
-          "output": 0.97,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 262144,
-        "maxTokens": 235929,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
-        }
-      },
-      {
         "id": "google/gemma-4-31b-it:free",
         "name": "Google: Gemma 4 31B (free)",
         "api": "openai-completions",
@@ -6314,8 +6711,8 @@
           "image"
         ],
         "cost": {
-          "input": 0.35,
-          "output": 1.5,
+          "input": 0.3,
+          "output": 1.1,
           "cacheRead": 0.04,
           "cacheWrite": 0
         },
@@ -6542,7 +6939,7 @@
           "text"
         ],
         "cost": {
-          "input": 0.55,
+          "input": 0.4,
           "output": 2.2,
           "cacheRead": 0,
           "cacheWrite": 0
@@ -7254,12 +7651,12 @@
           "image"
         ],
         "cost": {
-          "input": 0.075,
-          "output": 0.2,
+          "input": 0.09375,
+          "output": 0.25,
           "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 128000,
+        "contextWindow": 256000,
         "maxTokens": 16384,
         "compat": {
           "supportsDeveloperRole": false,
@@ -7456,9 +7853,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.71,
-          "output": 3.5,
-          "cacheRead": 0.15,
+          "input": 0.7062,
+          "output": 3.21,
+          "cacheRead": 0.18,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
@@ -7490,9 +7887,9 @@
           "image"
         ],
         "cost": {
-          "input": 2.648138,
-          "output": 13.282724,
-          "cacheRead": 0.302644,
+          "input": 3,
+          "output": 15,
+          "cacheRead": 0.3,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -7616,9 +8013,9 @@
           "text"
         ],
         "cost": {
-          "input": 0.05,
-          "output": 0.2,
-          "cacheRead": 0.03,
+          "input": 0.06,
+          "output": 0.24,
+          "cacheRead": 0,
           "cacheWrite": 0
         },
         "contextWindow": 262144,
@@ -7740,13 +8137,13 @@
           "text"
         ],
         "cost": {
-          "input": 0.6,
-          "output": 2.4,
-          "cacheRead": 0.12,
+          "input": 0.625,
+          "output": 3.125,
+          "cacheRead": 0.1875,
           "cacheWrite": 0
         },
-        "contextWindow": 202800,
-        "maxTokens": 182520,
+        "contextWindow": 256000,
+        "maxTokens": 32768,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -8984,7 +9381,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9017,7 +9415,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9149,7 +9548,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9248,7 +9648,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9380,7 +9781,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9512,7 +9914,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9644,7 +10047,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -9809,7 +10213,8 @@
         "maxTokens": 128000,
         "compat": {
           "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
+          "sendSessionAffinityHeaders": true,
+          "supportsMidConvoSystemMessages": true
         }
       },
       {
@@ -11155,13 +11560,13 @@
           "image"
         ],
         "cost": {
-          "input": 0.15,
-          "output": 0.6,
+          "input": 0.13,
+          "output": 0.52,
           "cacheRead": 0,
           "cacheWrite": 0
         },
-        "contextWindow": 262144,
-        "maxTokens": 16384,
+        "contextWindow": 131072,
+        "maxTokens": 32768,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -12066,6 +12471,31 @@
         }
       },
       {
+        "id": "stealth/union-alpha",
+        "name": "Union Alpha",
+        "api": "openai-completions",
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "provider": "openrouter",
+        "reasoning": false,
+        "input": [
+          "text",
+          "image"
+        ],
+        "cost": {
+          "input": 0,
+          "output": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        },
+        "contextWindow": 262144,
+        "maxTokens": 131072,
+        "compat": {
+          "supportsDeveloperRole": false,
+          "thinkingFormat": "openrouter",
+          "sendSessionAffinityHeaders": true
+        }
+      },
+      {
         "id": "stepfun/step-3.5-flash",
         "name": "StepFun: Step 3.5 Flash",
         "api": "openai-completions",
@@ -12226,30 +12656,6 @@
         }
       },
       {
-        "id": "thedrummer/unslopnemo-12b",
-        "name": "TheDrummer: UnslopNemo 12B",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": false,
-        "input": [
-          "text"
-        ],
-        "cost": {
-          "input": 0.4,
-          "output": 0.4,
-          "cacheRead": 0,
-          "cacheWrite": 0
-        },
-        "contextWindow": 1024000,
-        "maxTokens": 819200,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
-        }
-      },
-      {
         "id": "thinkingmachines/inkling",
         "name": "Thinking Machines: Inkling",
         "api": "openai-completions",
@@ -12311,40 +12717,6 @@
         },
         "contextWindow": 524288,
         "maxTokens": 262144,
-        "compat": {
-          "supportsDeveloperRole": false,
-          "thinkingFormat": "openrouter",
-          "sendSessionAffinityHeaders": true
-        }
-      },
-      {
-        "id": "thinkingmachines/inkling-small:batch",
-        "name": "Thinking Machines: Inkling Small (batch)",
-        "api": "openai-completions",
-        "baseUrl": "https://openrouter.ai/api/v1",
-        "provider": "openrouter",
-        "reasoning": true,
-        "thinkingLevelMap": {
-          "off": "none",
-          "minimal": "minimal",
-          "low": "low",
-          "medium": "medium",
-          "high": "high",
-          "xhigh": null,
-          "max": "max"
-        },
-        "input": [
-          "text",
-          "image"
-        ],
-        "cost": {
-          "input": 0.5,
-          "output": 1.2,
-          "cacheRead": 0.1,
-          "cacheWrite": 0
-        },
-        "contextWindow": 524288,
-        "maxTokens": 471859,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -13007,7 +13379,7 @@
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
-        "maxTokens": 128000,
+        "maxTokens": 131072,
         "compat": {
           "supportsDeveloperRole": false,
           "thinkingFormat": "openrouter",
@@ -13101,9 +13473,9 @@
           "image"
         ],
         "cost": {
-          "input": 0.15,
-          "output": 0.5,
-          "cacheRead": 0.03,
+          "input": 0.09,
+          "output": 0.3,
+          "cacheRead": 0.018,
           "cacheWrite": 0
         },
         "contextWindow": 1048576,
@@ -13424,8 +13796,8 @@
           "text"
         ],
         "cost": {
-          "input": 0.04,
-          "output": 0.1,
+          "input": 0.03,
+          "output": 0.13,
           "cacheRead": 0.01,
           "cacheWrite": 0
         },
@@ -13812,9 +14184,9 @@
         }
       }
     ],
-    "checkedAt": 1789532891982,
-    "lastModified": 1789468176000,
-    "etag": "W/\"006b4214ae5cfd5c47752ba1a03e86ff\""
+    "checkedAt": 1789715169586,
+    "lastModified": 1789648060000,
+    "etag": "W/\"b656d21cd5501ac14e694f2099504227\""
   },
   "amazon-bedrock": {
     "models": [
@@ -16572,6 +16944,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -16610,6 +16983,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -16648,6 +17022,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -16687,6 +17062,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -16726,6 +17102,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -16770,6 +17147,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -16814,6 +17192,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -16858,6 +17237,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -16896,6 +17276,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -16939,6 +17320,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -16982,6 +17364,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17021,6 +17404,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17060,6 +17444,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17098,6 +17483,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -17141,6 +17527,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -17184,6 +17571,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -17227,6 +17615,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -17270,6 +17659,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "baseten",
           "chatTemplateArgs": {
@@ -17314,6 +17704,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17353,6 +17744,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17392,6 +17784,7 @@
           "supportsUsageInStreaming": true,
           "maxTokensField": "max_tokens",
           "supportsStrictMode": true,
+          "sendSessionAffinityHeaders": true,
           "supportsLongCacheRetention": false,
           "thinkingFormat": "openai"
         },
@@ -17399,8 +17792,8 @@
         "maxTokens": 131072
       }
     ],
-    "checkedAt": 1789532891887,
-    "lastModified": 1789389586000,
-    "etag": "W/\"13081538c051953158b815df4e18fcee\""
+    "checkedAt": 1789715169657,
+    "lastModified": 1789562334000,
+    "etag": "W/\"a9694b43b8baf5b33c931fc592bec298\""
   }
 }

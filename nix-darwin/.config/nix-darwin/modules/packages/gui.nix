@@ -4,5 +4,4 @@ pkgs: with pkgs; [
   obsidian
   brave
   kitty
-  rectangle
 ]

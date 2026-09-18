@@ -42,6 +42,9 @@
       "com.cmuxterm.app" = {
         browserDisabledOverride = 1;
       };
+      "com.knollsoft.Rectangle" = {
+        launchOnLogin = true;
+      };
     };
   };
 }

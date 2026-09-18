@@ -79,4 +79,12 @@ username: { pkgs, lib, ... }: {
   home.activation.installBobNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     run ${pkgs.unstable.bob-nvim}/bin/bob install 0.11.3
   '';
+
+  # Register Rectangle as a login item on macOS startup
+  home.activation.registerRectangleLoginItem = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ -d "/Applications/Rectangle.app" ]; then
+      /usr/bin/osascript -e 'tell application "System Events" to get name of every login item' 2>/dev/null | grep -q "Rectangle" || \
+      /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Rectangle.app", hidden:false}' >/dev/null 2>&1 || true
+    fi
+  '';
 }

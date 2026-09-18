@@ -38,6 +38,7 @@
       "opensuperwhisper"
       "bruno"
       "linear"
+      "rectangle"
     ];
   };
 }

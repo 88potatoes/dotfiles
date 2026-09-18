@@ -7,4 +7,4 @@ font-family=Iosevka
 font-feature=calt
 
 # Load local overrides if they exist
-config-file = ~/.config/ghostty/config.local
+config-file = ?~/.config/ghostty/config.local
