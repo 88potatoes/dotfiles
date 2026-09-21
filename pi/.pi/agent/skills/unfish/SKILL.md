@@ -41,6 +41,7 @@ Also flag the supporting smells when they reveal a SOLID problem:
 
 - **Duplication** that will drift because knowledge has multiple owners.
 - **Raw positional data or vague names** that hide a domain contract.
+- **Fragile or positional parameter tests** — tests that use wide, cryptic positional tuples (`("a", 1, True, False, 200, "err")`) where adding or reading fields requires counting indexes, or copy-pasted test functions that obscure common behavior. Prefer frozen dataclass scenario objects with named fields and realistic payload simulations (e.g. realistic multi-row CSV/JSON text) to make test scenarios self-documenting.
 - **Dead code, unused parameters, or forwarding wrappers** that obscure responsibility without adding a seam.
 - **Type unsafety** where a known contract is weakened with `Any` or casts.
 - **Cross-resource coupling** where one resource reaches through another's internals, passes its concrete types across the boundary, or duplicates knowledge of its lifecycle and storage details.
@@ -81,6 +82,48 @@ type NameCellContext = Pick<OrganizationMemberColumnMeta, "label" | "onEdit">;
 function renderNameCell(value: string, context: NameCellContext) {
   return <NameCell value={value} {...context} />;
 }
+```
+````
+
+````markdown
+🐟 **Kinda fishy**
+
+**Problem:** Table-driven tests use a wide positional tuple. Reading or adding a test case requires counting positional arguments, making failures hard to diagnose and new cases prone to misaligned fields.
+
+**Fix:** Use a frozen dataclass scenario object with named fields and readable constructors.
+
+```python
+# Before
+@pytest.mark.parametrize(
+    "raw,expected_bool,status,detail",
+    [("on", True, "succeeded", "updated"), ("off", False, "succeeded", "updated")],
+)
+def test_states(raw, expected_bool, status, detail): ...
+
+
+# After
+@dataclass(frozen=True)
+class StateScenario:
+    raw_input: str
+    expected_bool: bool
+    expected_status: str
+    expected_detail: str
+
+
+SCENARIOS = [
+    StateScenario(
+        raw_input="on",
+        expected_bool=True,
+        expected_status="succeeded",
+        expected_detail="updated",
+    ),
+    StateScenario(
+        raw_input="off",
+        expected_bool=False,
+        expected_status="succeeded",
+        expected_detail="updated",
+    ),
+]
 ```
 ````
 
