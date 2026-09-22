@@ -1,5 +1,9 @@
 # Global Coding Conventions
 
+## Naming & Vocabulary
+
+- **Introduce as few new words as possible into the codebase.** Prefer reusing existing domain vocabulary, verbs, and naming patterns already established in the codebase over inventing novel synonyms (e.g. reuse `answer`, `hasContent`, `content` instead of inventing 'prose', 'substantive').
+
 ## Context Updates
 
 - When I say "remember", treat it as a request to add the information to the appropriate context in a meaningful way.

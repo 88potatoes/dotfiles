@@ -40,6 +40,7 @@ When assessing an interface or abstraction, ask:
 Also flag the supporting smells when they reveal a SOLID problem:
 
 - **Duplication** that will drift because knowledge has multiple owners.
+- **Novel vocabulary or synonym invention** — introducing new words, terms, or conceptual synonyms when the codebase already has established terminology for that concept (e.g. introducing `prose` or `substantive` when `answer`, `content`, or `hasContent` already exist). The codebase should introduce as few new words as possible; always prefer reusing established domain vocabulary and naming patterns.
 - **Raw positional data or vague names** that hide a domain contract.
 - **Fragile or positional parameter tests** — tests that use wide, cryptic positional tuples (`("a", 1, True, False, 200, "err")`) where adding or reading fields requires counting indexes, or copy-pasted test functions that obscure common behavior. Prefer frozen dataclass scenario objects with named fields and realistic payload simulations (e.g. realistic multi-row CSV/JSON text) to make test scenarios self-documenting.
 - **Dead code, unused parameters, or forwarding wrappers** that obscure responsibility without adding a seam.
@@ -164,6 +165,7 @@ or:
 
 - One concern at a time. Don't refactor the world.
 - Keep public APIs stable unless the user explicitly asks to rename.
+- **Introduce as few new words as possible.** Reuse existing domain vocabulary, verbs, and naming patterns already established in the codebase instead of inventing novel synonyms.
 - Match existing code style in the file/repo.
 - Run the relevant lint/compile check before committing.
 - Don't introduce new dependencies to fix a smell.

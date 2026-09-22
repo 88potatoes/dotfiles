@@ -53,6 +53,7 @@ Use the equivalent `🐟 **Kinda fishy**` heading for the lower tier. Include a 
 
 - Read the actual changed code and nearby context before deciding something is fishy.
 - Prioritize correctness-impacting smells, duplication, raw positional data, unclear public names, unnecessary complexity, dead code, and indirection without value.
+- Flag novel vocabulary or synonym invention: introducing new words, terms, or conceptual synonyms when the codebase already has established terminology for that concept (e.g., introducing `prose` or `substantive` when `answer`, `content`, or `hasContent` already exist). The codebase should introduce as few new words as possible.
 - Look for missing interfaces or abstraction boundaries that would let separate resources change, test, or be replaced independently. Also flag leaky abstractions, false interfaces, and direct coupling to another resource's internals when the problem is concrete.
 - Do not turn every `data` local, verbose implementation, framework convention, or unusual-but-explained choice into a comment.
 - Prefer one comment per distinct finding. Do not bundle unrelated issues.
