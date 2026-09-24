@@ -37,10 +37,6 @@
 - Write pi extensions to `~/dotfiles/pi/.pi/agent/extensions/`
 - Do NOT write directly to `~/.pi/agent/extensions/`
 
-## Agent Comments
-
-Run `agent-comments help` at session start to learn the CLI interface. All communication goes through the CLI.
-
 ## Bash Tool (timeouts)
 
 - Every `bash` call gets a timeout. The `bash-timeout` extension sets a default of 5 min, bumps anything `<= 1s` up to that default, and hard-caps at 30 min.

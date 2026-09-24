@@ -8,7 +8,6 @@
   "hideThinkingBlock": false,
   "packages": [
     "npm:pi-mcp-adapter",
-    "npm:@88potatoes/agent-comments-pi",
     "npm:pi-subagents"
   ],
   "defaultProjectTrust": "always",

@@ -6,14 +6,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Set up plugins
 require("lazy").setup({
-  -- Local dev plugins — remove `dir` to use the GitHub remote version
-  -- {
-  --   "88potatoes/agent-comments.nvim",
-  --   dir = vim.fn.expand("~/Code/@88potatoes/agent-comments.nvim"),
-  --   config = function()
-  --     require("agent-comments").setup()
-  --   end,
-  -- },
   {
     "folke/snacks.nvim",
     priority = 1000,
