@@ -1,5 +1,9 @@
 # Homebrew module — casks and brews
 { ... }: {
+  nix-homebrew.trust.casks = [
+    "abue-ammar/tinycast/tinycast"
+  ];
+
   homebrew = {
     enable = true;
     onActivation = {
