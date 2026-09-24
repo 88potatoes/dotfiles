@@ -24,6 +24,7 @@
 ## Git
 
 - When asked to "commit", interpret it as "stage all current repo changes, then commit" unless explicitly told otherwise.
+- **Dotfiles**: For any changes in dotfiles (`~/dotfiles`), always commit and push directly without asking for confirmation.
 - Before pushing code changes, run the relevant smoke test or validation command unless explicitly told to skip it.
 - Never rebase. Always merge when bringing in changes from another branch.
 - **Parallel work / concurrent changes**: If files or git state change unexpectedly (modified, staged, committed, or deleted), assume it may be the user or another agent working in parallel; do not revert or clobber external changes.

@@ -98,22 +98,59 @@ username: { pkgs, lib, ... }: {
   '';
 
   # Dotfile-driven Snippets, Notes, and Extensions directories for Tinycast
+  # Note: The parent directories must be real directories (not symlinks),
+  # because Swift's FileManager.contentsOfDirectory fails with ENOTDIR on symlinked folders.
   home.activation.setupTinycast = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/Library/Application Support/com.tinycast.app"
-    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" ]; then
-      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/Snippets" ]; then
-        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" "$HOME/Library/Application Support/com.tinycast.app/Snippets"
-      fi
+    APP_DIR="$HOME/Library/Application Support/com.tinycast.app"
+    mkdir -p "$APP_DIR"
+
+    # Extensions
+    EXT_DIR="$APP_DIR/extensions"
+    if [ -L "$EXT_DIR" ]; then
+      run rm -f "$EXT_DIR"
     fi
-    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes" ]; then
-      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/Notes" ]; then
-        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes" "$HOME/Library/Application Support/com.tinycast.app/Notes"
-      fi
-    fi
+    mkdir -p "$EXT_DIR"
     if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/extensions" ]; then
-      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/extensions" ]; then
-        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/extensions" "$HOME/Library/Application Support/com.tinycast.app/extensions"
-      fi
+      for item in "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/extensions/"*; do
+        if [ -d "$item" ]; then
+          run ln -sfn "$item" "$EXT_DIR/$(basename "$item")"
+        fi
+      done
+    fi
+
+    # Snippets
+    SNIP_DIR="$APP_DIR/Snippets"
+    if [ -L "$SNIP_DIR" ]; then
+      run rm -f "$SNIP_DIR"
+    fi
+    mkdir -p "$SNIP_DIR"
+    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" ]; then
+      for item in "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets/"*; do
+        if [ -f "$item" ] && [ "$(basename "$item")" != ".gitkeep" ]; then
+          run ln -sfn "$item" "$SNIP_DIR/$(basename "$item")"
+        fi
+      done
+    fi
+
+    # Notes
+    NOTES_DIR="$APP_DIR/Notes"
+    if [ -L "$NOTES_DIR" ]; then
+      run rm -f "$NOTES_DIR"
+    fi
+    mkdir -p "$NOTES_DIR"
+    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes" ]; then
+      for item in "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes/"*; do
+        if [ -f "$item" ] && [ "$(basename "$item")" != ".gitkeep" ]; then
+          run ln -sfn "$item" "$NOTES_DIR/$(basename "$item")"
+        fi
+      done
+    fi
+
+    # Auto-restart Tinycast if running so new extensions and configs reload
+    if pgrep -x "Tinycast" >/dev/null 2>&1; then
+      pkill -x "Tinycast" 2>/dev/null || true
+      sleep 1
+      open -a "/Applications/Tinycast.app" 2>/dev/null || true
     fi
   '';
 }
