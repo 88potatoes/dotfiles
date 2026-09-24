@@ -31,6 +31,11 @@
 - **Skip pre-commit hooks (`--no-verify`) on `scribe-fe-v2` frontend commits when local smoke has already passed** (formatting + lint + types + unit tests via `~/.work-contexts/skills/local-ci-smoke/scripts/`). Pre-commit is multi-minute on this repo; running it after a green smoke is wasted wall-clock. Outside the frontend, `--no-verify` still requires an explicit ask.
 
 
+## Software Installs
+
+- When I ask to install or download software, add it to the appropriate declarative configuration in `~/dotfiles` instead of installing it ad hoc.
+- For Nix-managed software, update the Nix configuration only; never run a Nix rebuild or switch. I will rebuild manually.
+
 ## Pi Extensions
 
 - `~/.pi` is symlinked (via stow) to `~/dotfiles/pi/.pi`

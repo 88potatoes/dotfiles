@@ -13,6 +13,7 @@
     };
     taps = [
       "abue-ammar/tinycast"
+      "stripe/stripe-cli"
     ];
     brews = [
       "worktrunk"
@@ -28,6 +29,7 @@
       "pango"
       "libmagic"
       "ffmpeg"
+      "stripe/stripe-cli/stripe"
     ];
     casks = [
       "karabiner-elements"
@@ -46,6 +48,7 @@
       "bruno"
       "linear"
       "rectangle"
+      "grandperspective"
     ];
   };
 }
