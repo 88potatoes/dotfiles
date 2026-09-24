@@ -14,7 +14,7 @@
       "command": "npx",
       "args": ["-y", "figma-developer-mcp", "--stdio"],
       "env": {
-        "FIGMA_API_KEY": "${FIGMA_TOKEN}"
+        "FIGMA_API_KEY": "!node ~/.pi/agent/get-figma-token.cjs"
       },
       "lifecycle": "lazy",
       "idleTimeout": 10
