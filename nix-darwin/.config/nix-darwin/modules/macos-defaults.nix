@@ -45,6 +45,17 @@
       "com.knollsoft.Rectangle" = {
         launchOnLogin = true;
       };
+      "com.google.Chrome" = {
+        GenAILocalFoundationalModelSettings = 1;
+      };
+      "com.tinycast.app" = {
+        showInMenuBar = 1;
+        extensionsEnabled = 1;
+        snippetsEnabled = 1;
+        calendarMenuBarDisplay = 0;
+        "hotkey.togglePalette" = "{\"combo\":{\"_0\":{\"carbonModifiers\":256,\"carbonKeyCode\":49}}}";
+        "hotkey.command:clipboard-history" = "{\"combo\":{\"_0\":{\"carbonKeyCode\":9,\"carbonModifiers\":768}}}";
+      };
     };
   };
 }

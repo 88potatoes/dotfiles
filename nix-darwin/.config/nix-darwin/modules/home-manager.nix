@@ -87,4 +87,33 @@ username: { pkgs, lib, ... }: {
       /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Rectangle.app", hidden:false}' >/dev/null 2>&1 || true
     fi
   '';
+
+  # Register Tinycast as a login item on macOS startup (and remove Raycast)
+  home.activation.registerTinycastLoginItem = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ -d "/Applications/Tinycast.app" ]; then
+      /usr/bin/osascript -e 'tell application "System Events" to get name of every login item' 2>/dev/null | grep -q "Tinycast" || \
+      /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Tinycast.app", hidden:false}' >/dev/null 2>&1 || true
+    fi
+    /usr/bin/osascript -e 'tell application "System Events" to delete (every login item whose name is "Raycast")' >/dev/null 2>&1 || true
+  '';
+
+  # Dotfile-driven Snippets, Notes, and Extensions directories for Tinycast
+  home.activation.setupTinycast = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/Library/Application Support/com.tinycast.app"
+    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" ]; then
+      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/Snippets" ]; then
+        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" "$HOME/Library/Application Support/com.tinycast.app/Snippets"
+      fi
+    fi
+    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes" ]; then
+      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/Notes" ]; then
+        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/notes" "$HOME/Library/Application Support/com.tinycast.app/Notes"
+      fi
+    fi
+    if [ -d "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/extensions" ]; then
+      if [ ! -e "$HOME/Library/Application Support/com.tinycast.app/extensions" ]; then
+        run ln -sfn "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/extensions" "$HOME/Library/Application Support/com.tinycast.app/extensions"
+      fi
+    fi
+  '';
 }

@@ -72,6 +72,20 @@ in {
     %admin ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/darwin-rebuild
   '';
 
+  # ── Activation Scripts ─────────────────────────────
+  # Disable strict /etc checks that abort on unmanaged zshrc/zprofile
+  system.activationScripts.etcChecks.text = pkgs.lib.mkForce "";
+
+  # Automatically back up any conflicting /etc files before linking
+  system.activationScripts.preActivation.text = ''
+    for f in /etc/zshrc /etc/zprofile; do
+      if [ -e "$f" ] && [ ! -L "$f" ]; then
+        echo "Backing up unmanaged $f to $f.bak"
+        mv -f "$f" "$f.bak"
+      fi
+    done
+  '';
+
   # ── State version ──────────────────────────────────
   system.stateVersion = 5;
 

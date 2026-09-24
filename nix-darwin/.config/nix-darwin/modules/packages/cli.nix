@@ -4,6 +4,7 @@ pkgs: with pkgs; [
   coreutils
   curl
   wget
+  httpie
   git
   pkgs.unstable.gh
   gnugrep

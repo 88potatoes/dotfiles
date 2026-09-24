@@ -70,13 +70,11 @@ vim.keymap.set("n", "<leader>ff", function()
   })
 end, { desc = "Find Files" })
 vim.keymap.set("n", "<leader>fj", function()
-  Snacks.picker.grep({
-    hidden = true
-  })
-end, { desc = "Grep" })
+  require("snacks-fff").live_grep()
+end, { desc = "Grep (FFF)" })
 vim.keymap.set("n", "<leader>g.", function()
-  Snacks.picker.grep({ cwd = vim.fn.expand("%:p:h") })
-end, { desc = "Grep in current file dir" })
+  require("snacks-fff").live_grep({ cwd = vim.fn.expand("%:p:h") })
+end, { desc = "Grep in current file dir (FFF)" })
 vim.keymap.set("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
 

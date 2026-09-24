@@ -7,6 +7,9 @@
       upgrade = true;
       cleanup = "none";
     };
+    taps = [
+      "abue-ammar/tinycast"
+    ];
     brews = [
       "worktrunk"
       "railway"
@@ -28,7 +31,7 @@
       "bitwarden"
       "ghostty"
       "1password"
-      "raycast"
+      "tinycast"
       "jetbrains-toolbox"
       "whatsapp"
       "google-gemini"

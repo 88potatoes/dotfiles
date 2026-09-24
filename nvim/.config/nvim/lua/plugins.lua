@@ -23,6 +23,19 @@ require("lazy").setup({
     },
   },
   {
+    "so1ve/snacks-fff.nvim",
+    dependencies = {
+      "folke/snacks.nvim",
+      {
+        "dmtrKovalenko/fff.nvim",
+        build = function()
+          require("fff.download").download_or_build_binary()
+        end,
+      },
+    },
+    lazy = false,
+  },
+  {
     "mikavilpas/yazi.nvim",
     dependencies = {
       "folke/snacks.nvim"
