@@ -1,7 +1,5 @@
 {
   "lastChangelogVersion": "0.85.1",
-  "defaultProvider": "openrouter",
-  "defaultModel": "google/gemini-3.8-flash",
   "defaultThinkingLevel": "high",
   "editorPaddingX": 0,
   "enableInstallTelemetry": false,

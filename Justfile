@@ -16,3 +16,4 @@ reload profile=_nix_profile:
 stow-all:
   stow local-bin
   stow pi
+  if [ ! -e ~/.pi/agent/settings.json ]; then rm -f ~/.pi/agent/settings.json && cp ~/dotfiles/pi/.pi/agent/settings.json.template ~/.pi/agent/settings.json; fi

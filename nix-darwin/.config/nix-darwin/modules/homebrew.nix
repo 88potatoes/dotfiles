@@ -16,6 +16,7 @@
       "stripe/stripe-cli"
     ];
     brews = [
+      "hunk"
       "worktrunk"
       "railway"
       "uv"

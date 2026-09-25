@@ -32,3 +32,5 @@ pi/.pi-subagents/artifacts
 .pi-subagents/artifacts
 pi/.pi/agent/run-history.jsonl
 pi/.pi/agent/missions
+pi/.pi/agent/models-store.json
+pi/.pi/agent/settings.json

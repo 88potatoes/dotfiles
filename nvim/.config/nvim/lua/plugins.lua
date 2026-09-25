@@ -133,6 +133,18 @@ require("lazy").setup({
       enhanced_diff_hl = true,
     },
   },
+  -- GitHub PR review in Neovim
+  {
+    "pwntester/octo.nvim",
+    lazy = true,
+    cmd = { "Octo" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {},
+  },
   -- LazyGit
   {
     "kdheepak/lazygit.nvim",

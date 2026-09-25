@@ -5,8 +5,8 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-// Global pi settings. Write via the symlink target path so we never clobber
-// the stow symlink itself; this file is the same one /model persists to.
+// Global pi settings. Write to the local settings file, which is deliberately
+// not stowed or tracked, so model changes stay machine-specific.
 const SETTINGS_PATH = join(homedir(), ".pi", "agent", "settings.json");
 
 type Settings = Record<string, unknown> & {
