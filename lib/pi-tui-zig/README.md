@@ -18,5 +18,5 @@ Patches the globally installed `pi-tui/dist/utils.js` (idempotent, backs up to
 ## Rebuild addon (source lives in ~/Code/pi-tui-bench/native/zig)
 
     cd ~/Code/pi-tui-bench && npm run build:native
-    cp native/zig/pi_tui_zig.node ~/dotfiles/pi/pi-tui-zig/
+    cp native/zig/pi_tui_zig.node ~/dotfiles/lib/pi-tui-zig/
     node ~/lib/pi-tui-zig/patch.mjs   # only needed if utils.js changed
