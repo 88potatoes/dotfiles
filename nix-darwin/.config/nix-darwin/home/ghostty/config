@@ -1,6 +1,6 @@
 background = 000000
 keybind = super+a=unbind
-keybind = super+d=new_split:Right
+keybind = super+d=new_split:right
 window-decoration = auto
 font-size=9
 font-family=Iosevka
