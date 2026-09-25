@@ -1,0 +1,67 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "shottr",
+  "title": "Shottr",
+  "description": "Capture screenshots with Shottr - area, fullscreen, window, scrolling, OCR and more",
+  "icon": "icon.png",
+  "author": "ericlang",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "area",
+      "title": "Capture Area",
+      "description": "Take an area screenshot with Shottr",
+      "mode": "no-view"
+    },
+    {
+      "name": "fullscreen",
+      "title": "Capture Fullscreen",
+      "description": "Take a fullscreen screenshot with Shottr",
+      "mode": "no-view"
+    },
+    {
+      "name": "window",
+      "title": "Capture Window",
+      "description": "Take a window screenshot with Shottr",
+      "mode": "no-view"
+    },
+    {
+      "name": "scrolling",
+      "title": "Scrolling Capture",
+      "description": "Take a scrolling capture with Shottr",
+      "mode": "no-view"
+    },
+    {
+      "name": "repeat-area",
+      "title": "Repeat Last Area",
+      "description": "Repeat the last area screenshot in the same location",
+      "mode": "no-view"
+    },
+    {
+      "name": "delayed",
+      "title": "Delayed Capture",
+      "description": "Take a screenshot with a 3 second delay",
+      "mode": "no-view"
+    },
+    {
+      "name": "ocr",
+      "title": "OCR",
+      "description": "Recognize text on screen with Shottr",
+      "mode": "no-view"
+    },
+    {
+      "name": "show",
+      "title": "Show Shottr",
+      "description": "Show the Shottr app",
+      "mode": "no-view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.21"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.0",
+    "esbuild": "^0.27.2",
+    "typescript": "^6.0.3"
+  }
+}
