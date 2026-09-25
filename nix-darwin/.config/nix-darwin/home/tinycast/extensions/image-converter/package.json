@@ -1,0 +1,50 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "image-converter",
+  "title": "Image Converter",
+  "description": "Convert the clipboard image between PNG, JPEG, HEIC, AVIF, GIF and BMP",
+  "icon": "icon.png",
+  "author": "ericlang",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "png",
+      "title": "Convert to PNG",
+      "description": "Convert the clipboard image to PNG and copy the result",
+      "mode": "no-view"
+    },
+    {
+      "name": "jpeg",
+      "title": "Convert to JPEG",
+      "description": "Convert the clipboard image to JPEG (quality 90) and copy the result",
+      "mode": "no-view"
+    },
+    {
+      "name": "heic",
+      "title": "Convert to HEIC",
+      "description": "Convert the clipboard image to HEIC and copy the result",
+      "mode": "no-view"
+    },
+    {
+      "name": "avif",
+      "title": "Convert to AVIF",
+      "description": "Convert the clipboard image to AVIF and copy the result",
+      "mode": "no-view"
+    },
+    {
+      "name": "gif",
+      "title": "Convert to GIF",
+      "description": "Convert the clipboard image to GIF and copy the result",
+      "mode": "no-view"
+    },
+    {
+      "name": "bmp",
+      "title": "Convert to BMP",
+      "description": "Convert the clipboard image to BMP and copy the result",
+      "mode": "no-view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.21"
+  }
+}

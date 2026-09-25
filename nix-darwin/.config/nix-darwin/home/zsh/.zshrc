@@ -64,6 +64,11 @@ alias gl='git loga'
 alias gd='git diff'
 alias gvr="gh pr view -w"
 alias gdc="git diff --cached"
+# diff HEAD against merge-base (three-dot range), e.g. `hdm` or `hdm origin/main`
+hdm() {
+  local base="${1:-main}"
+  hunk diff "$base...HEAD"
+}
 alias vim="nvim"
 # end git
 
