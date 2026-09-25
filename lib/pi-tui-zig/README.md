@@ -18,3 +18,13 @@ Patches the globally installed `pi-tui/dist/utils.js` (idempotent, backs up to
 ## Rebuild addon (source in src/)
 
     ~/lib/pi-tui-zig/src/build.sh
+
+## Benchmark harness (bench/)
+
+    cd ~/lib/pi-tui-zig/bench && npm install
+    npm run bench      # tier2: real TuiMainScreen + fake terminal, streaming simulation
+    npm run profile    # tier2 with --cpu-prof (flame chart)
+    npm run benchfns   # TS-vs-Zig correctness + speed for the 4 ported functions
+
+First run needs `npm install` (uses @earendil-works/pi-tui + get-east-asian-width);
+the addon is loaded from ../pi_tui_zig.node. See RESULTS.md for numbers.
