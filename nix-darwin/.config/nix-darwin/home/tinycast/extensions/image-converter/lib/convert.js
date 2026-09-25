@@ -1,13 +1,11 @@
-const { Clipboard, showHUD } = require("@raycast/api");
 const { execFile } = require("node:child_process");
 const { promisify } = require("node:util");
-const { mkdtemp, rm } = require("node:fs/promises");
+const { mkdir, readdir, mkdtemp, stat, rm } = require("node:fs/promises");
 const os = require("node:os");
 const path = require("node:path");
 
 const run = promisify(execFile);
 
-// sips format names for the formats we expose
 const SIPS_FORMATS = {
   png: "png",
   jpeg: "jpeg",
@@ -26,34 +24,63 @@ const LABELS = {
   bmp: "BMP",
 };
 
-module.exports = function makeConvert(format) {
-  const sipsFormat = SIPS_FORMATS[format];
-  const label = LABELS[format];
+const FORMATS = Object.keys(SIPS_FORMATS);
 
-  return async function convert() {
-    const { file } = await Clipboard.read();
+// Converted files are referenced by the clipboard after copy, so keep them
+// around in a stable directory and prune files older than 24h on each run.
+const OUT_DIR = path.join(os.tmpdir(), "tinycast-image-converter");
 
-    if (!file) {
-      await showHUD("Image Converter: no image on clipboard");
-      return;
-    }
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
-    const tmpDir = await mkdtemp(path.join(os.tmpdir(), "tinycast-convert-"));
-    const outPath = path.join(tmpDir, `converted.${format}`);
+async function pruneOldOutputs() {
+  try {
+    const now = Date.now();
+    const entries = await readdir(OUT_DIR);
+    await Promise.all(
+      entries.map(async (name) => {
+        const full = path.join(OUT_DIR, name);
+        const info = await stat(full).catch(() => null);
+        if (info && now - info.mtimeMs > ONE_DAY_MS) {
+          await rm(full, { recursive: true, force: true }).catch(() => {});
+        }
+      })
+    );
+  } catch {
+    // first run, dir doesn't exist yet
+  }
+}
 
-    try {
-      const args = ["-s", "format", sipsFormat];
-      if (format === "jpeg") args.push("-s", "formatOptions", "90");
-      args.push(file, "--out", outPath);
+function sipsArgs(inputPath, outPath, format) {
+  const args = ["-s", "format", SIPS_FORMATS[format]];
+  if (format === "jpeg") args.push("-s", "formatOptions", "90");
+  args.push(inputPath, "--out", outPath);
+  return args;
+}
 
-      await run("sips", args);
-      await Clipboard.copy({ file: outPath });
-      await showHUD(`Image Converter: converted to ${label} → copied to clipboard`);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      await showHUD(`Image Converter: failed to convert (${message.trim().split("\n").pop()})`);
-    } finally {
-      await rm(tmpDir, { recursive: true, force: true }).catch(() => {});
-    }
-  };
-};
+/**
+ * Convert images to a target format with sips.
+ * Returns per-input results; failed conversions come back with an error.
+ */
+async function convertImages(inputPaths, format) {
+  await mkdir(OUT_DIR, { recursive: true });
+  await pruneOldOutputs();
+  const tmpDir = await mkdtemp(path.join(OUT_DIR, "convert-"));
+
+  return Promise.all(
+    inputPaths.map(async (inputPath) => {
+      const base = path.basename(inputPath, path.extname(inputPath));
+      const outPath = path.join(tmpDir, `${base}.${format}`);
+      try {
+        await run("sips", sipsArgs(inputPath, outPath, format));
+        return { inputPath, outPath };
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        const errorLine =
+          message.split("\n").find((line) => /error/i.test(line)) ?? message.trim().split("\n").pop();
+        return { inputPath, outPath, error: errorLine.replace(/^Error\s*\d*:\s*/i, "") };
+      }
+    })
+  );
+}
+
+module.exports = { FORMATS, LABELS, convertImages };
