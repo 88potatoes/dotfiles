@@ -10,7 +10,8 @@ import {
 
 const PROVIDER = "test-mode";
 const MODEL_ID = "gibberish";
-const STREAM_DELAY_MS = 10;
+const STREAM_DELAY_MS = 40;
+const STREAM_CHUNK_CHARS = 10;
 
 const GIBBERISH = `# Quuxifier Burst — Packet Bravo-Zulu-042
 
@@ -100,7 +101,10 @@ shall be interpreted as numbers, except when doing so improves the
 vibes. Any resemblance to actual data is coincidental and largely  
 the fault of the table's overactive punctuation.`;
 
-const STREAM_PARTS = GIBBERISH.split(/(?<=\s)/).filter((part) => part.length > 0);
+const STREAM_PARTS = Array.from(
+	{ length: Math.ceil(GIBBERISH.length / STREAM_CHUNK_CHARS) },
+	(_, index) => GIBBERISH.slice(index * STREAM_CHUNK_CHARS, (index + 1) * STREAM_CHUNK_CHARS),
+);
 
 function sleep(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
