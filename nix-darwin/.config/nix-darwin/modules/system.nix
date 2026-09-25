@@ -37,6 +37,7 @@ in {
   nix.package = pkgs.lixPackageSets.stable.lix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
+    extra-deprecated-features = [ "or-as-identifier" "rec-set-dynamic-attrs" ];
     auto-optimise-store = false;
   };
 
