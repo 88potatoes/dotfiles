@@ -4,6 +4,7 @@ keybind = super+d=new_split:right
 keybind = ctrl+l=clear_screen
 keybind = ctrl+c=text:\x15\x03
 macos-option-as-alt = true
+split-divider-color = #585858
 window-decoration = auto
 font-size=9
 font-family=Iosevka
