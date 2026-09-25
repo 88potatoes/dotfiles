@@ -1,7 +1,7 @@
 background = 000000
 keybind = super+a=unbind
 keybind = super+d=unbind
-window-decoration = none
+window-decoration = auto
 font-size=9
 font-family=Iosevka
 font-feature=calt
