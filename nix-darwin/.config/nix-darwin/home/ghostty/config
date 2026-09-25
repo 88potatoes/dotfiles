@@ -1,6 +1,8 @@
 background = 000000
 keybind = super+a=unbind
 keybind = super+d=new_split:right
+keybind = ctrl+l=clear_screen
+macos-option-as-alt = true
 window-decoration = auto
 font-size=9
 font-family=Iosevka
