@@ -4,7 +4,7 @@
 
 - I often review diffs in [Hunk](https://github.com/steipete/hunk), an interactive terminal diff viewer, alongside the agent session.
 - At the start of a task (and whenever I mention Hunk, a review, or leave a comment in a diff), run `hunk session list --json` to find live Hunk sessions.
-- If a live session matches the current repo, read the hunk-review skill (`~/.pi/agent/skills/hunk-review/SKILL.md`) before using its commands, then check for my user notes with `hunk session comment list --repo <repo> --type user --json`.
+- If a live session matches the current repo, run `hunk skill path` to locate the hunk-review skill, read that SKILL.md, then check for my user notes with `hunk session comment list --repo <repo> --type user --json`.
 - Treat my Hunk notes as questions or review feedback: answer them inline in the session (`comment add` / `comment apply`) and act on the code feedback.
 - If Hunk is visibly open but commands say "No active Hunk sessions", the sandbox may be blocking localhost — retry with network access.
 
