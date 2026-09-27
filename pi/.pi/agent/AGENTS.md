@@ -2,8 +2,7 @@
 
 ## Explanation Style
 
-- When explaining anything, use 6th-grade plain English: short sentences, everyday words, lead with the main point.
-- Do NOT use analogies or metaphors — explain how things actually work, plainly.
+- Always follow the bro skill (`~/.pi/agent/skills/bro/SKILL.md`) when explaining anything — read it at the start of a session if not already loaded.
 
 ## Hunk Reviews
 
