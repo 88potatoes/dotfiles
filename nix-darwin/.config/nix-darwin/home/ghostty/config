@@ -3,6 +3,8 @@ keybind = super+a=unbind
 keybind = super+d=new_split:right
 keybind = ctrl+l=clear_screen
 keybind = ctrl+c=text:\x15\x03
+keybind = opt+left=previous_tab
+keybind = opt+right=next_tab
 macos-option-as-alt = true
 split-divider-color = #585858
 window-decoration = auto
