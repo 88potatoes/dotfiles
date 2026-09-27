@@ -1,5 +1,10 @@
 # Global Coding Conventions
 
+## Explanation Style
+
+- When explaining anything, use 6th-grade plain English: short sentences, everyday words, lead with the main point.
+- Do NOT use analogies or metaphors — explain how things actually work, plainly.
+
 ## Hunk Reviews
 
 - I often review diffs in [Hunk](https://github.com/steipete/hunk), an interactive terminal diff viewer, alongside the agent session.
