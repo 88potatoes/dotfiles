@@ -66,8 +66,8 @@ alias gvr="gh pr view -w"
 alias gdc="git diff --cached"
 # diff HEAD + working tree against merge-base (three-dot range), e.g. `hdm` or `hdm origin/main`
 hdm() {
-  local base="${1:-main}"
-  hunk diff "$base...HEAD" "$base"
+  local base="${1:-$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo main)}"
+  hunk diff "$base...HEAD"
 }
 alias vim="nvim"
 # end git

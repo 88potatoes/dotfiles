@@ -39,7 +39,10 @@ export default function (pi: ExtensionAPI) {
 
 	function notifyCmux() {
 		try {
-			spawn("cmux", ["notify"], { detached: true, stdio: "ignore" }).unref();
+			// cmux may not be installed (outside cmux env): swallow spawn ENOENT
+			spawn("cmux", ["notify"], { detached: true, stdio: "ignore" })
+				.on("error", () => {})
+				.unref();
 		} catch {}
 	}
 
