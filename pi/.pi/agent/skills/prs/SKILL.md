@@ -27,6 +27,7 @@ Provides an immediate, high-signal dashboard of recent PRs, stacked PR hierarchi
    - `--json`: Output raw JSON for programmatic inspection.
 
 2. Presentation Format:
+   - **ALWAYS attach the markdown link to every PR reference.** Never present a PR number (e.g. `#23616`) as bare text — it must be a clickable link like `[#23616](https://github.com/oscerai/scribe-fe-v2/pull/23616)`. This applies to bottom-of-stack, stacked children, standalone, and inactive PRs alike. The script already emits these links; preserve them.
    - **`### 🟢 To Merge`**: PRs with all required approvals + green CI + clean merge state.
    - **`### 🔴 Action Needed`**: Bottom-of-stack or standalone PRs with failing CI (with check name), changes requested (with blocker), or merge conflicts. If stacked, subsequent PRs in the stack are indented underneath.
    - **`### ⏳ In Review / Waiting`**: PRs waiting on reviewers or CI. If stacked, subsequent PRs are indented underneath so you see the chain.
