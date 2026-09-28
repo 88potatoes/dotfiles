@@ -11,6 +11,7 @@ const run = promisify(execFile);
 const HISTORY_DB = path.join(os.homedir(), "Library/Application Support/com.tinycast.app/clipboard.sqlite3");
 
 const STICKER_SIZE = 128;
+const GIF_HELPER = path.join(__dirname, "assets", "square-gif.swift");
 
 function stickersDir() {
   const prefs = getPreferenceValues();
@@ -40,10 +41,28 @@ function defaultBaseName() {
   return `sticker-${stamp}`;
 }
 
-// Square center-crop, downscale to 256x256. Images with transparency save as PNG
-// (JPEG has no alpha channel); fully opaque ones save as smaller JPEGs. Falls back
-// to a plain copy if sips can't process the file, so a weird image is never lost.
+function isGif(filePath) {
+  const fd = fs.openSync(filePath, "r");
+  try {
+    const buf = Buffer.alloc(3);
+    fs.readSync(fd, buf, 0, 3, 0);
+    return buf.toString("ascii") === "GIF";
+  } finally {
+    fs.closeSync(fd);
+  }
+}
+
+// Square center-crop, downscale to 128x128. Images with transparency save as PNG
+// (JPEG has no alpha channel); fully opaque ones save as smaller JPEGs. GIFs stay
+// GIFs (square-cropped and resized, animation preserved). Falls back to a plain
+// copy if processing fails, so a weird image is never lost.
 async function processSticker(srcPath, baseName) {
+  if (isGif(srcPath)) {
+    const dest = uniquePath(stickersDir(), `${baseName}.gif`);
+    await run("/usr/bin/env", ["swift", GIF_HELPER, srcPath, dest]);
+    return dest;
+  }
+
   let dims = null;
   let hasAlpha = false;
   try {
