@@ -5,10 +5,10 @@ Save images and GIFs from anywhere, then paste them anywhere.
 ## Commands
 
 - **Save Sticker from Clipboard** (`save-sticker`) — saves the image on your clipboard to your stickers folder. Handles:
-  - an image file copied in Finder (copied, not moved)
-  - an image copied with "Copy Image" in a browser
+  - an image file copied in Finder
   - an image URL in the clipboard (e.g. from "Copy Image Address")
-  - Format is detected from magic bytes, so GIFs stay GIFs.
+  - anything else: falls back to the newest image in Tinycast's own clipboard history (covers "Copy Image" in browsers — Tinycast's clipboard API is text-only)
+  - Every sticker is center-cropped square, resized to 256×256 and saved as a JPEG (~85 quality). GIFs become static images; for animated stickers keep the original file instead.
 - **Stickers** (`stickers`) — grid browser for your stickers. Paste, copy, show in Finder, or delete (to Trash) each one, and save straight from the clipboard from inside the grid.
 
 Stickers are plain files in `~/Pictures/Stickers` (changeable via the "Stickers Folder" preference), so Finder/QuickLook work on them too.

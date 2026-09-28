@@ -10,7 +10,7 @@ const run = promisify(execFile);
 // Tinycast's own clipboard history captures images from every app and stores them as files.
 const HISTORY_DB = path.join(os.homedir(), "Library/Application Support/com.tinycast.app/clipboard.sqlite3");
 
-const IMAGE_EXTS = new Set([".png", ".gif", ".jpg", ".jpeg", ".webp", ".apng", ".bmp", ".tiff", ".heic"]);
+const STICKER_SIZE = 256;
 
 function stickersDir() {
   const prefs = getPreferenceValues();
@@ -18,21 +18,7 @@ function stickersDir() {
   return raw.startsWith("~") ? path.join(os.homedir(), raw.slice(1)) : raw;
 }
 
-// Guess the image format from magic bytes so files always get the right extension.
-function sniffExt(buf) {
-  if (buf.length >= 4 && buf[0] === 0x89 && buf[1] === 0x50) return "png";
-  if (buf.length >= 3 && buf.slice(0, 3).toString("ascii") === "GIF") return "gif";
-  if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xd8) return "jpg";
-  if (buf.length >= 12 && buf.slice(0, 4).toString("ascii") === "RIFF" && buf.slice(8, 12).toString("ascii") === "WEBP") return "webp";
-  return null;
-}
-
-function extFromMime(mime) {
-  const map = { "image/png": "png", "image/gif": "gif", "image/jpeg": "jpg", "image/webp": "webp" };
-  return map[mime] || null;
-}
-
-// Find a name that doesn't collide: "cat.gif" -> "cat (2).gif"
+// Find a name that doesn't collide: "cat.jpg" -> "cat (2).jpg"
 function uniquePath(dir, name) {
   const ext = path.extname(name);
   const base = path.basename(name, ext);
@@ -45,43 +31,43 @@ function uniquePath(dir, name) {
   return candidate;
 }
 
-// Timestamped fallback name like "sticker-2025-09-28-15-39-12.png"
-function defaultName(ext) {
+// Timestamped fallback name like "sticker-2025-09-28-15-39-12"
+function defaultBaseName() {
   const stamp = new Date()
     .toISOString()
     .replace(/[:T]/g, "-")
     .slice(0, 19);
-  return `sticker-${stamp}.${ext}`;
+  return `sticker-${stamp}`;
 }
 
-// Copy an image file on disk into the stickers folder. Returns the saved path.
-function saveFile(filePath, forcedBaseName = null) {
-  const buf = fs.readFileSync(filePath);
-  const origExt = path.extname(filePath).toLowerCase();
-  const ext = IMAGE_EXTS.has(origExt) ? origExt.slice(1) : sniffExt(buf);
-  if (!ext) throw new Error("That file is not a recognized image format");
-  const baseName = forcedBaseName || path.basename(filePath, origExt);
-  const dest = uniquePath(stickersDir(), baseName + "." + ext);
-  fs.copyFileSync(filePath, dest);
-  return dest;
-}
-
-// Download an image URL and save it.
-async function saveUrl(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`Download failed (HTTP ${response.status})`);
-  const buf = Buffer.from(await response.arrayBuffer());
-  let ext = sniffExt(buf);
-  if (!ext) ext = extFromMime(response.headers.get("content-type")?.split(";")[0] || "");
-  if (!ext) throw new Error("That URL did not return a recognized image");
-  let name;
+// Square center-crop, downscale to 256x256, save as JPEG. Falls back to a plain
+// copy if sips can't process the file, so a weird image is never lost.
+async function processSticker(srcPath, baseName) {
+  const dest = uniquePath(stickersDir(), `${baseName}.jpg`);
   try {
-    const pathname = new URL(url).pathname;
-    const base = path.basename(pathname);
-    if (base) name = path.basename(base, path.extname(base)) + "." + ext;
-  } catch {}
-  const dest = uniquePath(stickersDir(), name || defaultName(ext));
-  fs.writeFileSync(dest, buf);
+    let crop = [];
+    try {
+      const { stdout } = await run("/usr/bin/sips", ["-g", "pixelWidth", "-g", "pixelHeight", srcPath]);
+      const dims = stdout
+        .split("\n")
+        .map((line) => parseInt(line.split(":")[1] || "", 10))
+        .filter((n) => !isNaN(n));
+      if (dims.length >= 2) {
+        const square = Math.min(...dims);
+        crop = ["-c", String(square), String(square)];
+      }
+    } catch {}
+    await run("/usr/bin/sips", [
+      ...crop,
+      "-Z", String(STICKER_SIZE),
+      "-s", "format", "jpeg",
+      "-s", "formatOptions", "85",
+      "--out", dest,
+      srcPath,
+    ]);
+  } catch {
+    fs.copyFileSync(srcPath, dest);
+  }
   return dest;
 }
 
@@ -102,32 +88,46 @@ async function newestHistoryImage() {
 async function saveSticker() {
   fs.mkdirSync(stickersDir(), { recursive: true });
 
-  const content = await Clipboard.read();
-  let saved = null;
+  let srcPath = null;
+  let baseName = defaultBaseName();
+  let tempPath = null;
+
   try {
+    const content = await Clipboard.read();
     if (content.file) {
-      saved = saveFile(content.file);
+      srcPath = content.file;
+      baseName = path.basename(srcPath, path.extname(srcPath)) || baseName;
     } else if (content.text && /^https?:\/\//i.test(content.text.trim())) {
-      saved = await saveUrl(content.text.trim());
+      const response = await fetch(content.text.trim());
+      if (!response.ok) throw new Error(`Download failed (HTTP ${response.status})`);
+      tempPath = path.join(os.tmpdir(), `tinycast-sticker-${Date.now()}`);
+      fs.writeFileSync(tempPath, Buffer.from(await response.arrayBuffer()));
+      srcPath = tempPath;
+      try {
+        const base = path.basename(new URL(content.text.trim()).pathname);
+        const name = path.basename(base, path.extname(base));
+        if (name) baseName = name;
+      } catch {}
     } else {
-      const historyImage = await newestHistoryImage();
-      if (historyImage) saved = saveFile(historyImage, defaultName("png").replace(/\.png$/, ""));
+      srcPath = await newestHistoryImage();
     }
+
+    if (!srcPath || !fs.existsSync(srcPath)) {
+      await Toast.show({
+        style: Toast.Style.Failure,
+        title: "No image on clipboard",
+        message: "Copy an image first (or copy an image URL).",
+      });
+      return;
+    }
+
+    const saved = await processSticker(srcPath, baseName);
+    await showHUD(`Saved sticker "${path.basename(saved)}"`);
   } catch (error) {
     await Toast.show({ style: Toast.Style.Failure, title: "Could not save sticker", message: error.message });
-    return;
+  } finally {
+    if (tempPath) fs.rmSync(tempPath, { force: true });
   }
-
-  if (!saved) {
-    await Toast.show({
-      style: Toast.Style.Failure,
-      title: "No image on clipboard",
-      message: "Copy an image first (or copy an image URL).",
-    });
-    return;
-  }
-
-  await showHUD(`Saved sticker "${path.basename(saved)}"`);
 }
 
 module.exports = saveSticker;
