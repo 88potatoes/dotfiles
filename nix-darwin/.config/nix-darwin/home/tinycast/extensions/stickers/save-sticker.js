@@ -1,7 +1,14 @@
 const { Clipboard, Toast, getPreferenceValues, showHUD } = require("@raycast/api");
+const { execFile } = require("node:child_process");
+const { promisify } = require("node:util");
 const fs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
+
+const run = promisify(execFile);
+
+// Tinycast's own clipboard history captures images from every app and stores them as files.
+const HISTORY_DB = path.join(os.homedir(), "Library/Application Support/com.tinycast.app/clipboard.sqlite3");
 
 const IMAGE_EXTS = new Set([".png", ".gif", ".jpg", ".jpeg", ".webp", ".apng", ".bmp", ".tiff", ".heic"]);
 
@@ -48,30 +55,15 @@ function defaultName(ext) {
 }
 
 // Copy an image file on disk into the stickers folder. Returns the saved path.
-function saveFile(filePath) {
+function saveFile(filePath, forcedBaseName = null) {
   const buf = fs.readFileSync(filePath);
   const origExt = path.extname(filePath).toLowerCase();
   const ext = IMAGE_EXTS.has(origExt) ? origExt.slice(1) : sniffExt(buf);
   if (!ext) throw new Error("That file is not a recognized image format");
-  const dest = uniquePath(stickersDir(), path.basename(filePath, origExt) + "." + ext);
+  const baseName = forcedBaseName || path.basename(filePath, origExt);
+  const dest = uniquePath(stickersDir(), baseName + "." + ext);
   fs.copyFileSync(filePath, dest);
   return dest;
-}
-
-// Save a clipboard image (a file path or a data URI).
-function saveImageContent(image) {
-  const source = image.source || "";
-  if (source.startsWith("data:")) {
-    const match = /^data:([^;]+);base64,(.*)$/s.exec(source);
-    const ext = match ? extFromMime(match[1]) : null;
-    const buf = Buffer.from(match ? match[2] : source.replace(/^data:[^,]*,/, ""), "base64");
-    const detected = sniffExt(buf) || ext;
-    if (!detected) throw new Error("Could not detect the image format");
-    const dest = uniquePath(stickersDir(), defaultName(detected));
-    fs.writeFileSync(dest, buf);
-    return dest;
-  }
-  return saveFile(source);
 }
 
 // Download an image URL and save it.
@@ -93,6 +85,20 @@ async function saveUrl(url) {
   return dest;
 }
 
+// Newest image in Tinycast's clipboard history — covers "Copy Image" in browsers,
+// which never reaches Clipboard.read() because Tinycast's clipboard API is text-only.
+async function newestHistoryImage() {
+  try {
+    const { stdout } = await run("/usr/bin/sqlite3", [
+      "-readonly", HISTORY_DB,
+      "SELECT image_path FROM items WHERE kind='image' AND image_path IS NOT NULL ORDER BY created_at DESC LIMIT 1",
+    ]);
+    const imagePath = stdout.trim();
+    if (imagePath && fs.existsSync(imagePath)) return imagePath;
+  } catch {}
+  return null;
+}
+
 async function saveSticker() {
   fs.mkdirSync(stickersDir(), { recursive: true });
 
@@ -101,10 +107,11 @@ async function saveSticker() {
   try {
     if (content.file) {
       saved = saveFile(content.file);
-    } else if (content.image) {
-      saved = saveImageContent(content.image);
     } else if (content.text && /^https?:\/\//i.test(content.text.trim())) {
       saved = await saveUrl(content.text.trim());
+    } else {
+      const historyImage = await newestHistoryImage();
+      if (historyImage) saved = saveFile(historyImage, defaultName("png").replace(/\.png$/, ""));
     }
   } catch (error) {
     await Toast.show({ style: Toast.Style.Failure, title: "Could not save sticker", message: error.message });
@@ -115,7 +122,7 @@ async function saveSticker() {
     await Toast.show({
       style: Toast.Style.Failure,
       title: "No image on clipboard",
-      message: "Right-click an image and pick Copy Image first (or copy an image URL).",
+      message: "Copy an image first (or copy an image URL).",
     });
     return;
   }
