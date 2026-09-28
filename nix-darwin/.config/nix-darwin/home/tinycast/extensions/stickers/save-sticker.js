@@ -10,7 +10,7 @@ const run = promisify(execFile);
 // Tinycast's own clipboard history captures images from every app and stores them as files.
 const HISTORY_DB = path.join(os.homedir(), "Library/Application Support/com.tinycast.app/clipboard.sqlite3");
 
-const STICKER_SIZE = 256;
+const STICKER_SIZE = 128;
 
 function stickersDir() {
   const prefs = getPreferenceValues();
