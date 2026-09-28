@@ -40,27 +40,34 @@ function defaultBaseName() {
   return `sticker-${stamp}`;
 }
 
-// Square center-crop, downscale to 256x256, save as JPEG. Falls back to a plain
-// copy if sips can't process the file, so a weird image is never lost.
+// Square center-crop, downscale to 256x256. Images with transparency save as PNG
+// (JPEG has no alpha channel); fully opaque ones save as smaller JPEGs. Falls back
+// to a plain copy if sips can't process the file, so a weird image is never lost.
 async function processSticker(srcPath, baseName) {
-  const dest = uniquePath(stickersDir(), `${baseName}.jpg`);
+  let dims = null;
+  let hasAlpha = false;
+  try {
+    const { stdout } = await run("/usr/bin/sips", ["-g", "pixelWidth", "-g", "pixelHeight", "-g", "hasAlpha", srcPath]);
+    const nums = stdout
+      .split("\n")
+      .map((line) => parseInt(line.split(":")[1] || "", 10))
+      .filter((n) => !isNaN(n));
+    if (nums.length >= 2) dims = nums.slice(0, 2);
+    hasAlpha = /hasAlpha:\s*yes/i.test(stdout);
+  } catch {}
+
+  const format = hasAlpha ? "png" : "jpeg";
+  const dest = uniquePath(stickersDir(), `${baseName}.${format === "png" ? "png" : "jpg"}`);
   try {
     let crop = [];
-    try {
-      const { stdout } = await run("/usr/bin/sips", ["-g", "pixelWidth", "-g", "pixelHeight", srcPath]);
-      const dims = stdout
-        .split("\n")
-        .map((line) => parseInt(line.split(":")[1] || "", 10))
-        .filter((n) => !isNaN(n));
-      if (dims.length >= 2) {
-        const square = Math.min(...dims);
-        crop = ["-c", String(square), String(square)];
-      }
-    } catch {}
+    if (dims) {
+      const square = Math.min(...dims);
+      crop = ["-c", String(square), String(square)];
+    }
     await run("/usr/bin/sips", [
       ...crop,
       "-Z", String(STICKER_SIZE),
-      "-s", "format", "jpeg",
+      "-s", "format", format,
       "-s", "formatOptions", "85",
       "--out", dest,
       srcPath,
