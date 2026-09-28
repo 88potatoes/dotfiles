@@ -69,8 +69,8 @@ function actionsFor(sticker, reload, extra) {
     ActionPanel,
     null,
     extra,
-    h(Action, { icon: Icon.Clipboard, title: "Paste Sticker", shortcut: { modifiers: ["cmd", "opt"], key: "p" }, onAction: () => pasteSticker(sticker) }),
     h(Action, { icon: Icon.CopyClipboard, title: "Copy Sticker", shortcut: { modifiers: ["cmd", "opt"], key: "c" }, onAction: () => copySticker(sticker) }),
+    h(Action, { icon: Icon.Clipboard, title: "Paste Sticker", shortcut: { modifiers: ["cmd", "opt"], key: "p" }, onAction: () => pasteSticker(sticker) }),
     h(Action.ShowInFinder, { path: sticker.filePath }),
     h(Action, {
       icon: Icon.Trash,
