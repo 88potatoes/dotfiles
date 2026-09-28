@@ -120,8 +120,8 @@ function Stickers() {
           title: sticker.name,
           subtitle: sticker.ext,
           content: { source: sticker.filePath, tooltip: `${sticker.name}.${sticker.ext}` },
-        },
-        actionsFor(sticker, reload)
+          actions: actionsFor(sticker, reload),
+        }
       )
     )
   );
