@@ -1,0 +1,36 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "stickers",
+  "title": "Stickers",
+  "description": "Save images and GIFs from your clipboard, then paste them anywhere",
+  "icon": "icon.png",
+  "author": "ericlang",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "save-sticker",
+      "title": "Save Sticker from Clipboard",
+      "description": "Save the image or GIF on your clipboard to your stickers folder",
+      "mode": "no-view"
+    },
+    {
+      "name": "stickers",
+      "title": "Stickers",
+      "description": "Browse saved stickers and copy or paste them anywhere",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "stickersFolder",
+      "title": "Stickers Folder",
+      "description": "Where stickers are saved (defaults to ~/Pictures/Stickers)",
+      "type": "textfield",
+      "required": false,
+      "default": "~/Pictures/Stickers"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.21"
+  }
+}
