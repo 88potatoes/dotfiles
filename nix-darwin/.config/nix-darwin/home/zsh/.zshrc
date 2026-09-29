@@ -64,10 +64,10 @@ alias gl='git loga'
 alias gd='git diff'
 alias gvr="gh pr view -w"
 alias gdc="git diff --cached"
-# diff working tree (commits + staged + unstaged) against merge-base, e.g. `hdm` or `hdm origin/main`
+# diff HEAD against merge-base (three-dot range), e.g. `hdm` or `hdm origin/main`
 hdm() {
   local base="${1:-$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo main)}"
-  hunk diff "$base"
+  hunk diff "$base...HEAD"
 }
 alias vim="nvim"
 # end git
