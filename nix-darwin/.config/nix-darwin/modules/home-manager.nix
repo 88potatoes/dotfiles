@@ -53,6 +53,8 @@ username: { pkgs, lib, ... }: {
     globalConfig = {
       tools = {
         node = "24.16.0";
+        # Pinned — bump here to update; don't run `pi update self`.
+        "npm:@earendil-works/pi-coding-agent" = "0.85.1";
       };
     };
   };
