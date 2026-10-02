@@ -61,6 +61,9 @@ username: { pkgs, lib, ... }: {
 
   # Auto-install mise tools after config change
   home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # mise-generated npm shims call bare `mise reshim` after global installs;
+    # mise isn't on PATH during activation, so expose it explicitly.
+    export PATH="${pkgs.mise}/bin:$PATH"
     run ${pkgs.mise}/bin/mise install
   '';
 

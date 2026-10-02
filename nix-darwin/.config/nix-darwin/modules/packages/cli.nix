@@ -53,4 +53,7 @@ pkgs: with pkgs; [
   pre-commit
   just
   postgresql
+
+  # diagrams
+  graphviz
 ]
