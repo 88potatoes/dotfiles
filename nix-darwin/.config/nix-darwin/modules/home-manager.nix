@@ -61,10 +61,13 @@ username: { pkgs, lib, ... }: {
 
   # Auto-install mise tools after config change
   home.activation.installMiseTools = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    # mise-generated npm shims call bare `mise reshim` after global installs;
-    # mise isn't on PATH during activation, so expose it explicitly.
+    # The mise npm shim calls bare `mise reshim` after global installs; mise
+    # isn't on PATH during activation, so expose it explicitly and skip the
+    # in-shim reshim (we reshim deterministically below instead).
     export PATH="${pkgs.mise}/bin:$PATH"
+    export MISE_SKIP_RESHIM=1
     run ${pkgs.mise}/bin/mise install
+    run ${pkgs.mise}/bin/mise reshim
   '';
 
   # Keep corepack pnpm/pnpx shims available for every mise-installed Node.
