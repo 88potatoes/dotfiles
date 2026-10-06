@@ -50,6 +50,7 @@
       "linear"
       "rectangle"
       "grandperspective"
+      "background-music"
     ];
   };
 }
