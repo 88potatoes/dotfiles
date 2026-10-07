@@ -75,3 +75,7 @@
 - **Never use barrel files** (`index.ts` that only re-exports from other files). Import directly from the source module instead.
 - Prefer object parameters for functions when it improves readability or future extensibility, including callbacks that may gain more fields later. Example: use `onSubmit({ optionId })` instead of `onSubmit(optionId)`.
 - **Type checks: always use `tsgo` (TypeScript v7 native Go-based compiler)**, not `tsc`. `tsgo` is invoked as `tsgo --noEmit` (or any other tsc flag — it accepts the same CLI). It is dramatically faster than the JS tsc on large repos like scribe-fe-v2, so a full-repo check that would OOM/hang under plain `tsc` completes in seconds. If `tsgo` isn't on `$PATH`, install with `npm install -g @typescript/native-preview` (ships a `tsgo` binary).
+
+## Comments
+
+- Don't add explanatory comments when writing or editing code. Code should read on its own; add a comment only when the code genuinely cannot explain itself (a non-obvious invariant, a workaround with a ticket). Never add comments restating what the next line does, and don't leave pre-existing comments in just to pad a diff.
