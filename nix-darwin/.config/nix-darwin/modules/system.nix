@@ -43,6 +43,7 @@ in {
 
   # ── System packages (CLI + GUI) ─────────────────────
   environment.systemPackages = cliPkgs ++ guiPkgs;
+  system.apps.enable = true;
 
   # ── Users ─────────────────────────────────────────
   users.users.${username}.home = "/Users/${username}";
