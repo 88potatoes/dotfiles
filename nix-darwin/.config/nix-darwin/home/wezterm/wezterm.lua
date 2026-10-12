@@ -24,6 +24,7 @@ local config = {
   keys = {
     { key = 'a', mods = 'SUPER', action = wezterm.action.Nop },
     { key = 'z', mods = 'SUPER', action = wezterm.action.SendString '\x1b[122;9u' },
+    { key = 's', mods = 'SUPER', action = wezterm.action.SendString '\x1b[115;9u' },
     { key = 'LeftArrow', mods = 'SUPER|OPT', action = wezterm.action.ActivateTabRelative(-1) },
     { key = 'RightArrow', mods = 'SUPER|OPT', action = wezterm.action.ActivateTabRelative(1) },
 
