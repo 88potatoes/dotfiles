@@ -4,5 +4,5 @@ pkgs: with pkgs; [
   obsidian
   brave
   kitty
-  wezterm
+  pkgs.unstable.wezterm
 ]
