@@ -56,6 +56,9 @@
         GenAILocalFoundationalModelSettings = 1;
       };
       "com.tinycast.app" = {
+        additionalSearchPaths = [
+          "/Applications/Nix Apps"
+        ];
         showInMenuBar = 1;
         extensionsEnabled = 1;
         snippetsEnabled = 1;
