@@ -13,7 +13,8 @@ local config = {
 
   send_composed_key_when_left_alt_is_pressed = false,
   send_composed_key_when_right_alt_is_pressed = false,
-  window_decorations = 'TITLE|RESIZE',
+  window_decorations = 'RESIZE',
+  hide_tab_bar_if_only_one_tab = true,
 
   keys = {
     { key = 'a', mods = 'SUPER', action = wezterm.action.Nop },
