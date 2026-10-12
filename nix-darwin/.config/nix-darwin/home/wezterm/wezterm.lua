@@ -7,7 +7,7 @@ local config = {
     split = '#585858',
   },
 
-  font = wezterm.font 'Iosevka',
+  font = wezterm.font 'Iosevka Nerd Font',
   font_size = 9.0,
   harfbuzz_features = { 'calt' },
 

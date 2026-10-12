@@ -35,6 +35,7 @@
     casks = [
       "karabiner-elements"
       "font-iosevka"
+      "font-iosevka-nerd-font"
       "bitwarden"
       "ghostty"
       "1password"
