@@ -56,7 +56,15 @@
         GenAILocalFoundationalModelSettings = 1;
       };
       "com.tinycast.app" = {
-        additionalSearchPaths = [
+        searchScopes = [
+          "/Applications"
+          "/Applications/Utilities"
+          "/System/Applications"
+          "/System/Applications/Utilities"
+          "/System/Library/CoreServices/Applications"
+          "/System/Volumes/Preboot/Cryptexes/App/System/Applications"
+          "/System/Library/CoreServices/Finder.app"
+          "~/Applications"
           "/Applications/Nix Apps"
         ];
         showInMenuBar = 1;
