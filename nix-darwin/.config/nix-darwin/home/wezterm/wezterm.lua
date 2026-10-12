@@ -16,11 +16,6 @@ local config = {
   window_decorations = 'RESIZE',
   hide_tab_bar_if_only_one_tab = true,
 
-  unix_domains = {
-    { name = 'unix' },
-  },
-  default_gui_startup_args = { 'connect', 'unix' },
-
   keys = {
     { key = 'a', mods = 'SUPER', action = wezterm.action.Nop },
     { key = 'z', mods = 'SUPER', action = wezterm.action.SendString '\x1b[122;9u' },
