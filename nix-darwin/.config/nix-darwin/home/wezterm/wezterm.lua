@@ -30,6 +30,14 @@ local config = {
     { key = 'Enter', mods = 'SUPER|SHIFT', action = wezterm.action.TogglePaneZoomState },
     { key = 'w', mods = 'SUPER', action = wezterm.action.CloseCurrentPane { confirm = true } },
     { key = 'w', mods = 'SUPER|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
+    { key = 'R', mods = 'SUPER|SHIFT', action = wezterm.action.PromptInputLine {
+      description = 'Enter new name for tab',
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    } },
   },
 }
 
