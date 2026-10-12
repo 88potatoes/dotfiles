@@ -11,7 +11,8 @@ local config = {
   font_size = 9.0,
   harfbuzz_features = { 'calt' },
 
-  macos_option_as_alt = true,
+  send_composed_key_when_left_alt_is_pressed = false,
+  send_composed_key_when_right_alt_is_pressed = false,
   window_decorations = 'TITLE|RESIZE',
 
   keys = {
