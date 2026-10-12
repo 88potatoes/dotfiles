@@ -36,6 +36,13 @@
     };
 
     CustomUserPreferences = {
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          "64" = {
+            enabled = false;
+          };
+        };
+      };
       "leits.MeetingBar" = {
         automaticEventJoin = 1;
       };
