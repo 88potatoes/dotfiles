@@ -29,7 +29,7 @@ local config = {
     { key = 'UpArrow', mods = 'SUPER|OPT', action = wezterm.action.ActivatePaneDirection 'Up' },
     { key = 'DownArrow', mods = 'SUPER|OPT', action = wezterm.action.ActivatePaneDirection 'Down' },
     { key = 'Enter', mods = 'SUPER|SHIFT', action = wezterm.action.TogglePaneZoomState },
-    { key = 'p', mods = 'SUPER', action = wezterm.action.ShowTabNavigator },
+    { key = 'p', mods = 'SUPER', action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|TABS' } },
     { key = 'w', mods = 'SUPER', action = wezterm.action.CloseCurrentPane { confirm = true } },
     { key = 'w', mods = 'SUPER|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
     { key = 'R', mods = 'SUPER|SHIFT', action = wezterm.action.PromptInputLine {
