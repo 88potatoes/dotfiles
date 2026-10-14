@@ -57,7 +57,8 @@ export default function (pi: ExtensionAPI) {
 
 		for (const target of targets) {
 			try {
-				const watcher = fs.watch(target, { recursive: true }, () => {
+				const watcher = fs.watch(target, { recursive: true }, (_event, filename) => {
+					if (!filename || filename.startsWith("orca-") || filename === "auto-reload.ts") return;
 					if (debounceTimer) clearTimeout(debounceTimer);
 					debounceTimer = setTimeout(() => {
 						debounceTimer = null;
