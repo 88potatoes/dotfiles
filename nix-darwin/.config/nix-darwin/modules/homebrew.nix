@@ -2,6 +2,7 @@
 { ... }: {
   nix-homebrew.trust.casks = [
     "abue-ammar/tinycast/tinycast"
+    "stablyai/orca/orca"
   ];
 
   homebrew = {
@@ -14,6 +15,7 @@
     taps = [
       "abue-ammar/tinycast"
       "stripe/stripe-cli"
+      "stablyai/orca"
     ];
     brews = [
       "hunk"
@@ -40,6 +42,7 @@
       "ghostty"
       "1password"
       "tinycast"
+      "stablyai/orca/orca"
       "jetbrains-toolbox"
       "whatsapp"
       "google-gemini"
