@@ -72,10 +72,14 @@ hdm() {
 alias vim="nvim"
 # end git
 
-alias zl='zellij list-sessions'
-alias zd='zellij delete-session'
-alias zk='zellij kill-session'
-alias za='zellij attach'
+alias wtss="wt switch"
+alias wts="wt switch"
+alias wst="wt switch"
+alias wtsn="wt switch -c"
+alias wtsc="wt switch -c"
+alias wstn="wt switch -c"
+alias wtr="wt remove"
+alias hdh="hunk diff HEAD~1"
 
 alias spt="TERM=tmux-256color spotify_player"
 alias zel="zellij -l welcome"
