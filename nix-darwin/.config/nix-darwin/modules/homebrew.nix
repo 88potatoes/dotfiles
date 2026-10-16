@@ -41,6 +41,7 @@
       "bitwarden"
       "ghostty"
       "1password"
+      "1password-cli"
       "tinycast"
       "stablyai/orca/orca"
       "jetbrains-toolbox"
