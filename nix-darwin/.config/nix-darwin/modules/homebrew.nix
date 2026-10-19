@@ -57,6 +57,7 @@
       "rectangle"
       "grandperspective"
       "background-music"
+      "todoist-app"
     ];
   };
 }
