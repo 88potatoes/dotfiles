@@ -1,0 +1,11 @@
+matches:
+  - trigger: ";date"
+    replace: "{{today}}"
+    vars:
+      - name: today
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ";shrug"
+    replace: "¯\\_(ツ)_/¯"
