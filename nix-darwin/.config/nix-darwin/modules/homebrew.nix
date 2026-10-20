@@ -55,7 +55,6 @@
       "bruno"
       "linear"
       "rectangle"
-      "espanso"
       "grandperspective"
       "background-music"
       "todoist-app"

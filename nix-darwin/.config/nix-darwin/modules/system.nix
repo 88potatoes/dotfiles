@@ -47,15 +47,6 @@ in {
   # ── Users ─────────────────────────────────────────
   users.users.${username}.home = "/Users/${username}";
 
-  # ── Espanso restart (memory leak) ───────────────────
-  launchd.user.agents.espanso-restart = {
-    serviceConfig = {
-      ProgramArguments = [ "/Applications/Espanso.app/Contents/MacOS/espanso" "restart" ];
-      StartInterval = 14400;
-      RunAtLoad = false;
-    };
-  };
-
   # ── Shell ──────────────────────────────────────────
   programs.zsh.enable = true;
   environment.shells = [ pkgs.zsh ];
