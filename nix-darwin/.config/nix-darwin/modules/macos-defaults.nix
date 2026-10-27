@@ -43,9 +43,6 @@
           };
         };
       };
-      "leits.MeetingBar" = {
-        automaticEventJoin = 1;
-      };
       "com.cmuxterm.app" = {
         browserDisabledOverride = 1;
       };
