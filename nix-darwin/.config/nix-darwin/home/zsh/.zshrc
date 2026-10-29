@@ -178,10 +178,6 @@ wtfev() {
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
 
-# Force pi to use brew path
-pi () {
-  /opt/homebrew/bin/pi "$@"
-}
 
 # Nix rebuild + restow
 # Usage: nix-reload           → reads profile from ~/.config/nix-profile
