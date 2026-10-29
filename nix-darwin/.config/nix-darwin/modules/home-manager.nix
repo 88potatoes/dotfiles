@@ -26,6 +26,8 @@ username: { pkgs, lib, ... }: {
 
     "ghostty/config".source = ../home/ghostty/config;
 
+    "rex/init.lua".source = ../home/rex/init.lua;
+
     "wezterm/wezterm.lua".source = ../home/wezterm/wezterm.lua;
 
     "karabiner/karabiner.json".source = ../home/karabiner/karabiner.json;
