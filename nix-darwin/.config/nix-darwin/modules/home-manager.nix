@@ -26,6 +26,8 @@ username: { pkgs, lib, ... }: {
 
     "ghostty/config".source = ../home/ghostty/config;
 
+    "rex/init.lua".source = ../home/rex/init.lua;
+
     "wezterm/wezterm.lua".source = ../home/wezterm/wezterm.lua;
 
     "karabiner/karabiner.json".source = ../home/karabiner/karabiner.json;
@@ -56,7 +58,7 @@ username: { pkgs, lib, ... }: {
       tools = {
         node = "24.16.0";
         # Pinned — bump here to update; don't run `pi update self`.
-        "npm:@earendil-works/pi-coding-agent" = "0.85.1";
+        "npm:@earendil-works/pi-coding-agent" = "1.4.0";
       };
     };
   };
