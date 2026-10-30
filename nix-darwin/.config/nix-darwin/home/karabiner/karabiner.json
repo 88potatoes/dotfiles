@@ -168,7 +168,7 @@
                                     "key_code": "a",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Brave Browser.app'" }],
+                                "to": [{ "shell_command": "open -a 'Helium.app'" }],
                                 "type": "basic"
                             },
                             {
@@ -176,7 +176,7 @@
                                     "key_code": "k",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Helium.app'" }],
+                                "to": [{ "shell_command": "open -a Orca.app" }],
                                 "type": "basic"
                             },
                             {
