@@ -32,6 +32,7 @@
       "pango"
       "libmagic"
       "ffmpeg"
+      "defaultbrowser"
       "stripe/stripe-cli/stripe"
     ];
     casks = [
@@ -58,6 +59,7 @@
       "grandperspective"
       "background-music"
       "todoist-app"
+      "helium-browser"
     ];
   };
 }

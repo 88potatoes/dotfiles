@@ -87,6 +87,12 @@ in {
     done
   '';
 
+  system.activationScripts.postActivation.text = ''
+    if [ -x /opt/homebrew/bin/defaultbrowser ]; then
+      sudo -u ${username} /opt/homebrew/bin/defaultbrowser helium || true
+    fi
+  '';
+
   # ── State version ──────────────────────────────────
   system.stateVersion = 5;
 
