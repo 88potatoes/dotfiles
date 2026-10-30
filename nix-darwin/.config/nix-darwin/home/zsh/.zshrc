@@ -195,3 +195,16 @@ nix-reload() {
   darwin-rebuild switch --flake "$HOME/dotfiles/nix-darwin/.config/nix-darwin#$profile"
   stow -d "$HOME/dotfiles" local-bin pi
 }
+
+# Keep the Rex CLI on PATH (nix-darwin's set-environment wipes Rex's front-of-PATH entry).
+# REX_BIN_DIR is set by Rex itself and points at Versions/Current, so it follows
+# app updates. The globs cover shells where Rex hasn't set it (SSH, other terminals).
+rex_bin="${REX_BIN_DIR:-}"
+if [ -z "$rex_bin" ]; then
+  for d in ~/Library/Application\ Support/com.superlogical.rex/RexServer/Versions/Current/*\.app/Contents/MacOS \
+           /Applications/Rex*\.app/Contents/Helpers/*\.rex/Contents/MacOS; do
+    [ -x "$d/rex" ] && rex_bin="$d" && break
+  done
+fi
+[ -n "$rex_bin" ] && export PATH="$rex_bin:$PATH"
+unset rex_bin

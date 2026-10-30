@@ -9,8 +9,13 @@ if f ~= nil then
   require("config.local")
 end
 
--- keybind = super+a=unbind
-rex.unbind("cmd+a")
+-- keybind = cmd+shift+r = rename session
+rex.bind("cmd+shift+r", "session.rename")
+
+-- keybind = cmd+p = command palette
+rex.bind("cmd+p", "client.palette.toggle")
+
+-- Ghostty's super+a=unbind: Rex has no default cmd+a binding, so no unbind needed.
 
 -- keybind = super+d=new_split:right
 rex.bind("cmd+d", "pane.split", { direction = "right" })
@@ -20,10 +25,8 @@ rex.bind("cmd+d", "pane.split", { direction = "right" })
 rex.bind("cmd+opt+left", "client.tab.previous")
 rex.bind("cmd+opt+right", "client.tab.next")
 
--- keybind = opt+left=unbind
--- keybind = opt+right=unbind
-rex.unbind("opt+left")
-rex.unbind("opt+right")
+-- keybind = opt+left=unbind, opt+right=unbind
+-- Rex sends unbound keys (like opt+arrows) to the shell by default, so no unbind needed.
 
 -- Not ported from Ghostty:
 --   ctrl+l=clear_screen and ctrl+c=text:\x15\x03 — Rex sends keys straight
