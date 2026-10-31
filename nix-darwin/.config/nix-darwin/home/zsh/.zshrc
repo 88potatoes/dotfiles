@@ -111,6 +111,13 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+## Random helper functions
+
+cols() {
+  head -n 1 "$1" | awk -F, '{for(i=1; i<=NF; i++) print i, $i}'
+}
+
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 # Zsh plugins (from nixpkgs).
@@ -177,7 +184,6 @@ wtfev() {
 }
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
-
 
 # Nix rebuild + restow
 # Usage: nix-reload           → reads profile from ~/.config/nix-profile
