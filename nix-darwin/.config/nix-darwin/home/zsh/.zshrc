@@ -71,6 +71,7 @@ hdm() {
   hunk diff "$base...HEAD"
 }
 alias vim="nvim"
+alias taks="task"
 # end git
 
 alias wtss="wt switch"
