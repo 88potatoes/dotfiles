@@ -58,6 +58,7 @@ alias v='nvim'
 
 # git
 gcam='git commit -a -m'
+alias lg='lazygit'
 alias gs='git status'
 alias gp='git push'
 alias gl='git loga'
