@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root=$(git rev-parse --show-toplevel)
+cd "$root"
+exec pnpm exec playwright test --config=e2e/playwright.config.ts --pass-with-no-tests \
+  --project=med-device-scribe-fast --project=med-device-evidence-fast "$@"
