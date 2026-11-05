@@ -97,6 +97,10 @@ export PATH="$HOME/dotfiles/scripts:$PATH"
 # Tab completion (required before fzf/bun completions register via compdef)
 autoload -Uz compinit && compinit
 
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt EXTENDED_HISTORY HIST_FIND_NO_DUPS HIST_REDUCE_BLANKS
+
 source <(fzf --zsh)
 
 # Copy a file to the clipboard (as a file, for pasting into Finder/apps)
