@@ -49,6 +49,9 @@
       "com.knollsoft.Rectangle" = {
         launchOnLogin = true;
       };
+      "com.superlogical.rex" = {
+        "rex.client.remoteControl" = true;
+      };
       "com.google.Chrome" = {
         GenAILocalFoundationalModelSettings = 1;
       };
