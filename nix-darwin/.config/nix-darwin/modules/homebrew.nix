@@ -58,6 +58,7 @@
       "rectangle"
       "grandperspective"
       "background-music"
+      "obs"
       "todoist-app"
       "helium-browser"
     ];
