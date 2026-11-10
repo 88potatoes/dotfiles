@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""Minimum CODEOWNERS you still need to request for the current branch's PR.
+
+usage: approvers [PR_NUMBER_OR_URL]
+"""
+import json, re, subprocess, sys
+
+
+def sh(*a):
+    r = subprocess.run(a, capture_output=True, text=True)
+    if r.returncode:
+        sys.exit(r.stderr.strip() or f"failed: {' '.join(a)}")
+    return r.stdout
+
+
+def pattern_regex(p):
+    anchored = p.startswith("/") or "/" in p.rstrip("/")
+    dir_only = p.endswith("/")
+    p = p.strip("/")
+    out, i = "", 0
+    while i < len(p):
+        c = p[i]
+        if p[i:i + 3] == "**/":
+            out += "(?:.*/)?"; i += 3; continue
+        if p[i:i + 2] == "**":
+            out += ".*"; i += 2; continue
+        out += "[^/]*" if c == "*" else "[^/]" if c == "?" else re.escape(c)
+        i += 1
+    prefix = "^" if anchored else "^(?:.*/)?"
+    return re.compile(prefix + out + ("/.*$" if dir_only else "(?:/.*)?$"))
+
+
+def load_rules(text):
+    rules = []
+    for line in text.splitlines():
+        line = line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        pat, *owners = line.split()
+        rules.append((pattern_regex(pat), owners))
+    return rules
+
+
+def owners_of(rules, path):
+    found = []
+    for rx, owners in rules:
+        if rx.match(path):
+            found = owners
+    return found
+
+
+pr_arg = sys.argv[1:2]
+pr = json.loads(sh("gh", "pr", "view", *pr_arg, "--json",
+                   "number,author,files,reviews,reviewRequests,url,baseRefName"))
+repo = json.loads(sh("gh", "repo", "view", "--json", "nameWithOwner,defaultBranchRef"))
+name = repo["nameWithOwner"]
+text = None
+for path in (".github/CODEOWNERS", "CODEOWNERS", "docs/CODEOWNERS"):
+    r = subprocess.run(["gh", "api", f"repos/{name}/contents/{path}?ref={pr['baseRefName']}",
+                        "-H", "Accept: application/vnd.github.raw"], capture_output=True, text=True)
+    if r.returncode == 0:
+        text = r.stdout
+        break
+if text is None:
+    sys.exit("no CODEOWNERS found")
+
+rules = load_rules(text)
+author = "@" + pr["author"]["login"].lower()
+latest = {}
+for rv in pr["reviews"]:
+    latest[rv["author"]["login"].lower()] = rv["state"]
+approved = {"@" + u for u, s in latest.items() if s == "APPROVED"}
+
+org = name.split("/")[0].lower()
+need = {}
+for f in pr["files"]:
+    owners = [o.lower() for o in owners_of(rules, f["path"])]
+    if not owners:
+        continue
+    if author in owners or any(o in approved for o in owners):
+        continue
+    need[f["path"]] = set(owners)
+
+if not need:
+    print(f"PR #{pr['number']}: all owned files already satisfied")
+    sys.exit()
+
+remaining = dict(need)
+picked = []
+while remaining:
+    counts = {}
+    for owners in remaining.values():
+        for o in owners:
+            counts[o] = counts.get(o, 0) + 1
+    best = max(sorted(counts), key=lambda o: counts[o])
+    covered = [f for f, o in remaining.items() if best in o]
+    picked.append((best, covered))
+    for f in covered:
+        del remaining[f]
+
+print(f"PR #{pr['number']} {pr['url']}")
+print(f"Request {len(picked)} owner(s):\n")
+for owner, files in picked:
+    print(f"{owner}  ({len(files)} files)")
+    for f in files[:5]:
+        print(f"  {f}")
+    if len(files) > 5:
+        print(f"  ... +{len(files) - 5} more")
