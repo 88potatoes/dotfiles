@@ -13,6 +13,7 @@ end
 rex.bind("cmd+shift+r", "session.rename")
 
 -- cmd+n = new session (not a new window)
+rex.unbind("cmd+n")
 rex.bind("cmd+n", "session.new")
 
 -- keybind = cmd+p = command palette
