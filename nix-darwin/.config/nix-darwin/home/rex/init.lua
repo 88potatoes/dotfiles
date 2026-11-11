@@ -12,6 +12,9 @@ end
 -- keybind = cmd+shift+r = rename session
 rex.bind("cmd+shift+r", "session.rename")
 
+-- cmd+n = new session (not a new window)
+rex.bind("cmd+n", "session.new")
+
 -- keybind = cmd+p = command palette
 rex.bind("cmd+p", "client.palette.toggle")
 
