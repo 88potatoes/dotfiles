@@ -62,6 +62,7 @@ username: { pkgs, lib, ... }: {
         node = "24.16.0";
         # Pinned — bump here to update; don't run `pi update self`.
         "npm:@earendil-works/pi-coding-agent" = "1.4.0";
+        python = "3.12";
       };
     };
   };
