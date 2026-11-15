@@ -8,6 +8,9 @@ username: { pkgs, lib, ... }: {
   ];
 
   xdg.configFile = {
+    "espanso/match/base.yml".source = ../home/espanso/match/base.yml;
+    "espanso/config/default.yml".source = ../home/espanso/config/default.yml;
+
     "yazi/yazi.toml".source = ../home/yazi/yazi.toml;
     "yazi/theme.toml".source = ../home/yazi/theme.toml;
 
@@ -168,4 +171,14 @@ username: { pkgs, lib, ... }: {
       open -a "/Applications/Tinycast.app" 2>/dev/null || true
     fi
   '';
+
+  home.activation.setupEspanso = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    MATCH_DIR="$HOME/.config/espanso/match"
+    mkdir -p "$MATCH_DIR"
+    for item in "$HOME/.work-contexts/espanso/"*.yml; do
+      if [ -f "$item" ]; then
+        run ln -sfn "$item" "$MATCH_DIR/work-$(basename "$item")"
+      fi
+    done
+  ''';
 }
