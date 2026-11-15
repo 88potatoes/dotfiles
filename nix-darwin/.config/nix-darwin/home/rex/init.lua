@@ -86,6 +86,8 @@ rex.action({
   name = "lazygit_float",
   title = "Toggle floating lazygit",
   run = function(ctx)
+    local f = io.open("/tmp/rex-lazygit.log", "a")
+    if f then f:write(os.date() .. " fired origin=" .. tostring(ctx.origin) .. " block=" .. tostring(ctx.block_id) .. "\n") f:close() end
     local sid = ctx.session_id
     local bid = ctx.block_id
 
@@ -121,3 +123,5 @@ rex.action({
 })
 
 rex.bind("cmd+shift+l", "lazygit_float")
+rex.bind("cmd+shift+k", "client.palette.toggle")
+rex.bind("cmd+shift+j", "lazygit_float")

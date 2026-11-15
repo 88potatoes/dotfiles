@@ -133,23 +133,6 @@ username: { pkgs, lib, ... }: {
       done
     fi
 
-    # Snippets
-    SNIP_DIR="$APP_DIR/Snippets"
-    if [ -L "$SNIP_DIR" ]; then
-      run rm -f "$SNIP_DIR"
-    fi
-    mkdir -p "$SNIP_DIR"
-    find "$SNIP_DIR" -maxdepth 1 -type l ! -exec test -e {} \; -delete
-    for SRC in "$HOME/dotfiles/nix-darwin/.config/nix-darwin/home/tinycast/snippets" "$HOME/.work-contexts/snippets"; do
-      if [ -d "$SRC" ]; then
-        for item in "$SRC/"*.md; do
-          if [ -f "$item" ]; then
-            run ln -sfn "$item" "$SNIP_DIR/$(basename "$item")"
-          fi
-        done
-      fi
-    done
-
     # Notes
     NOTES_DIR="$APP_DIR/Notes"
     if [ -L "$NOTES_DIR" ]; then
