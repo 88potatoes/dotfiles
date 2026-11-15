@@ -85,9 +85,9 @@ end
 rex.action({
   name = "lazygit_float",
   title = "Toggle floating lazygit",
-  run = function()
-    local sid = rex.session_id
-    local bid = rex.block_id
+  run = function(ctx)
+    local sid = ctx.session_id
+    local bid = ctx.block_id
 
     local process = rex.call("block.method", {
       session_id = sid,
