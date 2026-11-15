@@ -180,7 +180,7 @@ username: { pkgs, lib, ... }: {
         run ln -sfn "$item" "$MATCH_DIR/work-$(basename "$item")"
       fi
     done
-  ''';
+  '';
 
   launchd.agents.espanso-restart = {
     enable = true;
