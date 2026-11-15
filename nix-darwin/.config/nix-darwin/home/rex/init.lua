@@ -39,9 +39,52 @@ rex.bind("cmd+opt+right", "client.tab.next")
 --   Font (Iosevka 9), option-as-alt, background, and window styling are set
 --   in the Rex app's settings, not the config file.
 
+local LAZYGIT_PREFIX = "lazygit "
+
+local function find_lazygit_layer(view, bid, label)
+  local by_label
+  for _, window in ipairs(view.windows or {}) do
+    for _, layer in ipairs(window.layers or {}) do
+      if layer.kind ~= "tiled" then
+        for _, block in ipairs(layer.blocks or {}) do
+          if block.block_id == bid and (block.label or ""):sub(1, #LAZYGIT_PREFIX) == LAZYGIT_PREFIX then
+            return layer
+          end
+          if block.label == label then
+            by_label = layer
+          end
+        end
+      end
+    end
+  end
+  return by_label
+end
+
+local function ensure_lazygit_layer(sid, view, bid, cwd)
+  local label = LAZYGIT_PREFIX .. cwd
+  local layer = find_lazygit_layer(view, bid, label)
+  if layer then
+    return layer.layer_id, layer.state, false
+  end
+  local created = rex.call("session.new_layer", {
+    session_id = sid,
+    window_id = view.active_window_id,
+    bounds = { 0.1, 0.1, 0.8, 0.8 },
+    focus = true,
+    layout = {
+      block = {
+        flavor = "com.superlogical.terminal.shell",
+        label = label,
+        options = { command = { "lazygit" }, cwd = cwd },
+      },
+    },
+  })
+  return created.layer_id, "normal", true
+end
+
 rex.action({
   name = "lazygit_float",
-  title = "Lazygit (floating, minimized)",
+  title = "Toggle floating lazygit",
   run = function()
     local sid = rex.session_id
     local bid = rex.block_id
@@ -53,42 +96,27 @@ rex.action({
       args = {},
     })
     local cwd = process.foreground and process.foreground.cwd or os.getenv("HOME")
-    local label = "lazygit " .. cwd
 
     local view = rex.call("session.view", { session_id = sid })
-    local layer_id
-    for _, window in ipairs(view.windows or {}) do
-      for _, layer in ipairs(window.layers or {}) do
-        for _, block in ipairs(layer.blocks or {}) do
-          if layer.kind ~= "tiled" and block.label == label then
-            layer_id = layer.layer_id
-          end
-        end
-      end
+    local layer_id, state, created = ensure_lazygit_layer(sid, view, bid, cwd)
+    if created then
+      return
     end
 
-    if not layer_id then
-      local created = rex.call("session.new_layer", {
+    if state == "minimized" then
+      rex.call("session.set_layer_state", {
         session_id = sid,
-        window_id = view.active_window_id,
-        bounds = { 0.1, 0.1, 0.8, 0.8 },
-        focus = false,
-        layout = {
-          block = {
-            flavor = "com.superlogical.terminal.shell",
-            label = label,
-            options = { command = { "lazygit" }, cwd = cwd },
-          },
-        },
+        layer_id = layer_id,
+        state = "normal",
+        focus = true,
       })
-      layer_id = created.layer_id
+    else
+      rex.call("session.set_layer_state", {
+        session_id = sid,
+        layer_id = layer_id,
+        state = "minimized",
+      })
     end
-
-    rex.call("session.set_layer_state", {
-      session_id = sid,
-      layer_id = layer_id,
-      state = "minimized",
-    })
   end,
 })
 
