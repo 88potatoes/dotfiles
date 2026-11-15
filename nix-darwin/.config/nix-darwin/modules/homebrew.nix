@@ -52,7 +52,6 @@
       "surfshark"
       "notion"
       "grok-bot"
-      "opensuperwhisper"
       "bruno"
       "linear"
       "rectangle"
