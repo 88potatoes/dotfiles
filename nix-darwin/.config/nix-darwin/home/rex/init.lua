@@ -121,3 +121,6 @@ rex.action({
 })
 
 rex.bind("cmd+opt+l", "lazygit_float")
+rex.bind("cmd+shift+l", "lazygit_float")
+rex.bind("ctrl+opt+l", "lazygit_float")
+rex.bind("cmd+opt+k", "lazygit_float")
