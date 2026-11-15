@@ -120,4 +120,4 @@ rex.action({
   end,
 })
 
-rex.bind("cmd+opt+g", "lazygit_float")
+rex.bind("cmd+opt+l", "lazygit_float")
