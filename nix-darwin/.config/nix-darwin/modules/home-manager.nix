@@ -181,4 +181,14 @@ username: { pkgs, lib, ... }: {
       fi
     done
   ''';
+
+  launchd.agents.espanso-restart = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/opt/homebrew/bin/espanso" "restart" ];
+      StartInterval = 7200;
+      StandardErrorPath = "/tmp/espanso-restart.log";
+      StandardOutPath = "/tmp/espanso-restart.log";
+    };
+  };
 }
