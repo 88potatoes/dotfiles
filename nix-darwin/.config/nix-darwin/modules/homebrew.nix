@@ -45,7 +45,7 @@
       "1password-cli"
       "tinycast"
       "espanso"
-      "devutils"
+      "devtoys"
       "stablyai/orca/orca"
       "jetbrains-toolbox"
       "whatsapp"
