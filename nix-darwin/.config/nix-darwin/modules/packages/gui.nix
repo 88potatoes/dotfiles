@@ -5,4 +5,5 @@ pkgs: with pkgs; [
   brave
   kitty
   pkgs.wezterm
+  pkgs.unstable.handy  # voice dictation (not yet in stable nixpkgs)
 ]
