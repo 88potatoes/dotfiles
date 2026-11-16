@@ -40,6 +40,7 @@ pkgs: with pkgs; [
   zsh-syntax-highlighting
   stow
   go-task
+  temporal-cli
   awscli2
   deno
 
