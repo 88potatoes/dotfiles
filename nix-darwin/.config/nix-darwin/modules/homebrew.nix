@@ -13,6 +13,7 @@
       cleanup = "none";
     };
     taps = [
+      "databricks/tap"
       "abue-ammar/tinycast"
       "stripe/stripe-cli"
       "stablyai/orca"
@@ -34,6 +35,7 @@
       "ffmpeg"
       "defaultbrowser"
       "stripe/stripe-cli/stripe"
+      "databricks/tap/databricks"
     ];
     casks = [
       "karabiner-elements"
