@@ -64,7 +64,6 @@
       "obs"
       "todoist-app"
       "helium-browser"
-      "devin-cli"
     ];
   };
 }
