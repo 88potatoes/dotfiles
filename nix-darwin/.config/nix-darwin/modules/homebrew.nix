@@ -40,6 +40,7 @@
       "defaultbrowser"
       "stripe/stripe-cli/stripe"
       "databricks/tap/databricks"
+      "temporal"
     ];
     casks = [
       "karabiner-elements"
