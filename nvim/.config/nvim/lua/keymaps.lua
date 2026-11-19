@@ -78,11 +78,8 @@ end, { desc = "Grep in current file dir (FFF)" })
 vim.keymap.set("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fs", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
 
--- LazyGit
-vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<cr>', { desc = "LazyGit" })
-
 -- Undotree
-vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = "LazyGit" })
+vim.keymap.set('n', '<leader>u', '<cmd>UndotreeToggle<cr>', { desc = "Undotree" })
 
 -- Supermaven Completion
 vim.keymap.set('i', '<C-Tab>', function()

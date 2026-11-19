@@ -145,17 +145,6 @@ require("lazy").setup({
     },
     opts = {},
   },
-  -- LazyGit
-  {
-    "kdheepak/lazygit.nvim",
-    lazy = true,
-    cmd = {
-      "LazyGit",
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
