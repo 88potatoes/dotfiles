@@ -1,5 +1,9 @@
 # Homebrew module — casks and brews
 { ... }: {
+  nix-homebrew.trust.formulae = [
+    "databricks/tap/databricks"
+  ];
+
   nix-homebrew.trust.casks = [
     "abue-ammar/tinycast/tinycast"
     "stablyai/orca/orca"
