@@ -48,6 +48,8 @@
 - When I ask to install or download software, add it to the appropriate declarative configuration in `~/dotfiles` instead of installing it ad hoc.
 - For Nix-managed software, update the Nix configuration only; never run a Nix rebuild or switch. I will rebuild manually.
 
+- Espanso snippets: edit `nix-darwin/.config/nix-darwin/home/espanso/match/base.yml` (Nix-managed, applied on `just reload`), not `espanso/.config/espanso/match/base.yml`.
+
 ## Pi Extensions
 
 - `~/.pi` is symlinked (via stow) to `~/dotfiles/pi/.pi`
