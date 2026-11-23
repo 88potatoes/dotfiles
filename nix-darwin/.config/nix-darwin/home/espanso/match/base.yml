@@ -1,3 +1,5 @@
 matches:
   - trigger: ":bs"
     replace: "https://app.blacksmith.sh/oscerai/runs/$|$"
+  - trigger: ":che"
+    replace: "✅"

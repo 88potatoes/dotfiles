@@ -19,9 +19,6 @@ matches:
 
   # But matches can also be dynamic:
 
-  - trigger: ":che"
-    replace: "✅"
-
   # Print the current date
   - trigger: ":date"
     replace: "{{mydate}}"
