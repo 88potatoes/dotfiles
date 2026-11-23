@@ -175,4 +175,12 @@ username: { pkgs, lib, ... }: {
       StandardOutPath = "/tmp/espanso-restart.log";
     };
   };
+
+  launchd.agents.handy = {
+    enable = true;
+    config = {
+      ProgramArguments = [ "/usr/bin/open" "-a" "/Applications/Handy.app" ];
+      RunAtLoad = true;
+    };
+  };
 }
