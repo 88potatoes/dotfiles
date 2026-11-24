@@ -5,3 +5,22 @@ matches:
     replace: "✅"
   - trigger: ":pray"
     replace: "🙏"
+  - trigger: ":kao"
+    replace: "{{kao}}"
+    vars:
+      - name: kao
+        type: random
+        params:
+          choices:
+            - "(╯°□°)╯︵ ┻━┻"
+            - "¯\\_(ツ)_/¯"
+            - "(ノಠ益ಠ)ノ彡┻━┻"
+            - "ʕ•ᴥ•ʔ"
+            - "(づ。◕‿‿◕。)づ"
+            - "(☞゚ヮ゚)☞"
+            - "ヽ(´▽`)/"
+            - "(・_・;)"
+            - "٩(◕‿◕｡)۶"
+            - "(ಥ﹏ಥ)"
+            - "( ͡° ͜ʖ ͡°)"
+            - "ᕕ( ᐛ )ᕗ"
