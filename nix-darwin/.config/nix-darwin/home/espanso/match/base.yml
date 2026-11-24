@@ -3,3 +3,5 @@ matches:
     replace: "https://app.blacksmith.sh/oscerai/runs/$|$"
   - trigger: ":che"
     replace: "✅"
+  - trigger: ":pray"
+    replace: "🙏"
