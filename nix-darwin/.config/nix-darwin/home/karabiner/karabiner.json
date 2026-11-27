@@ -194,7 +194,7 @@
                                     "key_code": "k",
                                     "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
                                 },
-                                "to": [{ "shell_command": "open -a 'Rex Beta.app'" }],
+                                "to": [{ "shell_command": "open -a 'Rex.app'" }],
                                 "type": "basic"
                             },
                             {
